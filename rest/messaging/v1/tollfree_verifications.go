@@ -467,10 +467,7 @@ func (params *ListTollfreeVerificationParams) SetLimit(Limit int) *ListTollfreeV
 }
 
 // Retrieve a single page of TollfreeVerification records from the API. Request is executed immediately.
-func (c *ApiService) PageTollfreeVerification(
-	params *ListTollfreeVerificationParams,
-	pageToken, pageNumber string,
-) (*ListTollfreeVerificationResponse, error) {
+func (c *ApiService) PageTollfreeVerification(params *ListTollfreeVerificationParams, pageToken, pageNumber string) (*ListTollfreeVerificationResponse, error) {
 	path := "/v1/Tollfree/Verifications"
 
 	data := url.Values{}
@@ -559,12 +556,7 @@ func (c *ApiService) StreamTollfreeVerification(params *ListTollfreeVerification
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamTollfreeVerification(
-	response *ListTollfreeVerificationResponse,
-	params *ListTollfreeVerificationParams,
-	recordChannel chan MessagingV1TollfreeVerification,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamTollfreeVerification(response *ListTollfreeVerificationResponse, params *ListTollfreeVerificationParams, recordChannel chan MessagingV1TollfreeVerification, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

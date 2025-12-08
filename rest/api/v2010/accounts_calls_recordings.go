@@ -71,10 +71,7 @@ func (params *CreateCallRecordingParams) SetRecordingTrack(RecordingTrack string
 }
 
 // Create a recording for the call
-func (c *ApiService) CreateCallRecording(
-	CallSid string,
-	params *CreateCallRecordingParams,
-) (*ApiV2010CallRecording, error) {
+func (c *ApiService) CreateCallRecording(CallSid string, params *CreateCallRecordingParams) (*ApiV2010CallRecording, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -173,11 +170,7 @@ func (params *FetchCallRecordingParams) SetPathAccountSid(PathAccountSid string)
 }
 
 // Fetch an instance of a recording for a call
-func (c *ApiService) FetchCallRecording(
-	CallSid string,
-	Sid string,
-	params *FetchCallRecordingParams,
-) (*ApiV2010CallRecording, error) {
+func (c *ApiService) FetchCallRecording(CallSid string, Sid string, params *FetchCallRecordingParams) (*ApiV2010CallRecording, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -249,11 +242,7 @@ func (params *ListCallRecordingParams) SetLimit(Limit int) *ListCallRecordingPar
 }
 
 // Retrieve a single page of CallRecording records from the API. Request is executed immediately.
-func (c *ApiService) PageCallRecording(
-	CallSid string,
-	params *ListCallRecordingParams,
-	pageToken, pageNumber string,
-) (*ListCallRecordingResponse, error) {
+func (c *ApiService) PageCallRecording(CallSid string, params *ListCallRecordingParams, pageToken, pageNumber string) (*ListCallRecordingResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -304,10 +293,7 @@ func (c *ApiService) PageCallRecording(
 }
 
 // Lists CallRecording records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListCallRecording(
-	CallSid string,
-	params *ListCallRecordingParams,
-) ([]ApiV2010CallRecording, error) {
+func (c *ApiService) ListCallRecording(CallSid string, params *ListCallRecordingParams) ([]ApiV2010CallRecording, error) {
 	response, errors := c.StreamCallRecording(CallSid, params)
 
 	records := make([]ApiV2010CallRecording, 0)
@@ -323,10 +309,7 @@ func (c *ApiService) ListCallRecording(
 }
 
 // Streams CallRecording records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamCallRecording(
-	CallSid string,
-	params *ListCallRecordingParams,
-) (chan ApiV2010CallRecording, chan error) {
+func (c *ApiService) StreamCallRecording(CallSid string, params *ListCallRecordingParams) (chan ApiV2010CallRecording, chan error) {
 	if params == nil {
 		params = &ListCallRecordingParams{}
 	}
@@ -347,12 +330,7 @@ func (c *ApiService) StreamCallRecording(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCallRecording(
-	response *ListCallRecordingResponse,
-	params *ListCallRecordingParams,
-	recordChannel chan ApiV2010CallRecording,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCallRecording(response *ListCallRecordingResponse, params *ListCallRecordingParams, recordChannel chan ApiV2010CallRecording, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -424,11 +402,7 @@ func (params *UpdateCallRecordingParams) SetPauseBehavior(PauseBehavior string) 
 }
 
 // Changes the status of the recording to paused, stopped, or in-progress. Note: Pass `Twilio.CURRENT` instead of recording sid to reference current active recording.
-func (c *ApiService) UpdateCallRecording(
-	CallSid string,
-	Sid string,
-	params *UpdateCallRecordingParams,
-) (*ApiV2010CallRecording, error) {
+func (c *ApiService) UpdateCallRecording(CallSid string, Sid string, params *UpdateCallRecordingParams) (*ApiV2010CallRecording, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)

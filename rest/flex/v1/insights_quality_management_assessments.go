@@ -182,10 +182,7 @@ func (params *ListInsightsAssessmentsParams) SetLimit(Limit int) *ListInsightsAs
 }
 
 // Retrieve a single page of InsightsAssessments records from the API. Request is executed immediately.
-func (c *ApiService) PageInsightsAssessments(
-	params *ListInsightsAssessmentsParams,
-	pageToken, pageNumber string,
-) (*ListInsightsAssessmentsResponse, error) {
+func (c *ApiService) PageInsightsAssessments(params *ListInsightsAssessmentsParams, pageToken, pageNumber string) (*ListInsightsAssessmentsResponse, error) {
 	path := "/v1/Insights/QualityManagement/Assessments"
 
 	data := url.Values{}
@@ -260,12 +257,7 @@ func (c *ApiService) StreamInsightsAssessments(params *ListInsightsAssessmentsPa
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamInsightsAssessments(
-	response *ListInsightsAssessmentsResponse,
-	params *ListInsightsAssessmentsParams,
-	recordChannel chan FlexV1InsightsAssessments,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamInsightsAssessments(response *ListInsightsAssessmentsResponse, params *ListInsightsAssessmentsParams, recordChannel chan FlexV1InsightsAssessments, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -343,10 +335,7 @@ func (params *UpdateInsightsAssessmentsParams) SetAnswerId(AnswerId string) *Upd
 }
 
 // Update a specific Assessment assessed earlier
-func (c *ApiService) UpdateInsightsAssessments(
-	AssessmentSid string,
-	params *UpdateInsightsAssessmentsParams,
-) (*FlexV1InsightsAssessments, error) {
+func (c *ApiService) UpdateInsightsAssessments(AssessmentSid string, params *UpdateInsightsAssessmentsParams) (*FlexV1InsightsAssessments, error) {
 	path := "/v1/Insights/QualityManagement/Assessments/{AssessmentSid}"
 	path = strings.Replace(path, "{"+"AssessmentSid"+"}", AssessmentSid, -1)
 

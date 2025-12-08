@@ -166,10 +166,7 @@ func (params *FetchOutgoingCallerIdParams) SetPathAccountSid(PathAccountSid stri
 }
 
 // Fetch an outgoing-caller-id belonging to the account used to make the request
-func (c *ApiService) FetchOutgoingCallerId(
-	Sid string,
-	params *FetchOutgoingCallerIdParams,
-) (*ApiV2010OutgoingCallerId, error) {
+func (c *ApiService) FetchOutgoingCallerId(Sid string, params *FetchOutgoingCallerIdParams) (*ApiV2010OutgoingCallerId, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -234,10 +231,7 @@ func (params *ListOutgoingCallerIdParams) SetLimit(Limit int) *ListOutgoingCalle
 }
 
 // Retrieve a single page of OutgoingCallerId records from the API. Request is executed immediately.
-func (c *ApiService) PageOutgoingCallerId(
-	params *ListOutgoingCallerIdParams,
-	pageToken, pageNumber string,
-) (*ListOutgoingCallerIdResponse, error) {
+func (c *ApiService) PageOutgoingCallerId(params *ListOutgoingCallerIdParams, pageToken, pageNumber string) (*ListOutgoingCallerIdResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -321,12 +315,7 @@ func (c *ApiService) StreamOutgoingCallerId(params *ListOutgoingCallerIdParams) 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamOutgoingCallerId(
-	response *ListOutgoingCallerIdResponse,
-	params *ListOutgoingCallerIdParams,
-	recordChannel chan ApiV2010OutgoingCallerId,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamOutgoingCallerId(response *ListOutgoingCallerIdResponse, params *ListOutgoingCallerIdParams, recordChannel chan ApiV2010OutgoingCallerId, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -392,10 +381,7 @@ func (params *UpdateOutgoingCallerIdParams) SetFriendlyName(FriendlyName string)
 }
 
 // Updates the caller-id
-func (c *ApiService) UpdateOutgoingCallerId(
-	Sid string,
-	params *UpdateOutgoingCallerIdParams,
-) (*ApiV2010OutgoingCallerId, error) {
+func (c *ApiService) UpdateOutgoingCallerId(Sid string, params *UpdateOutgoingCallerIdParams) (*ApiV2010OutgoingCallerId, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)

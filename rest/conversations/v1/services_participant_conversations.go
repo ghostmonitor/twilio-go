@@ -53,11 +53,7 @@ func (params *ListServiceParticipantConversationParams) SetLimit(Limit int) *Lis
 }
 
 // Retrieve a single page of ServiceParticipantConversation records from the API. Request is executed immediately.
-func (c *ApiService) PageServiceParticipantConversation(
-	ChatServiceSid string,
-	params *ListServiceParticipantConversationParams,
-	pageToken, pageNumber string,
-) (*ListServiceParticipantConversationResponse, error) {
+func (c *ApiService) PageServiceParticipantConversation(ChatServiceSid string, params *ListServiceParticipantConversationParams, pageToken, pageNumber string) (*ListServiceParticipantConversationResponse, error) {
 	path := "/v1/Services/{ChatServiceSid}/ParticipantConversations"
 
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
@@ -100,10 +96,7 @@ func (c *ApiService) PageServiceParticipantConversation(
 }
 
 // Lists ServiceParticipantConversation records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListServiceParticipantConversation(
-	ChatServiceSid string,
-	params *ListServiceParticipantConversationParams,
-) ([]ConversationsV1ServiceParticipantConversation, error) {
+func (c *ApiService) ListServiceParticipantConversation(ChatServiceSid string, params *ListServiceParticipantConversationParams) ([]ConversationsV1ServiceParticipantConversation, error) {
 	response, errors := c.StreamServiceParticipantConversation(ChatServiceSid, params)
 
 	records := make([]ConversationsV1ServiceParticipantConversation, 0)
@@ -119,10 +112,7 @@ func (c *ApiService) ListServiceParticipantConversation(
 }
 
 // Streams ServiceParticipantConversation records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamServiceParticipantConversation(
-	ChatServiceSid string,
-	params *ListServiceParticipantConversationParams,
-) (chan ConversationsV1ServiceParticipantConversation, chan error) {
+func (c *ApiService) StreamServiceParticipantConversation(ChatServiceSid string, params *ListServiceParticipantConversationParams) (chan ConversationsV1ServiceParticipantConversation, chan error) {
 	if params == nil {
 		params = &ListServiceParticipantConversationParams{}
 	}
@@ -143,12 +133,7 @@ func (c *ApiService) StreamServiceParticipantConversation(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamServiceParticipantConversation(
-	response *ListServiceParticipantConversationResponse,
-	params *ListServiceParticipantConversationParams,
-	recordChannel chan ConversationsV1ServiceParticipantConversation,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamServiceParticipantConversation(response *ListServiceParticipantConversationResponse, params *ListServiceParticipantConversationParams, recordChannel chan ConversationsV1ServiceParticipantConversation, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

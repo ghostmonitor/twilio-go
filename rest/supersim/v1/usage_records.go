@@ -89,10 +89,7 @@ func (params *ListUsageRecordParams) SetLimit(Limit int) *ListUsageRecordParams 
 }
 
 // Retrieve a single page of UsageRecord records from the API. Request is executed immediately.
-func (c *ApiService) PageUsageRecord(
-	params *ListUsageRecordParams,
-	pageToken, pageNumber string,
-) (*ListUsageRecordResponse, error) {
+func (c *ApiService) PageUsageRecord(params *ListUsageRecordParams, pageToken, pageNumber string) (*ListUsageRecordResponse, error) {
 	path := "/v1/UsageRecords"
 
 	data := url.Values{}
@@ -188,12 +185,7 @@ func (c *ApiService) StreamUsageRecord(params *ListUsageRecordParams) (chan Supe
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUsageRecord(
-	response *ListUsageRecordResponse,
-	params *ListUsageRecordParams,
-	recordChannel chan SupersimV1UsageRecord,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUsageRecord(response *ListUsageRecordResponse, params *ListUsageRecordParams, recordChannel chan SupersimV1UsageRecord, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

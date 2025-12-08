@@ -53,11 +53,7 @@ func (params *CreateParticipantParams) SetProxyIdentifierSid(ProxyIdentifierSid 
 }
 
 // Add a new Participant to the Session
-func (c *ApiService) CreateParticipant(
-	ServiceSid string,
-	SessionSid string,
-	params *CreateParticipantParams,
-) (*ProxyV1Participant, error) {
+func (c *ApiService) CreateParticipant(ServiceSid string, SessionSid string, params *CreateParticipantParams) (*ProxyV1Participant, error) {
 	path := "/v1/Services/{ServiceSid}/Sessions/{SessionSid}/Participants"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"SessionSid"+"}", SessionSid, -1)
@@ -162,12 +158,7 @@ func (params *ListParticipantParams) SetLimit(Limit int) *ListParticipantParams 
 }
 
 // Retrieve a single page of Participant records from the API. Request is executed immediately.
-func (c *ApiService) PageParticipant(
-	ServiceSid string,
-	SessionSid string,
-	params *ListParticipantParams,
-	pageToken, pageNumber string,
-) (*ListParticipantResponse, error) {
+func (c *ApiService) PageParticipant(ServiceSid string, SessionSid string, params *ListParticipantParams, pageToken, pageNumber string) (*ListParticipantResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Sessions/{SessionSid}/Participants"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -205,11 +196,7 @@ func (c *ApiService) PageParticipant(
 }
 
 // Lists Participant records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListParticipant(
-	ServiceSid string,
-	SessionSid string,
-	params *ListParticipantParams,
-) ([]ProxyV1Participant, error) {
+func (c *ApiService) ListParticipant(ServiceSid string, SessionSid string, params *ListParticipantParams) ([]ProxyV1Participant, error) {
 	response, errors := c.StreamParticipant(ServiceSid, SessionSid, params)
 
 	records := make([]ProxyV1Participant, 0)
@@ -225,11 +212,7 @@ func (c *ApiService) ListParticipant(
 }
 
 // Streams Participant records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamParticipant(
-	ServiceSid string,
-	SessionSid string,
-	params *ListParticipantParams,
-) (chan ProxyV1Participant, chan error) {
+func (c *ApiService) StreamParticipant(ServiceSid string, SessionSid string, params *ListParticipantParams) (chan ProxyV1Participant, chan error) {
 	if params == nil {
 		params = &ListParticipantParams{}
 	}
@@ -250,12 +233,7 @@ func (c *ApiService) StreamParticipant(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamParticipant(
-	response *ListParticipantResponse,
-	params *ListParticipantParams,
-	recordChannel chan ProxyV1Participant,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamParticipant(response *ListParticipantResponse, params *ListParticipantParams, recordChannel chan ProxyV1Participant, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -100,11 +100,7 @@ func (params *ListBindingParams) SetLimit(Limit int) *ListBindingParams {
 }
 
 // Retrieve a single page of Binding records from the API. Request is executed immediately.
-func (c *ApiService) PageBinding(
-	ServiceSid string,
-	params *ListBindingParams,
-	pageToken, pageNumber string,
-) (*ListBindingResponse, error) {
+func (c *ApiService) PageBinding(ServiceSid string, params *ListBindingParams, pageToken, pageNumber string) (*ListBindingResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Bindings"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -188,12 +184,7 @@ func (c *ApiService) StreamBinding(ServiceSid string, params *ListBindingParams)
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamBinding(
-	response *ListBindingResponse,
-	params *ListBindingParams,
-	recordChannel chan ChatV2Binding,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamBinding(response *ListBindingResponse, params *ListBindingParams, recordChannel chan ChatV2Binding, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

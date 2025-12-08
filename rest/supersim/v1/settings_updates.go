@@ -52,10 +52,7 @@ func (params *ListSettingsUpdateParams) SetLimit(Limit int) *ListSettingsUpdateP
 }
 
 // Retrieve a single page of SettingsUpdate records from the API. Request is executed immediately.
-func (c *ApiService) PageSettingsUpdate(
-	params *ListSettingsUpdateParams,
-	pageToken, pageNumber string,
-) (*ListSettingsUpdateResponse, error) {
+func (c *ApiService) PageSettingsUpdate(params *ListSettingsUpdateParams, pageToken, pageNumber string) (*ListSettingsUpdateResponse, error) {
 	path := "/v1/SettingsUpdates"
 
 	data := url.Values{}
@@ -133,12 +130,7 @@ func (c *ApiService) StreamSettingsUpdate(params *ListSettingsUpdateParams) (cha
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSettingsUpdate(
-	response *ListSettingsUpdateResponse,
-	params *ListSettingsUpdateParams,
-	recordChannel chan SupersimV1SettingsUpdate,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSettingsUpdate(response *ListSettingsUpdateResponse, params *ListSettingsUpdateParams, recordChannel chan SupersimV1SettingsUpdate, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

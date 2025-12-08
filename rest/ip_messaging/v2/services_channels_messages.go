@@ -78,11 +78,7 @@ func (params *CreateMessageParams) SetMediaSid(MediaSid string) *CreateMessagePa
 }
 
 //
-func (c *ApiService) CreateMessage(
-	ServiceSid string,
-	ChannelSid string,
-	params *CreateMessageParams,
-) (*IpMessagingV2Message, error) {
+func (c *ApiService) CreateMessage(ServiceSid string, ChannelSid string, params *CreateMessageParams) (*IpMessagingV2Message, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Messages"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)
@@ -144,12 +140,7 @@ func (params *DeleteMessageParams) SetXTwilioWebhookEnabled(XTwilioWebhookEnable
 }
 
 //
-func (c *ApiService) DeleteMessage(
-	ServiceSid string,
-	ChannelSid string,
-	Sid string,
-	params *DeleteMessageParams,
-) error {
+func (c *ApiService) DeleteMessage(ServiceSid string, ChannelSid string, Sid string, params *DeleteMessageParams) error {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Messages/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)
@@ -224,12 +215,7 @@ func (params *ListMessageParams) SetLimit(Limit int) *ListMessageParams {
 }
 
 // Retrieve a single page of Message records from the API. Request is executed immediately.
-func (c *ApiService) PageMessage(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListMessageParams,
-	pageToken, pageNumber string,
-) (*ListMessageResponse, error) {
+func (c *ApiService) PageMessage(ServiceSid string, ChannelSid string, params *ListMessageParams, pageToken, pageNumber string) (*ListMessageResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Messages"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -270,11 +256,7 @@ func (c *ApiService) PageMessage(
 }
 
 // Lists Message records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListMessage(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListMessageParams,
-) ([]IpMessagingV2Message, error) {
+func (c *ApiService) ListMessage(ServiceSid string, ChannelSid string, params *ListMessageParams) ([]IpMessagingV2Message, error) {
 	response, errors := c.StreamMessage(ServiceSid, ChannelSid, params)
 
 	records := make([]IpMessagingV2Message, 0)
@@ -290,11 +272,7 @@ func (c *ApiService) ListMessage(
 }
 
 // Streams Message records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamMessage(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListMessageParams,
-) (chan IpMessagingV2Message, chan error) {
+func (c *ApiService) StreamMessage(ServiceSid string, ChannelSid string, params *ListMessageParams) (chan IpMessagingV2Message, chan error) {
 	if params == nil {
 		params = &ListMessageParams{}
 	}
@@ -315,12 +293,7 @@ func (c *ApiService) StreamMessage(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamMessage(
-	response *ListMessageResponse,
-	params *ListMessageParams,
-	recordChannel chan IpMessagingV2Message,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamMessage(response *ListMessageResponse, params *ListMessageParams, recordChannel chan IpMessagingV2Message, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -416,12 +389,7 @@ func (params *UpdateMessageParams) SetFrom(From string) *UpdateMessageParams {
 }
 
 //
-func (c *ApiService) UpdateMessage(
-	ServiceSid string,
-	ChannelSid string,
-	Sid string,
-	params *UpdateMessageParams,
-) (*IpMessagingV2Message, error) {
+func (c *ApiService) UpdateMessage(ServiceSid string, ChannelSid string, Sid string, params *UpdateMessageParams) (*IpMessagingV2Message, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Messages/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)

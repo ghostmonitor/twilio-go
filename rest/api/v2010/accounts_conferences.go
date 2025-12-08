@@ -136,10 +136,7 @@ func (params *ListConferenceParams) SetLimit(Limit int) *ListConferenceParams {
 }
 
 // Retrieve a single page of Conference records from the API. Request is executed immediately.
-func (c *ApiService) PageConference(
-	params *ListConferenceParams,
-	pageToken, pageNumber string,
-) (*ListConferenceResponse, error) {
+func (c *ApiService) PageConference(params *ListConferenceParams, pageToken, pageNumber string) (*ListConferenceResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Conferences.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -241,12 +238,7 @@ func (c *ApiService) StreamConference(params *ListConferenceParams) (chan ApiV20
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConference(
-	response *ListConferenceResponse,
-	params *ListConferenceParams,
-	recordChannel chan ApiV2010Conference,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConference(response *ListConferenceResponse, params *ListConferenceParams, recordChannel chan ApiV2010Conference, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

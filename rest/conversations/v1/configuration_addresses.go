@@ -232,10 +232,7 @@ func (params *ListConfigurationAddressParams) SetLimit(Limit int) *ListConfigura
 }
 
 // Retrieve a single page of ConfigurationAddress records from the API. Request is executed immediately.
-func (c *ApiService) PageConfigurationAddress(
-	params *ListConfigurationAddressParams,
-	pageToken, pageNumber string,
-) (*ListConfigurationAddressResponse, error) {
+func (c *ApiService) PageConfigurationAddress(params *ListConfigurationAddressParams, pageToken, pageNumber string) (*ListConfigurationAddressResponse, error) {
 	path := "/v1/Configuration/Addresses"
 
 	data := url.Values{}
@@ -310,12 +307,7 @@ func (c *ApiService) StreamConfigurationAddress(params *ListConfigurationAddress
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConfigurationAddress(
-	response *ListConfigurationAddressResponse,
-	params *ListConfigurationAddressParams,
-	recordChannel chan ConversationsV1ConfigurationAddress,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConfigurationAddress(response *ListConfigurationAddressResponse, params *ListConfigurationAddressParams, recordChannel chan ConversationsV1ConfigurationAddress, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -423,10 +415,7 @@ func (params *UpdateConfigurationAddressParams) SetAutoCreationStudioRetryCount(
 }
 
 // Update an existing address configuration
-func (c *ApiService) UpdateConfigurationAddress(
-	Sid string,
-	params *UpdateConfigurationAddressParams,
-) (*ConversationsV1ConfigurationAddress, error) {
+func (c *ApiService) UpdateConfigurationAddress(Sid string, params *UpdateConfigurationAddressParams) (*ConversationsV1ConfigurationAddress, error) {
 	path := "/v1/Configuration/Addresses/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 

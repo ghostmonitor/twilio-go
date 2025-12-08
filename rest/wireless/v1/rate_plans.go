@@ -226,10 +226,7 @@ func (params *ListRatePlanParams) SetLimit(Limit int) *ListRatePlanParams {
 }
 
 // Retrieve a single page of RatePlan records from the API. Request is executed immediately.
-func (c *ApiService) PageRatePlan(
-	params *ListRatePlanParams,
-	pageToken, pageNumber string,
-) (*ListRatePlanResponse, error) {
+func (c *ApiService) PageRatePlan(params *ListRatePlanParams, pageToken, pageNumber string) (*ListRatePlanResponse, error) {
 	path := "/v1/RatePlans"
 
 	data := url.Values{}
@@ -301,12 +298,7 @@ func (c *ApiService) StreamRatePlan(params *ListRatePlanParams) (chan WirelessV1
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamRatePlan(
-	response *ListRatePlanResponse,
-	params *ListRatePlanParams,
-	recordChannel chan WirelessV1RatePlan,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamRatePlan(response *ListRatePlanResponse, params *ListRatePlanParams, recordChannel chan WirelessV1RatePlan, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

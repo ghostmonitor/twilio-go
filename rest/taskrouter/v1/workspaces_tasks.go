@@ -275,11 +275,7 @@ func (params *ListTaskParams) SetLimit(Limit int) *ListTaskParams {
 }
 
 // Retrieve a single page of Task records from the API. Request is executed immediately.
-func (c *ApiService) PageTask(
-	WorkspaceSid string,
-	params *ListTaskParams,
-	pageToken, pageNumber string,
-) (*ListTaskResponse, error) {
+func (c *ApiService) PageTask(WorkspaceSid string, params *ListTaskParams, pageToken, pageNumber string) (*ListTaskResponse, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Tasks"
 
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
@@ -385,12 +381,7 @@ func (c *ApiService) StreamTask(WorkspaceSid string, params *ListTaskParams) (ch
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamTask(
-	response *ListTaskResponse,
-	params *ListTaskParams,
-	recordChannel chan TaskrouterV1Task,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamTask(response *ListTaskResponse, params *ListTaskParams, recordChannel chan TaskrouterV1Task, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

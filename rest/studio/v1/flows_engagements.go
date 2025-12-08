@@ -152,11 +152,7 @@ func (params *ListEngagementParams) SetLimit(Limit int) *ListEngagementParams {
 }
 
 // Retrieve a single page of Engagement records from the API. Request is executed immediately.
-func (c *ApiService) PageEngagement(
-	FlowSid string,
-	params *ListEngagementParams,
-	pageToken, pageNumber string,
-) (*ListEngagementResponse, error) {
+func (c *ApiService) PageEngagement(FlowSid string, params *ListEngagementParams, pageToken, pageNumber string) (*ListEngagementResponse, error) {
 	path := "/v1/Flows/{FlowSid}/Engagements"
 
 	path = strings.Replace(path, "{"+"FlowSid"+"}", FlowSid, -1)
@@ -209,10 +205,7 @@ func (c *ApiService) ListEngagement(FlowSid string, params *ListEngagementParams
 }
 
 // Streams Engagement records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamEngagement(
-	FlowSid string,
-	params *ListEngagementParams,
-) (chan StudioV1Engagement, chan error) {
+func (c *ApiService) StreamEngagement(FlowSid string, params *ListEngagementParams) (chan StudioV1Engagement, chan error) {
 	if params == nil {
 		params = &ListEngagementParams{}
 	}
@@ -233,12 +226,7 @@ func (c *ApiService) StreamEngagement(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamEngagement(
-	response *ListEngagementResponse,
-	params *ListEngagementParams,
-	recordChannel chan StudioV1Engagement,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamEngagement(response *ListEngagementResponse, params *ListEngagementParams, recordChannel chan StudioV1Engagement, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

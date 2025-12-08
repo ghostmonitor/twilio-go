@@ -35,10 +35,7 @@ func (params *CreatePhoneNumberParams) SetPhoneNumberSid(PhoneNumberSid string) 
 }
 
 //
-func (c *ApiService) CreatePhoneNumber(
-	ServiceSid string,
-	params *CreatePhoneNumberParams,
-) (*MessagingV1PhoneNumber, error) {
+func (c *ApiService) CreatePhoneNumber(ServiceSid string, params *CreatePhoneNumberParams) (*MessagingV1PhoneNumber, error) {
 	path := "/v1/Services/{ServiceSid}/PhoneNumbers"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 
@@ -131,11 +128,7 @@ func (params *ListPhoneNumberParams) SetLimit(Limit int) *ListPhoneNumberParams 
 }
 
 // Retrieve a single page of PhoneNumber records from the API. Request is executed immediately.
-func (c *ApiService) PagePhoneNumber(
-	ServiceSid string,
-	params *ListPhoneNumberParams,
-	pageToken, pageNumber string,
-) (*ListPhoneNumberResponse, error) {
+func (c *ApiService) PagePhoneNumber(ServiceSid string, params *ListPhoneNumberParams, pageToken, pageNumber string) (*ListPhoneNumberResponse, error) {
 	path := "/v1/Services/{ServiceSid}/PhoneNumbers"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -172,10 +165,7 @@ func (c *ApiService) PagePhoneNumber(
 }
 
 // Lists PhoneNumber records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListPhoneNumber(
-	ServiceSid string,
-	params *ListPhoneNumberParams,
-) ([]MessagingV1PhoneNumber, error) {
+func (c *ApiService) ListPhoneNumber(ServiceSid string, params *ListPhoneNumberParams) ([]MessagingV1PhoneNumber, error) {
 	response, errors := c.StreamPhoneNumber(ServiceSid, params)
 
 	records := make([]MessagingV1PhoneNumber, 0)
@@ -191,10 +181,7 @@ func (c *ApiService) ListPhoneNumber(
 }
 
 // Streams PhoneNumber records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamPhoneNumber(
-	ServiceSid string,
-	params *ListPhoneNumberParams,
-) (chan MessagingV1PhoneNumber, chan error) {
+func (c *ApiService) StreamPhoneNumber(ServiceSid string, params *ListPhoneNumberParams) (chan MessagingV1PhoneNumber, chan error) {
 	if params == nil {
 		params = &ListPhoneNumberParams{}
 	}
@@ -215,12 +202,7 @@ func (c *ApiService) StreamPhoneNumber(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamPhoneNumber(
-	response *ListPhoneNumberResponse,
-	params *ListPhoneNumberParams,
-	recordChannel chan MessagingV1PhoneNumber,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamPhoneNumber(response *ListPhoneNumberResponse, params *ListPhoneNumberParams, recordChannel chan MessagingV1PhoneNumber, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

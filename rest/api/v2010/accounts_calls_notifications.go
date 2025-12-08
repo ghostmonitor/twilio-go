@@ -35,11 +35,7 @@ func (params *FetchCallNotificationParams) SetPathAccountSid(PathAccountSid stri
 }
 
 //
-func (c *ApiService) FetchCallNotification(
-	CallSid string,
-	Sid string,
-	params *FetchCallNotificationParams,
-) (*ApiV2010CallNotificationInstance, error) {
+func (c *ApiService) FetchCallNotification(CallSid string, Sid string, params *FetchCallNotificationParams) (*ApiV2010CallNotificationInstance, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -117,11 +113,7 @@ func (params *ListCallNotificationParams) SetLimit(Limit int) *ListCallNotificat
 }
 
 // Retrieve a single page of CallNotification records from the API. Request is executed immediately.
-func (c *ApiService) PageCallNotification(
-	CallSid string,
-	params *ListCallNotificationParams,
-	pageToken, pageNumber string,
-) (*ListCallNotificationResponse, error) {
+func (c *ApiService) PageCallNotification(CallSid string, params *ListCallNotificationParams, pageToken, pageNumber string) (*ListCallNotificationResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -175,10 +167,7 @@ func (c *ApiService) PageCallNotification(
 }
 
 // Lists CallNotification records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListCallNotification(
-	CallSid string,
-	params *ListCallNotificationParams,
-) ([]ApiV2010CallNotification, error) {
+func (c *ApiService) ListCallNotification(CallSid string, params *ListCallNotificationParams) ([]ApiV2010CallNotification, error) {
 	response, errors := c.StreamCallNotification(CallSid, params)
 
 	records := make([]ApiV2010CallNotification, 0)
@@ -194,10 +183,7 @@ func (c *ApiService) ListCallNotification(
 }
 
 // Streams CallNotification records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamCallNotification(
-	CallSid string,
-	params *ListCallNotificationParams,
-) (chan ApiV2010CallNotification, chan error) {
+func (c *ApiService) StreamCallNotification(CallSid string, params *ListCallNotificationParams) (chan ApiV2010CallNotification, chan error) {
 	if params == nil {
 		params = &ListCallNotificationParams{}
 	}
@@ -218,12 +204,7 @@ func (c *ApiService) StreamCallNotification(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCallNotification(
-	response *ListCallNotificationResponse,
-	params *ListCallNotificationParams,
-	recordChannel chan ApiV2010CallNotification,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCallNotification(response *ListCallNotificationResponse, params *ListCallNotificationParams, recordChannel chan ApiV2010CallNotification, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -247,12 +247,7 @@ func (c *ApiService) StreamUser(params *ListUserParams) (chan ConversationsV1Use
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUser(
-	response *ListUserResponse,
-	params *ListUserParams,
-	recordChannel chan ConversationsV1User,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUser(response *ListUserResponse, params *ListUserParams, recordChannel chan ConversationsV1User, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

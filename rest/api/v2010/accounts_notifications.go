@@ -35,10 +35,7 @@ func (params *FetchNotificationParams) SetPathAccountSid(PathAccountSid string) 
 }
 
 // Fetch a notification belonging to the account used to make the request
-func (c *ApiService) FetchNotification(
-	Sid string,
-	params *FetchNotificationParams,
-) (*ApiV2010NotificationInstance, error) {
+func (c *ApiService) FetchNotification(Sid string, params *FetchNotificationParams) (*ApiV2010NotificationInstance, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Notifications/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -115,10 +112,7 @@ func (params *ListNotificationParams) SetLimit(Limit int) *ListNotificationParam
 }
 
 // Retrieve a single page of Notification records from the API. Request is executed immediately.
-func (c *ApiService) PageNotification(
-	params *ListNotificationParams,
-	pageToken, pageNumber string,
-) (*ListNotificationResponse, error) {
+func (c *ApiService) PageNotification(params *ListNotificationParams, pageToken, pageNumber string) (*ListNotificationResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Notifications.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -208,12 +202,7 @@ func (c *ApiService) StreamNotification(params *ListNotificationParams) (chan Ap
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamNotification(
-	response *ListNotificationResponse,
-	params *ListNotificationParams,
-	recordChannel chan ApiV2010Notification,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamNotification(response *ListNotificationResponse, params *ListNotificationParams, recordChannel chan ApiV2010Notification, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

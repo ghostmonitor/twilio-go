@@ -59,10 +59,7 @@ func (params *CreateConnectionPolicyTargetParams) SetEnabled(Enabled bool) *Crea
 }
 
 //
-func (c *ApiService) CreateConnectionPolicyTarget(
-	ConnectionPolicySid string,
-	params *CreateConnectionPolicyTargetParams,
-) (*VoiceV1ConnectionPolicyTarget, error) {
+func (c *ApiService) CreateConnectionPolicyTarget(ConnectionPolicySid string, params *CreateConnectionPolicyTargetParams) (*VoiceV1ConnectionPolicyTarget, error) {
 	path := "/v1/ConnectionPolicies/{ConnectionPolicySid}/Targets"
 	path = strings.Replace(path, "{"+"ConnectionPolicySid"+"}", ConnectionPolicySid, -1)
 
@@ -124,10 +121,7 @@ func (c *ApiService) DeleteConnectionPolicyTarget(ConnectionPolicySid string, Si
 }
 
 //
-func (c *ApiService) FetchConnectionPolicyTarget(
-	ConnectionPolicySid string,
-	Sid string,
-) (*VoiceV1ConnectionPolicyTarget, error) {
+func (c *ApiService) FetchConnectionPolicyTarget(ConnectionPolicySid string, Sid string) (*VoiceV1ConnectionPolicyTarget, error) {
 	path := "/v1/ConnectionPolicies/{ConnectionPolicySid}/Targets/{Sid}"
 	path = strings.Replace(path, "{"+"ConnectionPolicySid"+"}", ConnectionPolicySid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -170,11 +164,7 @@ func (params *ListConnectionPolicyTargetParams) SetLimit(Limit int) *ListConnect
 }
 
 // Retrieve a single page of ConnectionPolicyTarget records from the API. Request is executed immediately.
-func (c *ApiService) PageConnectionPolicyTarget(
-	ConnectionPolicySid string,
-	params *ListConnectionPolicyTargetParams,
-	pageToken, pageNumber string,
-) (*ListConnectionPolicyTargetResponse, error) {
+func (c *ApiService) PageConnectionPolicyTarget(ConnectionPolicySid string, params *ListConnectionPolicyTargetParams, pageToken, pageNumber string) (*ListConnectionPolicyTargetResponse, error) {
 	path := "/v1/ConnectionPolicies/{ConnectionPolicySid}/Targets"
 
 	path = strings.Replace(path, "{"+"ConnectionPolicySid"+"}", ConnectionPolicySid, -1)
@@ -211,10 +201,7 @@ func (c *ApiService) PageConnectionPolicyTarget(
 }
 
 // Lists ConnectionPolicyTarget records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListConnectionPolicyTarget(
-	ConnectionPolicySid string,
-	params *ListConnectionPolicyTargetParams,
-) ([]VoiceV1ConnectionPolicyTarget, error) {
+func (c *ApiService) ListConnectionPolicyTarget(ConnectionPolicySid string, params *ListConnectionPolicyTargetParams) ([]VoiceV1ConnectionPolicyTarget, error) {
 	response, errors := c.StreamConnectionPolicyTarget(ConnectionPolicySid, params)
 
 	records := make([]VoiceV1ConnectionPolicyTarget, 0)
@@ -230,10 +217,7 @@ func (c *ApiService) ListConnectionPolicyTarget(
 }
 
 // Streams ConnectionPolicyTarget records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamConnectionPolicyTarget(
-	ConnectionPolicySid string,
-	params *ListConnectionPolicyTargetParams,
-) (chan VoiceV1ConnectionPolicyTarget, chan error) {
+func (c *ApiService) StreamConnectionPolicyTarget(ConnectionPolicySid string, params *ListConnectionPolicyTargetParams) (chan VoiceV1ConnectionPolicyTarget, chan error) {
 	if params == nil {
 		params = &ListConnectionPolicyTargetParams{}
 	}
@@ -254,12 +238,7 @@ func (c *ApiService) StreamConnectionPolicyTarget(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConnectionPolicyTarget(
-	response *ListConnectionPolicyTargetResponse,
-	params *ListConnectionPolicyTargetParams,
-	recordChannel chan VoiceV1ConnectionPolicyTarget,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConnectionPolicyTarget(response *ListConnectionPolicyTargetResponse, params *ListConnectionPolicyTargetParams, recordChannel chan VoiceV1ConnectionPolicyTarget, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -343,11 +322,7 @@ func (params *UpdateConnectionPolicyTargetParams) SetEnabled(Enabled bool) *Upda
 }
 
 //
-func (c *ApiService) UpdateConnectionPolicyTarget(
-	ConnectionPolicySid string,
-	Sid string,
-	params *UpdateConnectionPolicyTargetParams,
-) (*VoiceV1ConnectionPolicyTarget, error) {
+func (c *ApiService) UpdateConnectionPolicyTarget(ConnectionPolicySid string, Sid string, params *UpdateConnectionPolicyTargetParams) (*VoiceV1ConnectionPolicyTarget, error) {
 	path := "/v1/ConnectionPolicies/{ConnectionPolicySid}/Targets/{Sid}"
 	path = strings.Replace(path, "{"+"ConnectionPolicySid"+"}", ConnectionPolicySid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

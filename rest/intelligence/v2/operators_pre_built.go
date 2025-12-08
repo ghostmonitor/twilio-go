@@ -78,10 +78,7 @@ func (params *ListPrebuiltOperatorParams) SetLimit(Limit int) *ListPrebuiltOpera
 }
 
 // Retrieve a single page of PrebuiltOperator records from the API. Request is executed immediately.
-func (c *ApiService) PagePrebuiltOperator(
-	params *ListPrebuiltOperatorParams,
-	pageToken, pageNumber string,
-) (*ListPrebuiltOperatorResponse, error) {
+func (c *ApiService) PagePrebuiltOperator(params *ListPrebuiltOperatorParams, pageToken, pageNumber string) (*ListPrebuiltOperatorResponse, error) {
 	path := "/v2/Operators/PreBuilt"
 
 	data := url.Values{}
@@ -159,12 +156,7 @@ func (c *ApiService) StreamPrebuiltOperator(params *ListPrebuiltOperatorParams) 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamPrebuiltOperator(
-	response *ListPrebuiltOperatorResponse,
-	params *ListPrebuiltOperatorParams,
-	recordChannel chan IntelligenceV2PrebuiltOperator,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamPrebuiltOperator(response *ListPrebuiltOperatorResponse, params *ListPrebuiltOperatorParams, recordChannel chan IntelligenceV2PrebuiltOperator, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

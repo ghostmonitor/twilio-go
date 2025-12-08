@@ -35,10 +35,7 @@ func (params *CreateIpAccessControlListParams) SetIpAccessControlListSid(IpAcces
 }
 
 // Associate an IP Access Control List with a Trunk
-func (c *ApiService) CreateIpAccessControlList(
-	TrunkSid string,
-	params *CreateIpAccessControlListParams,
-) (*TrunkingV1IpAccessControlList, error) {
+func (c *ApiService) CreateIpAccessControlList(TrunkSid string, params *CreateIpAccessControlListParams) (*TrunkingV1IpAccessControlList, error) {
 	path := "/v1/Trunks/{TrunkSid}/IpAccessControlLists"
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
 
@@ -131,11 +128,7 @@ func (params *ListIpAccessControlListParams) SetLimit(Limit int) *ListIpAccessCo
 }
 
 // Retrieve a single page of IpAccessControlList records from the API. Request is executed immediately.
-func (c *ApiService) PageIpAccessControlList(
-	TrunkSid string,
-	params *ListIpAccessControlListParams,
-	pageToken, pageNumber string,
-) (*ListIpAccessControlListResponse, error) {
+func (c *ApiService) PageIpAccessControlList(TrunkSid string, params *ListIpAccessControlListParams, pageToken, pageNumber string) (*ListIpAccessControlListResponse, error) {
 	path := "/v1/Trunks/{TrunkSid}/IpAccessControlLists"
 
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
@@ -172,10 +165,7 @@ func (c *ApiService) PageIpAccessControlList(
 }
 
 // Lists IpAccessControlList records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListIpAccessControlList(
-	TrunkSid string,
-	params *ListIpAccessControlListParams,
-) ([]TrunkingV1IpAccessControlList, error) {
+func (c *ApiService) ListIpAccessControlList(TrunkSid string, params *ListIpAccessControlListParams) ([]TrunkingV1IpAccessControlList, error) {
 	response, errors := c.StreamIpAccessControlList(TrunkSid, params)
 
 	records := make([]TrunkingV1IpAccessControlList, 0)
@@ -191,10 +181,7 @@ func (c *ApiService) ListIpAccessControlList(
 }
 
 // Streams IpAccessControlList records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamIpAccessControlList(
-	TrunkSid string,
-	params *ListIpAccessControlListParams,
-) (chan TrunkingV1IpAccessControlList, chan error) {
+func (c *ApiService) StreamIpAccessControlList(TrunkSid string, params *ListIpAccessControlListParams) (chan TrunkingV1IpAccessControlList, chan error) {
 	if params == nil {
 		params = &ListIpAccessControlListParams{}
 	}
@@ -215,12 +202,7 @@ func (c *ApiService) StreamIpAccessControlList(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamIpAccessControlList(
-	response *ListIpAccessControlListResponse,
-	params *ListIpAccessControlListParams,
-	recordChannel chan TrunkingV1IpAccessControlList,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamIpAccessControlList(response *ListIpAccessControlListResponse, params *ListIpAccessControlListParams, recordChannel chan TrunkingV1IpAccessControlList, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

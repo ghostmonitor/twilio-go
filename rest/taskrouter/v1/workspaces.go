@@ -176,10 +176,7 @@ func (params *ListWorkspaceParams) SetLimit(Limit int) *ListWorkspaceParams {
 }
 
 // Retrieve a single page of Workspace records from the API. Request is executed immediately.
-func (c *ApiService) PageWorkspace(
-	params *ListWorkspaceParams,
-	pageToken, pageNumber string,
-) (*ListWorkspaceResponse, error) {
+func (c *ApiService) PageWorkspace(params *ListWorkspaceParams, pageToken, pageNumber string) (*ListWorkspaceResponse, error) {
 	path := "/v1/Workspaces"
 
 	data := url.Values{}
@@ -254,12 +251,7 @@ func (c *ApiService) StreamWorkspace(params *ListWorkspaceParams) (chan Taskrout
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamWorkspace(
-	response *ListWorkspaceResponse,
-	params *ListWorkspaceParams,
-	recordChannel chan TaskrouterV1Workspace,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamWorkspace(response *ListWorkspaceResponse, params *ListWorkspaceParams, recordChannel chan TaskrouterV1Workspace, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -208,11 +208,7 @@ func (params *ListWorkerParams) SetLimit(Limit int) *ListWorkerParams {
 }
 
 // Retrieve a single page of Worker records from the API. Request is executed immediately.
-func (c *ApiService) PageWorker(
-	WorkspaceSid string,
-	params *ListWorkerParams,
-	pageToken, pageNumber string,
-) (*ListWorkerResponse, error) {
+func (c *ApiService) PageWorker(WorkspaceSid string, params *ListWorkerParams, pageToken, pageNumber string) (*ListWorkerResponse, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Workers"
 
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
@@ -310,12 +306,7 @@ func (c *ApiService) StreamWorker(WorkspaceSid string, params *ListWorkerParams)
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamWorker(
-	response *ListWorkerResponse,
-	params *ListWorkerParams,
-	recordChannel chan TaskrouterV1Worker,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamWorker(response *ListWorkerResponse, params *ListWorkerParams, recordChannel chan TaskrouterV1Worker, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -399,11 +390,7 @@ func (params *UpdateWorkerParams) SetRejectPendingReservations(RejectPendingRese
 }
 
 //
-func (c *ApiService) UpdateWorker(
-	WorkspaceSid string,
-	Sid string,
-	params *UpdateWorkerParams,
-) (*TaskrouterV1Worker, error) {
+func (c *ApiService) UpdateWorker(WorkspaceSid string, Sid string, params *UpdateWorkerParams) (*TaskrouterV1Worker, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Workers/{Sid}"
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

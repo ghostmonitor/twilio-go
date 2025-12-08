@@ -260,12 +260,7 @@ func (c *ApiService) StreamTrunk(params *ListTrunkParams) (chan TrunkingV1Trunk,
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamTrunk(
-	response *ListTrunkResponse,
-	params *ListTrunkParams,
-	recordChannel chan TrunkingV1Trunk,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamTrunk(response *ListTrunkResponse, params *ListTrunkParams, recordChannel chan TrunkingV1Trunk, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

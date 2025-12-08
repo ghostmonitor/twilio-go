@@ -217,12 +217,7 @@ func (c *ApiService) StreamRole(params *ListRoleParams) (chan ConversationsV1Rol
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamRole(
-	response *ListRoleResponse,
-	params *ListRoleParams,
-	recordChannel chan ConversationsV1Role,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamRole(response *ListRoleResponse, params *ListRoleParams, recordChannel chan ConversationsV1Role, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

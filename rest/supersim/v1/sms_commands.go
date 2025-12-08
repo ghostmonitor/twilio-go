@@ -150,10 +150,7 @@ func (params *ListSmsCommandParams) SetLimit(Limit int) *ListSmsCommandParams {
 }
 
 // Retrieve a single page of SmsCommand records from the API. Request is executed immediately.
-func (c *ApiService) PageSmsCommand(
-	params *ListSmsCommandParams,
-	pageToken, pageNumber string,
-) (*ListSmsCommandResponse, error) {
+func (c *ApiService) PageSmsCommand(params *ListSmsCommandParams, pageToken, pageNumber string) (*ListSmsCommandResponse, error) {
 	path := "/v1/SmsCommands"
 
 	data := url.Values{}
@@ -234,12 +231,7 @@ func (c *ApiService) StreamSmsCommand(params *ListSmsCommandParams) (chan Supers
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSmsCommand(
-	response *ListSmsCommandResponse,
-	params *ListSmsCommandParams,
-	recordChannel chan SupersimV1SmsCommand,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSmsCommand(response *ListSmsCommandResponse, params *ListSmsCommandParams, recordChannel chan SupersimV1SmsCommand, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

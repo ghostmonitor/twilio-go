@@ -35,10 +35,7 @@ func (params *CreateItemAssignmentParams) SetObjectSid(ObjectSid string) *Create
 }
 
 // Create a new Assigned Item.
-func (c *ApiService) CreateItemAssignment(
-	BundleSid string,
-	params *CreateItemAssignmentParams,
-) (*NumbersV2ItemAssignment, error) {
+func (c *ApiService) CreateItemAssignment(BundleSid string, params *CreateItemAssignmentParams) (*NumbersV2ItemAssignment, error) {
 	path := "/v2/RegulatoryCompliance/Bundles/{BundleSid}/ItemAssignments"
 	path = strings.Replace(path, "{"+"BundleSid"+"}", BundleSid, -1)
 
@@ -131,11 +128,7 @@ func (params *ListItemAssignmentParams) SetLimit(Limit int) *ListItemAssignmentP
 }
 
 // Retrieve a single page of ItemAssignment records from the API. Request is executed immediately.
-func (c *ApiService) PageItemAssignment(
-	BundleSid string,
-	params *ListItemAssignmentParams,
-	pageToken, pageNumber string,
-) (*ListItemAssignmentResponse, error) {
+func (c *ApiService) PageItemAssignment(BundleSid string, params *ListItemAssignmentParams, pageToken, pageNumber string) (*ListItemAssignmentResponse, error) {
 	path := "/v2/RegulatoryCompliance/Bundles/{BundleSid}/ItemAssignments"
 
 	path = strings.Replace(path, "{"+"BundleSid"+"}", BundleSid, -1)
@@ -172,10 +165,7 @@ func (c *ApiService) PageItemAssignment(
 }
 
 // Lists ItemAssignment records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListItemAssignment(
-	BundleSid string,
-	params *ListItemAssignmentParams,
-) ([]NumbersV2ItemAssignment, error) {
+func (c *ApiService) ListItemAssignment(BundleSid string, params *ListItemAssignmentParams) ([]NumbersV2ItemAssignment, error) {
 	response, errors := c.StreamItemAssignment(BundleSid, params)
 
 	records := make([]NumbersV2ItemAssignment, 0)
@@ -191,10 +181,7 @@ func (c *ApiService) ListItemAssignment(
 }
 
 // Streams ItemAssignment records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamItemAssignment(
-	BundleSid string,
-	params *ListItemAssignmentParams,
-) (chan NumbersV2ItemAssignment, chan error) {
+func (c *ApiService) StreamItemAssignment(BundleSid string, params *ListItemAssignmentParams) (chan NumbersV2ItemAssignment, chan error) {
 	if params == nil {
 		params = &ListItemAssignmentParams{}
 	}
@@ -215,12 +202,7 @@ func (c *ApiService) StreamItemAssignment(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamItemAssignment(
-	response *ListItemAssignmentResponse,
-	params *ListItemAssignmentParams,
-	recordChannel chan NumbersV2ItemAssignment,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamItemAssignment(response *ListItemAssignmentResponse, params *ListItemAssignmentParams, recordChannel chan NumbersV2ItemAssignment, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

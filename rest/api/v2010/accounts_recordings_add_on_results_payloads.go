@@ -35,12 +35,7 @@ func (params *DeleteRecordingAddOnResultPayloadParams) SetPathAccountSid(PathAcc
 }
 
 // Delete a payload from the result along with all associated Data
-func (c *ApiService) DeleteRecordingAddOnResultPayload(
-	ReferenceSid string,
-	AddOnResultSid string,
-	Sid string,
-	params *DeleteRecordingAddOnResultPayloadParams,
-) error {
+func (c *ApiService) DeleteRecordingAddOnResultPayload(ReferenceSid string, AddOnResultSid string, Sid string, params *DeleteRecordingAddOnResultPayloadParams) error {
 	path := "/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -78,12 +73,7 @@ func (params *FetchRecordingAddOnResultPayloadParams) SetPathAccountSid(PathAcco
 }
 
 // Fetch an instance of a result payload
-func (c *ApiService) FetchRecordingAddOnResultPayload(
-	ReferenceSid string,
-	AddOnResultSid string,
-	Sid string,
-	params *FetchRecordingAddOnResultPayloadParams,
-) (*ApiV2010RecordingAddOnResultPayload, error) {
+func (c *ApiService) FetchRecordingAddOnResultPayload(ReferenceSid string, AddOnResultSid string, Sid string, params *FetchRecordingAddOnResultPayloadParams) (*ApiV2010RecordingAddOnResultPayload, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -138,12 +128,7 @@ func (params *ListRecordingAddOnResultPayloadParams) SetLimit(Limit int) *ListRe
 }
 
 // Retrieve a single page of RecordingAddOnResultPayload records from the API. Request is executed immediately.
-func (c *ApiService) PageRecordingAddOnResultPayload(
-	ReferenceSid string,
-	AddOnResultSid string,
-	params *ListRecordingAddOnResultPayloadParams,
-	pageToken, pageNumber string,
-) (*ListRecordingAddOnResultPayloadResponse, error) {
+func (c *ApiService) PageRecordingAddOnResultPayload(ReferenceSid string, AddOnResultSid string, params *ListRecordingAddOnResultPayloadParams, pageToken, pageNumber string) (*ListRecordingAddOnResultPayloadResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -186,11 +171,7 @@ func (c *ApiService) PageRecordingAddOnResultPayload(
 }
 
 // Lists RecordingAddOnResultPayload records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListRecordingAddOnResultPayload(
-	ReferenceSid string,
-	AddOnResultSid string,
-	params *ListRecordingAddOnResultPayloadParams,
-) ([]ApiV2010RecordingAddOnResultPayload, error) {
+func (c *ApiService) ListRecordingAddOnResultPayload(ReferenceSid string, AddOnResultSid string, params *ListRecordingAddOnResultPayloadParams) ([]ApiV2010RecordingAddOnResultPayload, error) {
 	response, errors := c.StreamRecordingAddOnResultPayload(ReferenceSid, AddOnResultSid, params)
 
 	records := make([]ApiV2010RecordingAddOnResultPayload, 0)
@@ -206,11 +187,7 @@ func (c *ApiService) ListRecordingAddOnResultPayload(
 }
 
 // Streams RecordingAddOnResultPayload records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamRecordingAddOnResultPayload(
-	ReferenceSid string,
-	AddOnResultSid string,
-	params *ListRecordingAddOnResultPayloadParams,
-) (chan ApiV2010RecordingAddOnResultPayload, chan error) {
+func (c *ApiService) StreamRecordingAddOnResultPayload(ReferenceSid string, AddOnResultSid string, params *ListRecordingAddOnResultPayloadParams) (chan ApiV2010RecordingAddOnResultPayload, chan error) {
 	if params == nil {
 		params = &ListRecordingAddOnResultPayloadParams{}
 	}
@@ -231,12 +208,7 @@ func (c *ApiService) StreamRecordingAddOnResultPayload(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamRecordingAddOnResultPayload(
-	response *ListRecordingAddOnResultPayloadResponse,
-	params *ListRecordingAddOnResultPayloadParams,
-	recordChannel chan ApiV2010RecordingAddOnResultPayload,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamRecordingAddOnResultPayload(response *ListRecordingAddOnResultPayloadResponse, params *ListRecordingAddOnResultPayloadParams, recordChannel chan ApiV2010RecordingAddOnResultPayload, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

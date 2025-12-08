@@ -87,12 +87,7 @@ func (params *ListLogParams) SetLimit(Limit int) *ListLogParams {
 }
 
 // Retrieve a single page of Log records from the API. Request is executed immediately.
-func (c *ApiService) PageLog(
-	ServiceSid string,
-	EnvironmentSid string,
-	params *ListLogParams,
-	pageToken, pageNumber string,
-) (*ListLogResponse, error) {
+func (c *ApiService) PageLog(ServiceSid string, EnvironmentSid string, params *ListLogParams, pageToken, pageNumber string) (*ListLogResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Logs"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -139,11 +134,7 @@ func (c *ApiService) PageLog(
 }
 
 // Lists Log records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListLog(
-	ServiceSid string,
-	EnvironmentSid string,
-	params *ListLogParams,
-) ([]ServerlessV1Log, error) {
+func (c *ApiService) ListLog(ServiceSid string, EnvironmentSid string, params *ListLogParams) ([]ServerlessV1Log, error) {
 	response, errors := c.StreamLog(ServiceSid, EnvironmentSid, params)
 
 	records := make([]ServerlessV1Log, 0)
@@ -159,11 +150,7 @@ func (c *ApiService) ListLog(
 }
 
 // Streams Log records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamLog(
-	ServiceSid string,
-	EnvironmentSid string,
-	params *ListLogParams,
-) (chan ServerlessV1Log, chan error) {
+func (c *ApiService) StreamLog(ServiceSid string, EnvironmentSid string, params *ListLogParams) (chan ServerlessV1Log, chan error) {
 	if params == nil {
 		params = &ListLogParams{}
 	}
@@ -184,12 +171,7 @@ func (c *ApiService) StreamLog(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamLog(
-	response *ListLogResponse,
-	params *ListLogParams,
-	recordChannel chan ServerlessV1Log,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamLog(response *ListLogResponse, params *ListLogParams, recordChannel chan ServerlessV1Log, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

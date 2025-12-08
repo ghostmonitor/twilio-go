@@ -246,10 +246,7 @@ func (params *ListUsageTriggerParams) SetLimit(Limit int) *ListUsageTriggerParam
 }
 
 // Retrieve a single page of UsageTrigger records from the API. Request is executed immediately.
-func (c *ApiService) PageUsageTrigger(
-	params *ListUsageTriggerParams,
-	pageToken, pageNumber string,
-) (*ListUsageTriggerResponse, error) {
+func (c *ApiService) PageUsageTrigger(params *ListUsageTriggerParams, pageToken, pageNumber string) (*ListUsageTriggerResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -336,12 +333,7 @@ func (c *ApiService) StreamUsageTrigger(params *ListUsageTriggerParams) (chan Ap
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUsageTrigger(
-	response *ListUsageTriggerResponse,
-	params *ListUsageTriggerParams,
-	recordChannel chan ApiV2010UsageTrigger,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUsageTrigger(response *ListUsageTriggerResponse, params *ListUsageTriggerParams, recordChannel chan ApiV2010UsageTrigger, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

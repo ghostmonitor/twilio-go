@@ -125,10 +125,7 @@ func (params *ListConnectionPolicyParams) SetLimit(Limit int) *ListConnectionPol
 }
 
 // Retrieve a single page of ConnectionPolicy records from the API. Request is executed immediately.
-func (c *ApiService) PageConnectionPolicy(
-	params *ListConnectionPolicyParams,
-	pageToken, pageNumber string,
-) (*ListConnectionPolicyResponse, error) {
+func (c *ApiService) PageConnectionPolicy(params *ListConnectionPolicyParams, pageToken, pageNumber string) (*ListConnectionPolicyResponse, error) {
 	path := "/v1/ConnectionPolicies"
 
 	data := url.Values{}
@@ -200,12 +197,7 @@ func (c *ApiService) StreamConnectionPolicy(params *ListConnectionPolicyParams) 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConnectionPolicy(
-	response *ListConnectionPolicyResponse,
-	params *ListConnectionPolicyParams,
-	recordChannel chan VoiceV1ConnectionPolicy,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConnectionPolicy(response *ListConnectionPolicyResponse, params *ListConnectionPolicyParams, recordChannel chan VoiceV1ConnectionPolicy, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -265,10 +257,7 @@ func (params *UpdateConnectionPolicyParams) SetFriendlyName(FriendlyName string)
 }
 
 //
-func (c *ApiService) UpdateConnectionPolicy(
-	Sid string,
-	params *UpdateConnectionPolicyParams,
-) (*VoiceV1ConnectionPolicy, error) {
+func (c *ApiService) UpdateConnectionPolicy(Sid string, params *UpdateConnectionPolicyParams) (*VoiceV1ConnectionPolicy, error) {
 	path := "/v1/ConnectionPolicies/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 

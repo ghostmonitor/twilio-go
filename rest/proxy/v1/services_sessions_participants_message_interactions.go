@@ -41,12 +41,7 @@ func (params *CreateMessageInteractionParams) SetMediaUrl(MediaUrl []string) *Cr
 }
 
 // Create a new message Interaction to send directly from your system to one [Participant](https://www.twilio.com/docs/proxy/api/participant).  The `inbound` properties for the Interaction will always be empty.
-func (c *ApiService) CreateMessageInteraction(
-	ServiceSid string,
-	SessionSid string,
-	ParticipantSid string,
-	params *CreateMessageInteractionParams,
-) (*ProxyV1MessageInteraction, error) {
+func (c *ApiService) CreateMessageInteraction(ServiceSid string, SessionSid string, ParticipantSid string, params *CreateMessageInteractionParams) (*ProxyV1MessageInteraction, error) {
 	path := "/v1/Services/{ServiceSid}/Sessions/{SessionSid}/Participants/{ParticipantSid}/MessageInteractions"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"SessionSid"+"}", SessionSid, -1)
@@ -82,12 +77,7 @@ func (c *ApiService) CreateMessageInteraction(
 }
 
 //
-func (c *ApiService) FetchMessageInteraction(
-	ServiceSid string,
-	SessionSid string,
-	ParticipantSid string,
-	Sid string,
-) (*ProxyV1MessageInteraction, error) {
+func (c *ApiService) FetchMessageInteraction(ServiceSid string, SessionSid string, ParticipantSid string, Sid string) (*ProxyV1MessageInteraction, error) {
 	path := "/v1/Services/{ServiceSid}/Sessions/{SessionSid}/Participants/{ParticipantSid}/MessageInteractions/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"SessionSid"+"}", SessionSid, -1)
@@ -132,13 +122,7 @@ func (params *ListMessageInteractionParams) SetLimit(Limit int) *ListMessageInte
 }
 
 // Retrieve a single page of MessageInteraction records from the API. Request is executed immediately.
-func (c *ApiService) PageMessageInteraction(
-	ServiceSid string,
-	SessionSid string,
-	ParticipantSid string,
-	params *ListMessageInteractionParams,
-	pageToken, pageNumber string,
-) (*ListMessageInteractionResponse, error) {
+func (c *ApiService) PageMessageInteraction(ServiceSid string, SessionSid string, ParticipantSid string, params *ListMessageInteractionParams, pageToken, pageNumber string) (*ListMessageInteractionResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Sessions/{SessionSid}/Participants/{ParticipantSid}/MessageInteractions"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -177,12 +161,7 @@ func (c *ApiService) PageMessageInteraction(
 }
 
 // Lists MessageInteraction records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListMessageInteraction(
-	ServiceSid string,
-	SessionSid string,
-	ParticipantSid string,
-	params *ListMessageInteractionParams,
-) ([]ProxyV1MessageInteraction, error) {
+func (c *ApiService) ListMessageInteraction(ServiceSid string, SessionSid string, ParticipantSid string, params *ListMessageInteractionParams) ([]ProxyV1MessageInteraction, error) {
 	response, errors := c.StreamMessageInteraction(ServiceSid, SessionSid, ParticipantSid, params)
 
 	records := make([]ProxyV1MessageInteraction, 0)
@@ -198,12 +177,7 @@ func (c *ApiService) ListMessageInteraction(
 }
 
 // Streams MessageInteraction records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamMessageInteraction(
-	ServiceSid string,
-	SessionSid string,
-	ParticipantSid string,
-	params *ListMessageInteractionParams,
-) (chan ProxyV1MessageInteraction, chan error) {
+func (c *ApiService) StreamMessageInteraction(ServiceSid string, SessionSid string, ParticipantSid string, params *ListMessageInteractionParams) (chan ProxyV1MessageInteraction, chan error) {
 	if params == nil {
 		params = &ListMessageInteractionParams{}
 	}
@@ -224,12 +198,7 @@ func (c *ApiService) StreamMessageInteraction(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamMessageInteraction(
-	response *ListMessageInteractionResponse,
-	params *ListMessageInteractionParams,
-	recordChannel chan ProxyV1MessageInteraction,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamMessageInteraction(response *ListMessageInteractionResponse, params *ListMessageInteractionParams, recordChannel chan ProxyV1MessageInteraction, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

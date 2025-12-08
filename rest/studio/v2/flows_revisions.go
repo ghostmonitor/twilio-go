@@ -67,11 +67,7 @@ func (params *ListFlowRevisionParams) SetLimit(Limit int) *ListFlowRevisionParam
 }
 
 // Retrieve a single page of FlowRevision records from the API. Request is executed immediately.
-func (c *ApiService) PageFlowRevision(
-	Sid string,
-	params *ListFlowRevisionParams,
-	pageToken, pageNumber string,
-) (*ListFlowRevisionResponse, error) {
+func (c *ApiService) PageFlowRevision(Sid string, params *ListFlowRevisionParams, pageToken, pageNumber string) (*ListFlowRevisionResponse, error) {
 	path := "/v2/Flows/{Sid}/Revisions"
 
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -124,10 +120,7 @@ func (c *ApiService) ListFlowRevision(Sid string, params *ListFlowRevisionParams
 }
 
 // Streams FlowRevision records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamFlowRevision(
-	Sid string,
-	params *ListFlowRevisionParams,
-) (chan StudioV2FlowRevision, chan error) {
+func (c *ApiService) StreamFlowRevision(Sid string, params *ListFlowRevisionParams) (chan StudioV2FlowRevision, chan error) {
 	if params == nil {
 		params = &ListFlowRevisionParams{}
 	}
@@ -148,12 +141,7 @@ func (c *ApiService) StreamFlowRevision(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamFlowRevision(
-	response *ListFlowRevisionResponse,
-	params *ListFlowRevisionParams,
-	recordChannel chan StudioV2FlowRevision,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamFlowRevision(response *ListFlowRevisionResponse, params *ListFlowRevisionParams, recordChannel chan StudioV2FlowRevision, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

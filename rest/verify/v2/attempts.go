@@ -115,10 +115,7 @@ func (params *ListVerificationAttemptParams) SetLimit(Limit int) *ListVerificati
 }
 
 // Retrieve a single page of VerificationAttempt records from the API. Request is executed immediately.
-func (c *ApiService) PageVerificationAttempt(
-	params *ListVerificationAttemptParams,
-	pageToken, pageNumber string,
-) (*ListVerificationAttemptResponse, error) {
+func (c *ApiService) PageVerificationAttempt(params *ListVerificationAttemptParams, pageToken, pageNumber string) (*ListVerificationAttemptResponse, error) {
 	path := "/v2/Attempts"
 
 	data := url.Values{}
@@ -214,12 +211,7 @@ func (c *ApiService) StreamVerificationAttempt(params *ListVerificationAttemptPa
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamVerificationAttempt(
-	response *ListVerificationAttemptResponse,
-	params *ListVerificationAttemptParams,
-	recordChannel chan VerifyV2VerificationAttempt,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamVerificationAttempt(response *ListVerificationAttemptResponse, params *ListVerificationAttemptParams, recordChannel chan VerifyV2VerificationAttempt, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

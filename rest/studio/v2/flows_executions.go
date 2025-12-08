@@ -165,11 +165,7 @@ func (params *ListExecutionParams) SetLimit(Limit int) *ListExecutionParams {
 }
 
 // Retrieve a single page of Execution records from the API. Request is executed immediately.
-func (c *ApiService) PageExecution(
-	FlowSid string,
-	params *ListExecutionParams,
-	pageToken, pageNumber string,
-) (*ListExecutionResponse, error) {
+func (c *ApiService) PageExecution(FlowSid string, params *ListExecutionParams, pageToken, pageNumber string) (*ListExecutionResponse, error) {
 	path := "/v2/Flows/{FlowSid}/Executions"
 
 	path = strings.Replace(path, "{"+"FlowSid"+"}", FlowSid, -1)
@@ -249,12 +245,7 @@ func (c *ApiService) StreamExecution(FlowSid string, params *ListExecutionParams
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamExecution(
-	response *ListExecutionResponse,
-	params *ListExecutionParams,
-	recordChannel chan StudioV2Execution,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamExecution(response *ListExecutionResponse, params *ListExecutionParams, recordChannel chan StudioV2Execution, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -314,11 +305,7 @@ func (params *UpdateExecutionParams) SetStatus(Status string) *UpdateExecutionPa
 }
 
 // Update the status of an Execution to `ended`.
-func (c *ApiService) UpdateExecution(
-	FlowSid string,
-	Sid string,
-	params *UpdateExecutionParams,
-) (*StudioV2Execution, error) {
+func (c *ApiService) UpdateExecution(FlowSid string, Sid string, params *UpdateExecutionParams) (*StudioV2Execution, error) {
 	path := "/v2/Flows/{FlowSid}/Executions/{Sid}"
 	path = strings.Replace(path, "{"+"FlowSid"+"}", FlowSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

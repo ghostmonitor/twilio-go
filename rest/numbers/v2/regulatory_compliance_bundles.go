@@ -360,12 +360,7 @@ func (c *ApiService) StreamBundle(params *ListBundleParams) (chan NumbersV2Bundl
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamBundle(
-	response *ListBundleResponse,
-	params *ListBundleParams,
-	recordChannel chan NumbersV2Bundle,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamBundle(response *ListBundleResponse, params *ListBundleParams, recordChannel chan NumbersV2Bundle, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

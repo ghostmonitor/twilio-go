@@ -35,10 +35,7 @@ func (params *CreateCustomerProfileEvaluationParams) SetPolicySid(PolicySid stri
 }
 
 // Create a new Evaluation
-func (c *ApiService) CreateCustomerProfileEvaluation(
-	CustomerProfileSid string,
-	params *CreateCustomerProfileEvaluationParams,
-) (*TrusthubV1CustomerProfileEvaluation, error) {
+func (c *ApiService) CreateCustomerProfileEvaluation(CustomerProfileSid string, params *CreateCustomerProfileEvaluationParams) (*TrusthubV1CustomerProfileEvaluation, error) {
 	path := "/v1/CustomerProfiles/{CustomerProfileSid}/Evaluations"
 	path = strings.Replace(path, "{"+"CustomerProfileSid"+"}", CustomerProfileSid, -1)
 
@@ -67,10 +64,7 @@ func (c *ApiService) CreateCustomerProfileEvaluation(
 }
 
 // Fetch specific Evaluation Instance.
-func (c *ApiService) FetchCustomerProfileEvaluation(
-	CustomerProfileSid string,
-	Sid string,
-) (*TrusthubV1CustomerProfileEvaluation, error) {
+func (c *ApiService) FetchCustomerProfileEvaluation(CustomerProfileSid string, Sid string) (*TrusthubV1CustomerProfileEvaluation, error) {
 	path := "/v1/CustomerProfiles/{CustomerProfileSid}/Evaluations/{Sid}"
 	path = strings.Replace(path, "{"+"CustomerProfileSid"+"}", CustomerProfileSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -113,11 +107,7 @@ func (params *ListCustomerProfileEvaluationParams) SetLimit(Limit int) *ListCust
 }
 
 // Retrieve a single page of CustomerProfileEvaluation records from the API. Request is executed immediately.
-func (c *ApiService) PageCustomerProfileEvaluation(
-	CustomerProfileSid string,
-	params *ListCustomerProfileEvaluationParams,
-	pageToken, pageNumber string,
-) (*ListCustomerProfileEvaluationResponse, error) {
+func (c *ApiService) PageCustomerProfileEvaluation(CustomerProfileSid string, params *ListCustomerProfileEvaluationParams, pageToken, pageNumber string) (*ListCustomerProfileEvaluationResponse, error) {
 	path := "/v1/CustomerProfiles/{CustomerProfileSid}/Evaluations"
 
 	path = strings.Replace(path, "{"+"CustomerProfileSid"+"}", CustomerProfileSid, -1)
@@ -154,10 +144,7 @@ func (c *ApiService) PageCustomerProfileEvaluation(
 }
 
 // Lists CustomerProfileEvaluation records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListCustomerProfileEvaluation(
-	CustomerProfileSid string,
-	params *ListCustomerProfileEvaluationParams,
-) ([]TrusthubV1CustomerProfileEvaluation, error) {
+func (c *ApiService) ListCustomerProfileEvaluation(CustomerProfileSid string, params *ListCustomerProfileEvaluationParams) ([]TrusthubV1CustomerProfileEvaluation, error) {
 	response, errors := c.StreamCustomerProfileEvaluation(CustomerProfileSid, params)
 
 	records := make([]TrusthubV1CustomerProfileEvaluation, 0)
@@ -173,10 +160,7 @@ func (c *ApiService) ListCustomerProfileEvaluation(
 }
 
 // Streams CustomerProfileEvaluation records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamCustomerProfileEvaluation(
-	CustomerProfileSid string,
-	params *ListCustomerProfileEvaluationParams,
-) (chan TrusthubV1CustomerProfileEvaluation, chan error) {
+func (c *ApiService) StreamCustomerProfileEvaluation(CustomerProfileSid string, params *ListCustomerProfileEvaluationParams) (chan TrusthubV1CustomerProfileEvaluation, chan error) {
 	if params == nil {
 		params = &ListCustomerProfileEvaluationParams{}
 	}
@@ -197,12 +181,7 @@ func (c *ApiService) StreamCustomerProfileEvaluation(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCustomerProfileEvaluation(
-	response *ListCustomerProfileEvaluationResponse,
-	params *ListCustomerProfileEvaluationParams,
-	recordChannel chan TrusthubV1CustomerProfileEvaluation,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCustomerProfileEvaluation(response *ListCustomerProfileEvaluationResponse, params *ListCustomerProfileEvaluationParams, recordChannel chan TrusthubV1CustomerProfileEvaluation, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

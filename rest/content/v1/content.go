@@ -130,10 +130,7 @@ func (params *ListContentParams) SetLimit(Limit int) *ListContentParams {
 }
 
 // Retrieve a single page of Content records from the API. Request is executed immediately.
-func (c *ApiService) PageContent(
-	params *ListContentParams,
-	pageToken, pageNumber string,
-) (*ListContentResponse, error) {
+func (c *ApiService) PageContent(params *ListContentParams, pageToken, pageNumber string) (*ListContentResponse, error) {
 	path := "/v1/Content"
 
 	data := url.Values{}
@@ -205,12 +202,7 @@ func (c *ApiService) StreamContent(params *ListContentParams) (chan ContentV1Con
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamContent(
-	response *ListContentResponse,
-	params *ListContentParams,
-	recordChannel chan ContentV1Content,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamContent(response *ListContentResponse, params *ListContentParams, recordChannel chan ContentV1Content, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

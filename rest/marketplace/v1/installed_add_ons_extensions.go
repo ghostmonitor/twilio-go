@@ -24,10 +24,7 @@ import (
 )
 
 // Fetch an instance of an Extension for the Installed Add-on.
-func (c *ApiService) FetchInstalledAddOnExtension(
-	InstalledAddOnSid string,
-	Sid string,
-) (*MarketplaceV1InstalledAddOnExtension, error) {
+func (c *ApiService) FetchInstalledAddOnExtension(InstalledAddOnSid string, Sid string) (*MarketplaceV1InstalledAddOnExtension, error) {
 	path := "/v1/InstalledAddOns/{InstalledAddOnSid}/Extensions/{Sid}"
 	path = strings.Replace(path, "{"+"InstalledAddOnSid"+"}", InstalledAddOnSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -70,11 +67,7 @@ func (params *ListInstalledAddOnExtensionParams) SetLimit(Limit int) *ListInstal
 }
 
 // Retrieve a single page of InstalledAddOnExtension records from the API. Request is executed immediately.
-func (c *ApiService) PageInstalledAddOnExtension(
-	InstalledAddOnSid string,
-	params *ListInstalledAddOnExtensionParams,
-	pageToken, pageNumber string,
-) (*ListInstalledAddOnExtensionResponse, error) {
+func (c *ApiService) PageInstalledAddOnExtension(InstalledAddOnSid string, params *ListInstalledAddOnExtensionParams, pageToken, pageNumber string) (*ListInstalledAddOnExtensionResponse, error) {
 	path := "/v1/InstalledAddOns/{InstalledAddOnSid}/Extensions"
 
 	path = strings.Replace(path, "{"+"InstalledAddOnSid"+"}", InstalledAddOnSid, -1)
@@ -111,10 +104,7 @@ func (c *ApiService) PageInstalledAddOnExtension(
 }
 
 // Lists InstalledAddOnExtension records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListInstalledAddOnExtension(
-	InstalledAddOnSid string,
-	params *ListInstalledAddOnExtensionParams,
-) ([]MarketplaceV1InstalledAddOnExtension, error) {
+func (c *ApiService) ListInstalledAddOnExtension(InstalledAddOnSid string, params *ListInstalledAddOnExtensionParams) ([]MarketplaceV1InstalledAddOnExtension, error) {
 	response, errors := c.StreamInstalledAddOnExtension(InstalledAddOnSid, params)
 
 	records := make([]MarketplaceV1InstalledAddOnExtension, 0)
@@ -130,10 +120,7 @@ func (c *ApiService) ListInstalledAddOnExtension(
 }
 
 // Streams InstalledAddOnExtension records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamInstalledAddOnExtension(
-	InstalledAddOnSid string,
-	params *ListInstalledAddOnExtensionParams,
-) (chan MarketplaceV1InstalledAddOnExtension, chan error) {
+func (c *ApiService) StreamInstalledAddOnExtension(InstalledAddOnSid string, params *ListInstalledAddOnExtensionParams) (chan MarketplaceV1InstalledAddOnExtension, chan error) {
 	if params == nil {
 		params = &ListInstalledAddOnExtensionParams{}
 	}
@@ -154,12 +141,7 @@ func (c *ApiService) StreamInstalledAddOnExtension(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamInstalledAddOnExtension(
-	response *ListInstalledAddOnExtensionResponse,
-	params *ListInstalledAddOnExtensionParams,
-	recordChannel chan MarketplaceV1InstalledAddOnExtension,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamInstalledAddOnExtension(response *ListInstalledAddOnExtensionResponse, params *ListInstalledAddOnExtensionParams, recordChannel chan MarketplaceV1InstalledAddOnExtension, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -219,11 +201,7 @@ func (params *UpdateInstalledAddOnExtensionParams) SetEnabled(Enabled bool) *Upd
 }
 
 // Update an Extension for an Add-on installation.
-func (c *ApiService) UpdateInstalledAddOnExtension(
-	InstalledAddOnSid string,
-	Sid string,
-	params *UpdateInstalledAddOnExtensionParams,
-) (*MarketplaceV1InstalledAddOnExtension, error) {
+func (c *ApiService) UpdateInstalledAddOnExtension(InstalledAddOnSid string, Sid string, params *UpdateInstalledAddOnExtensionParams) (*MarketplaceV1InstalledAddOnExtension, error) {
 	path := "/v1/InstalledAddOns/{InstalledAddOnSid}/Extensions/{Sid}"
 	path = strings.Replace(path, "{"+"InstalledAddOnSid"+"}", InstalledAddOnSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

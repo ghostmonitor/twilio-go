@@ -66,10 +66,7 @@ func (params *ListEndUserTypeParams) SetLimit(Limit int) *ListEndUserTypeParams 
 }
 
 // Retrieve a single page of EndUserType records from the API. Request is executed immediately.
-func (c *ApiService) PageEndUserType(
-	params *ListEndUserTypeParams,
-	pageToken, pageNumber string,
-) (*ListEndUserTypeResponse, error) {
+func (c *ApiService) PageEndUserType(params *ListEndUserTypeParams, pageToken, pageNumber string) (*ListEndUserTypeResponse, error) {
 	path := "/v1/EndUserTypes"
 
 	data := url.Values{}
@@ -141,12 +138,7 @@ func (c *ApiService) StreamEndUserType(params *ListEndUserTypeParams) (chan Trus
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamEndUserType(
-	response *ListEndUserTypeResponse,
-	params *ListEndUserTypeParams,
-	recordChannel chan TrusthubV1EndUserType,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamEndUserType(response *ListEndUserTypeResponse, params *ListEndUserTypeParams, recordChannel chan TrusthubV1EndUserType, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

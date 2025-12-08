@@ -46,11 +46,7 @@ func (c *ApiService) DeleteUserBinding(ServiceSid string, UserSid string, Sid st
 }
 
 //
-func (c *ApiService) FetchUserBinding(
-	ServiceSid string,
-	UserSid string,
-	Sid string,
-) (*IpMessagingV2UserBinding, error) {
+func (c *ApiService) FetchUserBinding(ServiceSid string, UserSid string, Sid string) (*IpMessagingV2UserBinding, error) {
 	path := "/v2/Services/{ServiceSid}/Users/{UserSid}/Bindings/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"UserSid"+"}", UserSid, -1)
@@ -100,12 +96,7 @@ func (params *ListUserBindingParams) SetLimit(Limit int) *ListUserBindingParams 
 }
 
 // Retrieve a single page of UserBinding records from the API. Request is executed immediately.
-func (c *ApiService) PageUserBinding(
-	ServiceSid string,
-	UserSid string,
-	params *ListUserBindingParams,
-	pageToken, pageNumber string,
-) (*ListUserBindingResponse, error) {
+func (c *ApiService) PageUserBinding(ServiceSid string, UserSid string, params *ListUserBindingParams, pageToken, pageNumber string) (*ListUserBindingResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Users/{UserSid}/Bindings"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -148,11 +139,7 @@ func (c *ApiService) PageUserBinding(
 }
 
 // Lists UserBinding records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListUserBinding(
-	ServiceSid string,
-	UserSid string,
-	params *ListUserBindingParams,
-) ([]IpMessagingV2UserBinding, error) {
+func (c *ApiService) ListUserBinding(ServiceSid string, UserSid string, params *ListUserBindingParams) ([]IpMessagingV2UserBinding, error) {
 	response, errors := c.StreamUserBinding(ServiceSid, UserSid, params)
 
 	records := make([]IpMessagingV2UserBinding, 0)
@@ -168,11 +155,7 @@ func (c *ApiService) ListUserBinding(
 }
 
 // Streams UserBinding records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamUserBinding(
-	ServiceSid string,
-	UserSid string,
-	params *ListUserBindingParams,
-) (chan IpMessagingV2UserBinding, chan error) {
+func (c *ApiService) StreamUserBinding(ServiceSid string, UserSid string, params *ListUserBindingParams) (chan IpMessagingV2UserBinding, chan error) {
 	if params == nil {
 		params = &ListUserBindingParams{}
 	}
@@ -193,12 +176,7 @@ func (c *ApiService) StreamUserBinding(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUserBinding(
-	response *ListUserBindingResponse,
-	params *ListUserBindingParams,
-	recordChannel chan IpMessagingV2UserBinding,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUserBinding(response *ListUserBindingResponse, params *ListUserBindingParams, recordChannel chan IpMessagingV2UserBinding, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

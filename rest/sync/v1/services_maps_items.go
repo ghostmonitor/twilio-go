@@ -59,11 +59,7 @@ func (params *CreateSyncMapItemParams) SetCollectionTtl(CollectionTtl int) *Crea
 }
 
 //
-func (c *ApiService) CreateSyncMapItem(
-	ServiceSid string,
-	MapSid string,
-	params *CreateSyncMapItemParams,
-) (*SyncV1SyncMapItem, error) {
+func (c *ApiService) CreateSyncMapItem(ServiceSid string, MapSid string, params *CreateSyncMapItemParams) (*SyncV1SyncMapItem, error) {
 	path := "/v1/Services/{ServiceSid}/Maps/{MapSid}/Items"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"MapSid"+"}", MapSid, -1)
@@ -122,12 +118,7 @@ func (params *DeleteSyncMapItemParams) SetIfMatch(IfMatch string) *DeleteSyncMap
 }
 
 //
-func (c *ApiService) DeleteSyncMapItem(
-	ServiceSid string,
-	MapSid string,
-	Key string,
-	params *DeleteSyncMapItemParams,
-) error {
+func (c *ApiService) DeleteSyncMapItem(ServiceSid string, MapSid string, Key string, params *DeleteSyncMapItemParams) error {
 	path := "/v1/Services/{ServiceSid}/Maps/{MapSid}/Items/{Key}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"MapSid"+"}", MapSid, -1)
@@ -214,12 +205,7 @@ func (params *ListSyncMapItemParams) SetLimit(Limit int) *ListSyncMapItemParams 
 }
 
 // Retrieve a single page of SyncMapItem records from the API. Request is executed immediately.
-func (c *ApiService) PageSyncMapItem(
-	ServiceSid string,
-	MapSid string,
-	params *ListSyncMapItemParams,
-	pageToken, pageNumber string,
-) (*ListSyncMapItemResponse, error) {
+func (c *ApiService) PageSyncMapItem(ServiceSid string, MapSid string, params *ListSyncMapItemParams, pageToken, pageNumber string) (*ListSyncMapItemResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Maps/{MapSid}/Items"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -266,11 +252,7 @@ func (c *ApiService) PageSyncMapItem(
 }
 
 // Lists SyncMapItem records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListSyncMapItem(
-	ServiceSid string,
-	MapSid string,
-	params *ListSyncMapItemParams,
-) ([]SyncV1SyncMapItem, error) {
+func (c *ApiService) ListSyncMapItem(ServiceSid string, MapSid string, params *ListSyncMapItemParams) ([]SyncV1SyncMapItem, error) {
 	response, errors := c.StreamSyncMapItem(ServiceSid, MapSid, params)
 
 	records := make([]SyncV1SyncMapItem, 0)
@@ -286,11 +268,7 @@ func (c *ApiService) ListSyncMapItem(
 }
 
 // Streams SyncMapItem records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamSyncMapItem(
-	ServiceSid string,
-	MapSid string,
-	params *ListSyncMapItemParams,
-) (chan SyncV1SyncMapItem, chan error) {
+func (c *ApiService) StreamSyncMapItem(ServiceSid string, MapSid string, params *ListSyncMapItemParams) (chan SyncV1SyncMapItem, chan error) {
 	if params == nil {
 		params = &ListSyncMapItemParams{}
 	}
@@ -311,12 +289,7 @@ func (c *ApiService) StreamSyncMapItem(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSyncMapItem(
-	response *ListSyncMapItemResponse,
-	params *ListSyncMapItemParams,
-	recordChannel chan SyncV1SyncMapItem,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSyncMapItem(response *ListSyncMapItemResponse, params *ListSyncMapItemParams, recordChannel chan SyncV1SyncMapItem, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -400,12 +373,7 @@ func (params *UpdateSyncMapItemParams) SetCollectionTtl(CollectionTtl int) *Upda
 }
 
 //
-func (c *ApiService) UpdateSyncMapItem(
-	ServiceSid string,
-	MapSid string,
-	Key string,
-	params *UpdateSyncMapItemParams,
-) (*SyncV1SyncMapItem, error) {
+func (c *ApiService) UpdateSyncMapItem(ServiceSid string, MapSid string, Key string, params *UpdateSyncMapItemParams) (*SyncV1SyncMapItem, error) {
 	path := "/v1/Services/{ServiceSid}/Maps/{MapSid}/Items/{Key}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"MapSid"+"}", MapSid, -1)

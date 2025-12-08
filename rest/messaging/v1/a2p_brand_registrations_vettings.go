@@ -41,10 +41,7 @@ func (params *CreateBrandVettingParams) SetVettingId(VettingId string) *CreateBr
 }
 
 //
-func (c *ApiService) CreateBrandVetting(
-	BrandSid string,
-	params *CreateBrandVettingParams,
-) (*MessagingV1BrandVetting, error) {
+func (c *ApiService) CreateBrandVetting(BrandSid string, params *CreateBrandVettingParams) (*MessagingV1BrandVetting, error) {
 	path := "/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"
 	path = strings.Replace(path, "{"+"BrandSid"+"}", BrandSid, -1)
 
@@ -125,11 +122,7 @@ func (params *ListBrandVettingParams) SetPageSize(PageSize int) *ListBrandVettin
 }
 
 // Retrieve a single page of BrandVetting records from the API. Request is executed immediately.
-func (c *ApiService) PageBrandVetting(
-	BrandSid string,
-	params *ListBrandVettingParams,
-	pageToken, pageNumber string,
-) (*ListBrandVettingResponse, error) {
+func (c *ApiService) PageBrandVetting(BrandSid string, params *ListBrandVettingParams, pageToken, pageNumber string) (*ListBrandVettingResponse, error) {
 	path := "/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"
 
 	path = strings.Replace(path, "{"+"BrandSid"+"}", BrandSid, -1)
@@ -169,10 +162,7 @@ func (c *ApiService) PageBrandVetting(
 }
 
 // Lists BrandVetting records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListBrandVetting(
-	BrandSid string,
-	params *ListBrandVettingParams,
-) ([]MessagingV1BrandVetting, error) {
+func (c *ApiService) ListBrandVetting(BrandSid string, params *ListBrandVettingParams) ([]MessagingV1BrandVetting, error) {
 	response, errors := c.StreamBrandVetting(BrandSid, params)
 
 	records := make([]MessagingV1BrandVetting, 0)
@@ -188,10 +178,7 @@ func (c *ApiService) ListBrandVetting(
 }
 
 // Streams BrandVetting records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamBrandVetting(
-	BrandSid string,
-	params *ListBrandVettingParams,
-) (chan MessagingV1BrandVetting, chan error) {
+func (c *ApiService) StreamBrandVetting(BrandSid string, params *ListBrandVettingParams) (chan MessagingV1BrandVetting, chan error) {
 	if params == nil {
 		params = &ListBrandVettingParams{}
 	}
@@ -212,12 +199,7 @@ func (c *ApiService) StreamBrandVetting(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamBrandVetting(
-	response *ListBrandVettingResponse,
-	params *ListBrandVettingParams,
-	recordChannel chan MessagingV1BrandVetting,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamBrandVetting(response *ListBrandVettingResponse, params *ListBrandVettingParams, recordChannel chan MessagingV1BrandVetting, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -143,10 +143,7 @@ func (params *ListCredentialPublicKeyParams) SetLimit(Limit int) *ListCredential
 }
 
 // Retrieve a single page of CredentialPublicKey records from the API. Request is executed immediately.
-func (c *ApiService) PageCredentialPublicKey(
-	params *ListCredentialPublicKeyParams,
-	pageToken, pageNumber string,
-) (*ListCredentialPublicKeyResponse, error) {
+func (c *ApiService) PageCredentialPublicKey(params *ListCredentialPublicKeyParams, pageToken, pageNumber string) (*ListCredentialPublicKeyResponse, error) {
 	path := "/v1/Credentials/PublicKeys"
 
 	data := url.Values{}
@@ -218,12 +215,7 @@ func (c *ApiService) StreamCredentialPublicKey(params *ListCredentialPublicKeyPa
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCredentialPublicKey(
-	response *ListCredentialPublicKeyResponse,
-	params *ListCredentialPublicKeyParams,
-	recordChannel chan AccountsV1CredentialPublicKey,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCredentialPublicKey(response *ListCredentialPublicKeyResponse, params *ListCredentialPublicKeyParams, recordChannel chan AccountsV1CredentialPublicKey, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -283,10 +275,7 @@ func (params *UpdateCredentialPublicKeyParams) SetFriendlyName(FriendlyName stri
 }
 
 // Modify the properties of a given Account
-func (c *ApiService) UpdateCredentialPublicKey(
-	Sid string,
-	params *UpdateCredentialPublicKeyParams,
-) (*AccountsV1CredentialPublicKey, error) {
+func (c *ApiService) UpdateCredentialPublicKey(Sid string, params *UpdateCredentialPublicKeyParams) (*AccountsV1CredentialPublicKey, error) {
 	path := "/v1/Credentials/PublicKeys/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 

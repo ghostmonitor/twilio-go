@@ -203,12 +203,7 @@ func (c *ApiService) StreamSim(params *ListSimParams) (chan WirelessV1Sim, chan 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSim(
-	response *ListSimResponse,
-	params *ListSimParams,
-	recordChannel chan WirelessV1Sim,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSim(response *ListSimResponse, params *ListSimParams, recordChannel chan WirelessV1Sim, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

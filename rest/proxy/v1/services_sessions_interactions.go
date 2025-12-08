@@ -90,12 +90,7 @@ func (params *ListInteractionParams) SetLimit(Limit int) *ListInteractionParams 
 }
 
 // Retrieve a single page of Interaction records from the API. Request is executed immediately.
-func (c *ApiService) PageInteraction(
-	ServiceSid string,
-	SessionSid string,
-	params *ListInteractionParams,
-	pageToken, pageNumber string,
-) (*ListInteractionResponse, error) {
+func (c *ApiService) PageInteraction(ServiceSid string, SessionSid string, params *ListInteractionParams, pageToken, pageNumber string) (*ListInteractionResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Sessions/{SessionSid}/Interactions"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -133,11 +128,7 @@ func (c *ApiService) PageInteraction(
 }
 
 // Lists Interaction records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListInteraction(
-	ServiceSid string,
-	SessionSid string,
-	params *ListInteractionParams,
-) ([]ProxyV1Interaction, error) {
+func (c *ApiService) ListInteraction(ServiceSid string, SessionSid string, params *ListInteractionParams) ([]ProxyV1Interaction, error) {
 	response, errors := c.StreamInteraction(ServiceSid, SessionSid, params)
 
 	records := make([]ProxyV1Interaction, 0)
@@ -153,11 +144,7 @@ func (c *ApiService) ListInteraction(
 }
 
 // Streams Interaction records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamInteraction(
-	ServiceSid string,
-	SessionSid string,
-	params *ListInteractionParams,
-) (chan ProxyV1Interaction, chan error) {
+func (c *ApiService) StreamInteraction(ServiceSid string, SessionSid string, params *ListInteractionParams) (chan ProxyV1Interaction, chan error) {
 	if params == nil {
 		params = &ListInteractionParams{}
 	}
@@ -178,12 +165,7 @@ func (c *ApiService) StreamInteraction(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamInteraction(
-	response *ListInteractionResponse,
-	params *ListInteractionParams,
-	recordChannel chan ProxyV1Interaction,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamInteraction(response *ListInteractionResponse, params *ListInteractionParams, recordChannel chan ProxyV1Interaction, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -59,10 +59,7 @@ func (params *CreateOriginationUrlParams) SetSipUrl(SipUrl string) *CreateOrigin
 }
 
 //
-func (c *ApiService) CreateOriginationUrl(
-	TrunkSid string,
-	params *CreateOriginationUrlParams,
-) (*TrunkingV1OriginationUrl, error) {
+func (c *ApiService) CreateOriginationUrl(TrunkSid string, params *CreateOriginationUrlParams) (*TrunkingV1OriginationUrl, error) {
 	path := "/v1/Trunks/{TrunkSid}/OriginationUrls"
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
 
@@ -167,11 +164,7 @@ func (params *ListOriginationUrlParams) SetLimit(Limit int) *ListOriginationUrlP
 }
 
 // Retrieve a single page of OriginationUrl records from the API. Request is executed immediately.
-func (c *ApiService) PageOriginationUrl(
-	TrunkSid string,
-	params *ListOriginationUrlParams,
-	pageToken, pageNumber string,
-) (*ListOriginationUrlResponse, error) {
+func (c *ApiService) PageOriginationUrl(TrunkSid string, params *ListOriginationUrlParams, pageToken, pageNumber string) (*ListOriginationUrlResponse, error) {
 	path := "/v1/Trunks/{TrunkSid}/OriginationUrls"
 
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
@@ -208,10 +201,7 @@ func (c *ApiService) PageOriginationUrl(
 }
 
 // Lists OriginationUrl records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListOriginationUrl(
-	TrunkSid string,
-	params *ListOriginationUrlParams,
-) ([]TrunkingV1OriginationUrl, error) {
+func (c *ApiService) ListOriginationUrl(TrunkSid string, params *ListOriginationUrlParams) ([]TrunkingV1OriginationUrl, error) {
 	response, errors := c.StreamOriginationUrl(TrunkSid, params)
 
 	records := make([]TrunkingV1OriginationUrl, 0)
@@ -227,10 +217,7 @@ func (c *ApiService) ListOriginationUrl(
 }
 
 // Streams OriginationUrl records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamOriginationUrl(
-	TrunkSid string,
-	params *ListOriginationUrlParams,
-) (chan TrunkingV1OriginationUrl, chan error) {
+func (c *ApiService) StreamOriginationUrl(TrunkSid string, params *ListOriginationUrlParams) (chan TrunkingV1OriginationUrl, chan error) {
 	if params == nil {
 		params = &ListOriginationUrlParams{}
 	}
@@ -251,12 +238,7 @@ func (c *ApiService) StreamOriginationUrl(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamOriginationUrl(
-	response *ListOriginationUrlResponse,
-	params *ListOriginationUrlParams,
-	recordChannel chan TrunkingV1OriginationUrl,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamOriginationUrl(response *ListOriginationUrlResponse, params *ListOriginationUrlParams, recordChannel chan TrunkingV1OriginationUrl, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -340,11 +322,7 @@ func (params *UpdateOriginationUrlParams) SetSipUrl(SipUrl string) *UpdateOrigin
 }
 
 //
-func (c *ApiService) UpdateOriginationUrl(
-	TrunkSid string,
-	Sid string,
-	params *UpdateOriginationUrlParams,
-) (*TrunkingV1OriginationUrl, error) {
+func (c *ApiService) UpdateOriginationUrl(TrunkSid string, Sid string, params *UpdateOriginationUrlParams) (*TrunkingV1OriginationUrl, error) {
 	path := "/v1/Trunks/{TrunkSid}/OriginationUrls/{Sid}"
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

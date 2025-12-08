@@ -125,10 +125,7 @@ func (params *ListServiceParams) SetLimit(Limit int) *ListServiceParams {
 }
 
 // Retrieve a single page of Service records from the API. Request is executed immediately.
-func (c *ApiService) PageService(
-	params *ListServiceParams,
-	pageToken, pageNumber string,
-) (*ListServiceResponse, error) {
+func (c *ApiService) PageService(params *ListServiceParams, pageToken, pageNumber string) (*ListServiceResponse, error) {
 	path := "/v1/Services"
 
 	data := url.Values{}
@@ -200,12 +197,7 @@ func (c *ApiService) StreamService(params *ListServiceParams) (chan ChatV1Servic
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamService(
-	response *ListServiceResponse,
-	params *ListServiceParams,
-	recordChannel chan ChatV1Service,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamService(response *ListServiceResponse, params *ListServiceParams, recordChannel chan ChatV1Service, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

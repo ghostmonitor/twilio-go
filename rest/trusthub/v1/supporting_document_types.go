@@ -66,10 +66,7 @@ func (params *ListSupportingDocumentTypeParams) SetLimit(Limit int) *ListSupport
 }
 
 // Retrieve a single page of SupportingDocumentType records from the API. Request is executed immediately.
-func (c *ApiService) PageSupportingDocumentType(
-	params *ListSupportingDocumentTypeParams,
-	pageToken, pageNumber string,
-) (*ListSupportingDocumentTypeResponse, error) {
+func (c *ApiService) PageSupportingDocumentType(params *ListSupportingDocumentTypeParams, pageToken, pageNumber string) (*ListSupportingDocumentTypeResponse, error) {
 	path := "/v1/SupportingDocumentTypes"
 
 	data := url.Values{}
@@ -141,12 +138,7 @@ func (c *ApiService) StreamSupportingDocumentType(params *ListSupportingDocument
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSupportingDocumentType(
-	response *ListSupportingDocumentTypeResponse,
-	params *ListSupportingDocumentTypeParams,
-	recordChannel chan TrusthubV1SupportingDocumentType,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSupportingDocumentType(response *ListSupportingDocumentTypeResponse, params *ListSupportingDocumentTypeParams, recordChannel chan TrusthubV1SupportingDocumentType, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

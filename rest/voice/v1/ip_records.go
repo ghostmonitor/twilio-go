@@ -143,10 +143,7 @@ func (params *ListIpRecordParams) SetLimit(Limit int) *ListIpRecordParams {
 }
 
 // Retrieve a single page of IpRecord records from the API. Request is executed immediately.
-func (c *ApiService) PageIpRecord(
-	params *ListIpRecordParams,
-	pageToken, pageNumber string,
-) (*ListIpRecordResponse, error) {
+func (c *ApiService) PageIpRecord(params *ListIpRecordParams, pageToken, pageNumber string) (*ListIpRecordResponse, error) {
 	path := "/v1/IpRecords"
 
 	data := url.Values{}
@@ -218,12 +215,7 @@ func (c *ApiService) StreamIpRecord(params *ListIpRecordParams) (chan VoiceV1IpR
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamIpRecord(
-	response *ListIpRecordResponse,
-	params *ListIpRecordParams,
-	recordChannel chan VoiceV1IpRecord,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamIpRecord(response *ListIpRecordResponse, params *ListIpRecordParams, recordChannel chan VoiceV1IpRecord, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

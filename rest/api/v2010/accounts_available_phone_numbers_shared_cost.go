@@ -155,11 +155,7 @@ func (params *ListAvailablePhoneNumberSharedCostParams) SetLimit(Limit int) *Lis
 }
 
 // Retrieve a single page of AvailablePhoneNumberSharedCost records from the API. Request is executed immediately.
-func (c *ApiService) PageAvailablePhoneNumberSharedCost(
-	CountryCode string,
-	params *ListAvailablePhoneNumberSharedCostParams,
-	pageToken, pageNumber string,
-) (*ListAvailablePhoneNumberSharedCostResponse, error) {
+func (c *ApiService) PageAvailablePhoneNumberSharedCost(CountryCode string, params *ListAvailablePhoneNumberSharedCostParams, pageToken, pageNumber string) (*ListAvailablePhoneNumberSharedCostResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -255,10 +251,7 @@ func (c *ApiService) PageAvailablePhoneNumberSharedCost(
 }
 
 // Lists AvailablePhoneNumberSharedCost records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListAvailablePhoneNumberSharedCost(
-	CountryCode string,
-	params *ListAvailablePhoneNumberSharedCostParams,
-) ([]ApiV2010AvailablePhoneNumberSharedCost, error) {
+func (c *ApiService) ListAvailablePhoneNumberSharedCost(CountryCode string, params *ListAvailablePhoneNumberSharedCostParams) ([]ApiV2010AvailablePhoneNumberSharedCost, error) {
 	response, errors := c.StreamAvailablePhoneNumberSharedCost(CountryCode, params)
 
 	records := make([]ApiV2010AvailablePhoneNumberSharedCost, 0)
@@ -274,10 +267,7 @@ func (c *ApiService) ListAvailablePhoneNumberSharedCost(
 }
 
 // Streams AvailablePhoneNumberSharedCost records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamAvailablePhoneNumberSharedCost(
-	CountryCode string,
-	params *ListAvailablePhoneNumberSharedCostParams,
-) (chan ApiV2010AvailablePhoneNumberSharedCost, chan error) {
+func (c *ApiService) StreamAvailablePhoneNumberSharedCost(CountryCode string, params *ListAvailablePhoneNumberSharedCostParams) (chan ApiV2010AvailablePhoneNumberSharedCost, chan error) {
 	if params == nil {
 		params = &ListAvailablePhoneNumberSharedCostParams{}
 	}
@@ -298,12 +288,7 @@ func (c *ApiService) StreamAvailablePhoneNumberSharedCost(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamAvailablePhoneNumberSharedCost(
-	response *ListAvailablePhoneNumberSharedCostResponse,
-	params *ListAvailablePhoneNumberSharedCostParams,
-	recordChannel chan ApiV2010AvailablePhoneNumberSharedCost,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamAvailablePhoneNumberSharedCost(response *ListAvailablePhoneNumberSharedCostResponse, params *ListAvailablePhoneNumberSharedCostParams, recordChannel chan ApiV2010AvailablePhoneNumberSharedCost, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

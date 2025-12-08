@@ -71,10 +71,7 @@ func (params *ListUsageRecordYesterdayParams) SetLimit(Limit int) *ListUsageReco
 }
 
 // Retrieve a single page of UsageRecordYesterday records from the API. Request is executed immediately.
-func (c *ApiService) PageUsageRecordYesterday(
-	params *ListUsageRecordYesterdayParams,
-	pageToken, pageNumber string,
-) (*ListUsageRecordYesterdayResponse, error) {
+func (c *ApiService) PageUsageRecordYesterday(params *ListUsageRecordYesterdayParams, pageToken, pageNumber string) (*ListUsageRecordYesterdayResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -164,12 +161,7 @@ func (c *ApiService) StreamUsageRecordYesterday(params *ListUsageRecordYesterday
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUsageRecordYesterday(
-	response *ListUsageRecordYesterdayResponse,
-	params *ListUsageRecordYesterdayParams,
-	recordChannel chan ApiV2010UsageRecordYesterday,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUsageRecordYesterday(response *ListUsageRecordYesterdayResponse, params *ListUsageRecordYesterdayParams, recordChannel chan ApiV2010UsageRecordYesterday, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

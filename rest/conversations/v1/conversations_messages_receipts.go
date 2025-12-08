@@ -24,11 +24,7 @@ import (
 )
 
 // Fetch the delivery and read receipts of the conversation message
-func (c *ApiService) FetchConversationMessageReceipt(
-	ConversationSid string,
-	MessageSid string,
-	Sid string,
-) (*ConversationsV1ConversationMessageReceipt, error) {
+func (c *ApiService) FetchConversationMessageReceipt(ConversationSid string, MessageSid string, Sid string) (*ConversationsV1ConversationMessageReceipt, error) {
 	path := "/v1/Conversations/{ConversationSid}/Messages/{MessageSid}/Receipts/{Sid}"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 	path = strings.Replace(path, "{"+"MessageSid"+"}", MessageSid, -1)
@@ -72,12 +68,7 @@ func (params *ListConversationMessageReceiptParams) SetLimit(Limit int) *ListCon
 }
 
 // Retrieve a single page of ConversationMessageReceipt records from the API. Request is executed immediately.
-func (c *ApiService) PageConversationMessageReceipt(
-	ConversationSid string,
-	MessageSid string,
-	params *ListConversationMessageReceiptParams,
-	pageToken, pageNumber string,
-) (*ListConversationMessageReceiptResponse, error) {
+func (c *ApiService) PageConversationMessageReceipt(ConversationSid string, MessageSid string, params *ListConversationMessageReceiptParams, pageToken, pageNumber string) (*ListConversationMessageReceiptResponse, error) {
 	path := "/v1/Conversations/{ConversationSid}/Messages/{MessageSid}/Receipts"
 
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
@@ -115,11 +106,7 @@ func (c *ApiService) PageConversationMessageReceipt(
 }
 
 // Lists ConversationMessageReceipt records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListConversationMessageReceipt(
-	ConversationSid string,
-	MessageSid string,
-	params *ListConversationMessageReceiptParams,
-) ([]ConversationsV1ConversationMessageReceipt, error) {
+func (c *ApiService) ListConversationMessageReceipt(ConversationSid string, MessageSid string, params *ListConversationMessageReceiptParams) ([]ConversationsV1ConversationMessageReceipt, error) {
 	response, errors := c.StreamConversationMessageReceipt(ConversationSid, MessageSid, params)
 
 	records := make([]ConversationsV1ConversationMessageReceipt, 0)
@@ -135,11 +122,7 @@ func (c *ApiService) ListConversationMessageReceipt(
 }
 
 // Streams ConversationMessageReceipt records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamConversationMessageReceipt(
-	ConversationSid string,
-	MessageSid string,
-	params *ListConversationMessageReceiptParams,
-) (chan ConversationsV1ConversationMessageReceipt, chan error) {
+func (c *ApiService) StreamConversationMessageReceipt(ConversationSid string, MessageSid string, params *ListConversationMessageReceiptParams) (chan ConversationsV1ConversationMessageReceipt, chan error) {
 	if params == nil {
 		params = &ListConversationMessageReceiptParams{}
 	}
@@ -160,12 +143,7 @@ func (c *ApiService) StreamConversationMessageReceipt(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConversationMessageReceipt(
-	response *ListConversationMessageReceiptResponse,
-	params *ListConversationMessageReceiptParams,
-	recordChannel chan ConversationsV1ConversationMessageReceipt,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConversationMessageReceipt(response *ListConversationMessageReceiptResponse, params *ListConversationMessageReceiptParams, recordChannel chan ConversationsV1ConversationMessageReceipt, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

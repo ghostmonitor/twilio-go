@@ -155,11 +155,7 @@ func (params *ListAvailablePhoneNumberNationalParams) SetLimit(Limit int) *ListA
 }
 
 // Retrieve a single page of AvailablePhoneNumberNational records from the API. Request is executed immediately.
-func (c *ApiService) PageAvailablePhoneNumberNational(
-	CountryCode string,
-	params *ListAvailablePhoneNumberNationalParams,
-	pageToken, pageNumber string,
-) (*ListAvailablePhoneNumberNationalResponse, error) {
+func (c *ApiService) PageAvailablePhoneNumberNational(CountryCode string, params *ListAvailablePhoneNumberNationalParams, pageToken, pageNumber string) (*ListAvailablePhoneNumberNationalResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -255,10 +251,7 @@ func (c *ApiService) PageAvailablePhoneNumberNational(
 }
 
 // Lists AvailablePhoneNumberNational records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListAvailablePhoneNumberNational(
-	CountryCode string,
-	params *ListAvailablePhoneNumberNationalParams,
-) ([]ApiV2010AvailablePhoneNumberNational, error) {
+func (c *ApiService) ListAvailablePhoneNumberNational(CountryCode string, params *ListAvailablePhoneNumberNationalParams) ([]ApiV2010AvailablePhoneNumberNational, error) {
 	response, errors := c.StreamAvailablePhoneNumberNational(CountryCode, params)
 
 	records := make([]ApiV2010AvailablePhoneNumberNational, 0)
@@ -274,10 +267,7 @@ func (c *ApiService) ListAvailablePhoneNumberNational(
 }
 
 // Streams AvailablePhoneNumberNational records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamAvailablePhoneNumberNational(
-	CountryCode string,
-	params *ListAvailablePhoneNumberNationalParams,
-) (chan ApiV2010AvailablePhoneNumberNational, chan error) {
+func (c *ApiService) StreamAvailablePhoneNumberNational(CountryCode string, params *ListAvailablePhoneNumberNationalParams) (chan ApiV2010AvailablePhoneNumberNational, chan error) {
 	if params == nil {
 		params = &ListAvailablePhoneNumberNationalParams{}
 	}
@@ -298,12 +288,7 @@ func (c *ApiService) StreamAvailablePhoneNumberNational(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamAvailablePhoneNumberNational(
-	response *ListAvailablePhoneNumberNationalResponse,
-	params *ListAvailablePhoneNumberNationalParams,
-	recordChannel chan ApiV2010AvailablePhoneNumberNational,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamAvailablePhoneNumberNational(response *ListAvailablePhoneNumberNationalResponse, params *ListAvailablePhoneNumberNationalParams, recordChannel chan ApiV2010AvailablePhoneNumberNational, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

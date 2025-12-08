@@ -124,10 +124,7 @@ func (params *ListConnectAppParams) SetLimit(Limit int) *ListConnectAppParams {
 }
 
 // Retrieve a single page of ConnectApp records from the API. Request is executed immediately.
-func (c *ApiService) PageConnectApp(
-	params *ListConnectAppParams,
-	pageToken, pageNumber string,
-) (*ListConnectAppResponse, error) {
+func (c *ApiService) PageConnectApp(params *ListConnectAppParams, pageToken, pageNumber string) (*ListConnectAppResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/ConnectApps.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -205,12 +202,7 @@ func (c *ApiService) StreamConnectApp(params *ListConnectAppParams) (chan ApiV20
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConnectApp(
-	response *ListConnectAppResponse,
-	params *ListConnectAppParams,
-	recordChannel chan ApiV2010ConnectApp,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConnectApp(response *ListConnectAppResponse, params *ListConnectAppParams, recordChannel chan ApiV2010ConnectApp, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

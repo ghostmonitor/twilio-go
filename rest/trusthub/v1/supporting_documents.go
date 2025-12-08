@@ -149,10 +149,7 @@ func (params *ListSupportingDocumentParams) SetLimit(Limit int) *ListSupportingD
 }
 
 // Retrieve a single page of SupportingDocument records from the API. Request is executed immediately.
-func (c *ApiService) PageSupportingDocument(
-	params *ListSupportingDocumentParams,
-	pageToken, pageNumber string,
-) (*ListSupportingDocumentResponse, error) {
+func (c *ApiService) PageSupportingDocument(params *ListSupportingDocumentParams, pageToken, pageNumber string) (*ListSupportingDocumentResponse, error) {
 	path := "/v1/SupportingDocuments"
 
 	data := url.Values{}
@@ -224,12 +221,7 @@ func (c *ApiService) StreamSupportingDocument(params *ListSupportingDocumentPara
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSupportingDocument(
-	response *ListSupportingDocumentResponse,
-	params *ListSupportingDocumentParams,
-	recordChannel chan TrusthubV1SupportingDocument,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSupportingDocument(response *ListSupportingDocumentResponse, params *ListSupportingDocumentParams, recordChannel chan TrusthubV1SupportingDocument, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -295,10 +287,7 @@ func (params *UpdateSupportingDocumentParams) SetAttributes(Attributes interface
 }
 
 // Update an existing Supporting Document.
-func (c *ApiService) UpdateSupportingDocument(
-	Sid string,
-	params *UpdateSupportingDocumentParams,
-) (*TrusthubV1SupportingDocument, error) {
+func (c *ApiService) UpdateSupportingDocument(Sid string, params *UpdateSupportingDocumentParams) (*TrusthubV1SupportingDocument, error) {
 	path := "/v1/SupportingDocuments/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 

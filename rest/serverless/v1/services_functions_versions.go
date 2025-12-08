@@ -24,11 +24,7 @@ import (
 )
 
 // Retrieve a specific Function Version resource.
-func (c *ApiService) FetchFunctionVersion(
-	ServiceSid string,
-	FunctionSid string,
-	Sid string,
-) (*ServerlessV1FunctionVersion, error) {
+func (c *ApiService) FetchFunctionVersion(ServiceSid string, FunctionSid string, Sid string) (*ServerlessV1FunctionVersion, error) {
 	path := "/v1/Services/{ServiceSid}/Functions/{FunctionSid}/Versions/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"FunctionSid"+"}", FunctionSid, -1)
@@ -72,12 +68,7 @@ func (params *ListFunctionVersionParams) SetLimit(Limit int) *ListFunctionVersio
 }
 
 // Retrieve a single page of FunctionVersion records from the API. Request is executed immediately.
-func (c *ApiService) PageFunctionVersion(
-	ServiceSid string,
-	FunctionSid string,
-	params *ListFunctionVersionParams,
-	pageToken, pageNumber string,
-) (*ListFunctionVersionResponse, error) {
+func (c *ApiService) PageFunctionVersion(ServiceSid string, FunctionSid string, params *ListFunctionVersionParams, pageToken, pageNumber string) (*ListFunctionVersionResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Functions/{FunctionSid}/Versions"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -115,11 +106,7 @@ func (c *ApiService) PageFunctionVersion(
 }
 
 // Lists FunctionVersion records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListFunctionVersion(
-	ServiceSid string,
-	FunctionSid string,
-	params *ListFunctionVersionParams,
-) ([]ServerlessV1FunctionVersion, error) {
+func (c *ApiService) ListFunctionVersion(ServiceSid string, FunctionSid string, params *ListFunctionVersionParams) ([]ServerlessV1FunctionVersion, error) {
 	response, errors := c.StreamFunctionVersion(ServiceSid, FunctionSid, params)
 
 	records := make([]ServerlessV1FunctionVersion, 0)
@@ -135,11 +122,7 @@ func (c *ApiService) ListFunctionVersion(
 }
 
 // Streams FunctionVersion records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamFunctionVersion(
-	ServiceSid string,
-	FunctionSid string,
-	params *ListFunctionVersionParams,
-) (chan ServerlessV1FunctionVersion, chan error) {
+func (c *ApiService) StreamFunctionVersion(ServiceSid string, FunctionSid string, params *ListFunctionVersionParams) (chan ServerlessV1FunctionVersion, chan error) {
 	if params == nil {
 		params = &ListFunctionVersionParams{}
 	}
@@ -160,12 +143,7 @@ func (c *ApiService) StreamFunctionVersion(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamFunctionVersion(
-	response *ListFunctionVersionResponse,
-	params *ListFunctionVersionParams,
-	recordChannel chan ServerlessV1FunctionVersion,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamFunctionVersion(response *ListFunctionVersionResponse, params *ListFunctionVersionParams, recordChannel chan ServerlessV1FunctionVersion, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

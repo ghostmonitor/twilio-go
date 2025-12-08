@@ -150,10 +150,7 @@ func (params *ListEsimProfileParams) SetLimit(Limit int) *ListEsimProfileParams 
 }
 
 // Retrieve a single page of EsimProfile records from the API. Request is executed immediately.
-func (c *ApiService) PageEsimProfile(
-	params *ListEsimProfileParams,
-	pageToken, pageNumber string,
-) (*ListEsimProfileResponse, error) {
+func (c *ApiService) PageEsimProfile(params *ListEsimProfileParams, pageToken, pageNumber string) (*ListEsimProfileResponse, error) {
 	path := "/v1/ESimProfiles"
 
 	data := url.Values{}
@@ -234,12 +231,7 @@ func (c *ApiService) StreamEsimProfile(params *ListEsimProfileParams) (chan Supe
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamEsimProfile(
-	response *ListEsimProfileResponse,
-	params *ListEsimProfileParams,
-	recordChannel chan SupersimV1EsimProfile,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamEsimProfile(response *ListEsimProfileResponse, params *ListEsimProfileParams, recordChannel chan SupersimV1EsimProfile, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
