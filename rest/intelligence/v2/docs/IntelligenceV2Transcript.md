@@ -15,9 +15,10 @@ Name | Type | Description | Notes
 **LanguageCode** | Pointer to **string** | The default language code of the audio. |
 **CustomerKey** | Pointer to **string** |  |
 **MediaStartTime** | Pointer to [**time.Time**](time.Time.md) | The date that this Transcript's media was started, given in ISO 8601 format. |
-**Duration** | Pointer to **int** | The duration of this Transcript's source |
+**Duration** | **int** | The duration of this Transcript's source |[optional] [default to 0]
 **Url** | Pointer to **string** | The URL of this resource. |
 **Redaction** | Pointer to **bool** | If the transcript has been redacted, a redacted alternative of the transcript will be available. |
+**EncryptionCredentialSid** | Pointer to **string** | The unique SID identifier of the Public Key resource used to encrypt the sentences and operator results. |
 **Links** | Pointer to **map[string]interface{}** |  |
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

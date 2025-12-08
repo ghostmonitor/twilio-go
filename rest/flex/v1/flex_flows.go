@@ -146,7 +146,7 @@ func (c *ApiService) CreateFlexFlow(params *CreateFlexFlowParams) (*FlexV1FlexFl
 		data.Set("ChatServiceSid", *params.ChatServiceSid)
 	}
 	if params != nil && params.ChannelType != nil {
-		data.Set("ChannelType", *params.ChannelType)
+		data.Set("ChannelType", fmt.Sprint(*params.ChannelType))
 	}
 	if params != nil && params.ContactIdentity != nil {
 		data.Set("ContactIdentity", *params.ContactIdentity)
@@ -155,7 +155,7 @@ func (c *ApiService) CreateFlexFlow(params *CreateFlexFlowParams) (*FlexV1FlexFl
 		data.Set("Enabled", fmt.Sprint(*params.Enabled))
 	}
 	if params != nil && params.IntegrationType != nil {
-		data.Set("IntegrationType", *params.IntegrationType)
+		data.Set("IntegrationType", fmt.Sprint(*params.IntegrationType))
 	}
 	if params != nil && params.IntegrationFlowSid != nil {
 		data.Set("Integration.FlowSid", *params.IntegrationFlowSid)
@@ -530,7 +530,7 @@ func (c *ApiService) UpdateFlexFlow(Sid string, params *UpdateFlexFlowParams) (*
 		data.Set("ChatServiceSid", *params.ChatServiceSid)
 	}
 	if params != nil && params.ChannelType != nil {
-		data.Set("ChannelType", *params.ChannelType)
+		data.Set("ChannelType", fmt.Sprint(*params.ChannelType))
 	}
 	if params != nil && params.ContactIdentity != nil {
 		data.Set("ContactIdentity", *params.ContactIdentity)
@@ -539,7 +539,7 @@ func (c *ApiService) UpdateFlexFlow(Sid string, params *UpdateFlexFlowParams) (*
 		data.Set("Enabled", fmt.Sprint(*params.Enabled))
 	}
 	if params != nil && params.IntegrationType != nil {
-		data.Set("IntegrationType", *params.IntegrationType)
+		data.Set("IntegrationType", fmt.Sprint(*params.IntegrationType))
 	}
 	if params != nil && params.IntegrationFlowSid != nil {
 		data.Set("Integration.FlowSid", *params.IntegrationFlowSid)

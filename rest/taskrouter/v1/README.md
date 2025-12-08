@@ -57,7 +57,7 @@ Class | Method | HTTP request | Description
 *WorkspacesTaskQueuesApi* | [**ListTaskQueue**](docs/WorkspacesTaskQueuesApi.md#listtaskqueue) | **Get** /v1/Workspaces/{WorkspaceSid}/TaskQueues | 
 *WorkspacesTaskQueuesApi* | [**UpdateTaskQueue**](docs/WorkspacesTaskQueuesApi.md#updatetaskqueue) | **Post** /v1/Workspaces/{WorkspaceSid}/TaskQueues/{Sid} | 
 *WorkspacesTaskQueuesCumulativeStatisticsApi* | [**FetchTaskQueueCumulativeStatistics**](docs/WorkspacesTaskQueuesCumulativeStatisticsApi.md#fetchtaskqueuecumulativestatistics) | **Get** /v1/Workspaces/{WorkspaceSid}/TaskQueues/{TaskQueueSid}/CumulativeStatistics | 
-*WorkspacesTaskQueuesRealTimeStatisticsApi* | [**CreateTaskQueueBulkRealTimeStatistics**](docs/WorkspacesTaskQueuesRealTimeStatisticsApi.md#createtaskqueuebulkrealtimestatistics) | **Post** /v1/Workspaces/{WorkspaceSid}/TaskQueues/RealTimeStatistics | 
+*WorkspacesTaskQueuesRealTimeStatisticsApi* | [**CreateTaskQueueBulkRealTimeStatistics**](docs/WorkspacesTaskQueuesRealTimeStatisticsApi.md#createtaskqueuebulkrealtimestatistics) | **Post** /v1/Workspaces/{WorkspaceSid}/TaskQueues/RealTimeStatistics | Fetch a Task Queue Real Time Statistics in bulk for the array of TaskQueue SIDs, support upto 50 in a request.
 *WorkspacesTaskQueuesRealTimeStatisticsApi* | [**FetchTaskQueueRealTimeStatistics**](docs/WorkspacesTaskQueuesRealTimeStatisticsApi.md#fetchtaskqueuerealtimestatistics) | **Get** /v1/Workspaces/{WorkspaceSid}/TaskQueues/{TaskQueueSid}/RealTimeStatistics | 
 *WorkspacesTaskQueuesStatisticsApi* | [**FetchTaskQueueStatistics**](docs/WorkspacesTaskQueuesStatisticsApi.md#fetchtaskqueuestatistics) | **Get** /v1/Workspaces/{WorkspaceSid}/TaskQueues/{TaskQueueSid}/Statistics | 
 *WorkspacesTaskQueuesStatisticsApi* | [**ListTaskQueuesStatistics**](docs/WorkspacesTaskQueuesStatisticsApi.md#listtaskqueuesstatistics) | **Get** /v1/Workspaces/{WorkspaceSid}/TaskQueues/Statistics | 
@@ -125,8 +125,8 @@ Class | Method | HTTP request | Description
  - [TaskrouterV1TaskQueueCumulativeStatistics](docs/TaskrouterV1TaskQueueCumulativeStatistics.md)
  - [TaskrouterV1WorkersRealTimeStatistics](docs/TaskrouterV1WorkersRealTimeStatistics.md)
  - [TaskrouterV1Worker](docs/TaskrouterV1Worker.md)
- - [TaskrouterV1TaskQueueRealTimeStatistics](docs/TaskrouterV1TaskQueueRealTimeStatistics.md)
  - [TaskrouterV1WorkerReservation](docs/TaskrouterV1WorkerReservation.md)
+ - [TaskrouterV1TaskQueueRealTimeStatistics](docs/TaskrouterV1TaskQueueRealTimeStatistics.md)
  - [ListWorkerReservationResponse](docs/ListWorkerReservationResponse.md)
  - [TaskrouterV1Event](docs/TaskrouterV1Event.md)
  - [ListTaskQueueResponse](docs/ListTaskQueueResponse.md)

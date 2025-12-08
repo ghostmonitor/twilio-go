@@ -80,7 +80,7 @@ func (c *ApiService) PageDependentHostedNumberOrder(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.PhoneNumber != nil {
 		data.Set("PhoneNumber", *params.PhoneNumber)

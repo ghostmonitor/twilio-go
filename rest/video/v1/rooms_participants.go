@@ -107,7 +107,7 @@ func (c *ApiService) PageRoomParticipant(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.Identity != nil {
 		data.Set("Identity", *params.Identity)
@@ -268,7 +268,7 @@ func (c *ApiService) UpdateRoomParticipant(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)

@@ -117,7 +117,7 @@ func (c *ApiService) PageRegulation(
 	}
 
 	if params != nil && params.EndUserType != nil {
-		data.Set("EndUserType", *params.EndUserType)
+		data.Set("EndUserType", fmt.Sprint(*params.EndUserType))
 	}
 	if params != nil && params.IsoCountry != nil {
 		data.Set("IsoCountry", *params.IsoCountry)

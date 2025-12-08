@@ -237,7 +237,7 @@ func (c *ApiService) UpdateInteractionChannel(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.Routing != nil {
 		v, err := json.Marshal(params.Routing)

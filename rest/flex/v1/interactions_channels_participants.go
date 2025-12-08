@@ -62,7 +62,7 @@ func (c *ApiService) CreateInteractionChannelParticipant(
 	}
 
 	if params != nil && params.Type != nil {
-		data.Set("Type", *params.Type)
+		data.Set("Type", fmt.Sprint(*params.Type))
 	}
 	if params != nil && params.MediaProperties != nil {
 		v, err := json.Marshal(params.MediaProperties)
@@ -286,7 +286,7 @@ func (c *ApiService) UpdateInteractionChannelParticipant(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)

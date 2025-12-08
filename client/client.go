@@ -3,6 +3,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/ghostmonitor/twilio-go/client/form"
@@ -35,12 +37,17 @@ func NewCredentials(username string, password string) *Credentials {
 	return &Credentials{Username: username, Password: password}
 }
 
+type OAuth interface {
+	GetAccessToken(context.Context) (string, error)
+}
+
 // Client encapsulates a standard HTTP backend with authorization.
 type Client struct {
 	*Credentials
 	HTTPClient          *http.Client
 	accountSid          string
 	UserAgentExtensions []string
+	oAuth               OAuth
 }
 
 // default http Client should not follow redirects and return the most recent response.
@@ -131,6 +138,9 @@ func (c *Client) validateCredentials() error {
 	return nil
 }
 
+var baseUserAgent string
+var userAgentOnce sync.Once
+
 // SendRequest verifies, constructs, and authorizes an HTTP request.
 func (c *Client) SendRequest(
 	method string, rawURL string, data url.Values,
@@ -152,7 +162,7 @@ func (c *Client) SendRequest(
 	// are added as information in the url itself. Also while Content-Type is json, we are sending
 	// json body. In that case, data variable contains all other parameters than body, which is the
 	//same case as GET method. In that case as well all parameters will be added to url
-	if method == http.MethodGet || contentType == jsonContentType {
+	if method == http.MethodGet || method == http.MethodDelete || contentType == jsonContentType {
 		if data != nil {
 			v, _ := form.EncodeToStringWith(data, delimiter, escapee, keepZeros)
 			s := delimitingRegex.ReplaceAllString(v, "")
@@ -169,29 +179,44 @@ func (c *Client) SendRequest(
 			return nil, err
 		}
 	} else {
-		//Here the HTTP POST methods which is not having json content type are processed
-		//All the values will be added in data and encoded (all body, query, path parameters)
-		if method == http.MethodPost {
+		// Here the HTTP POST methods which do not have json content type are processed
+		// All the values will be added in data and encoded (all body, query, path parameters)
+		if method == http.MethodPost || method == http.MethodPut || method == http.MethodPatch {
 			valueReader = strings.NewReader(data.Encode())
 		}
-		credErr := c.validateCredentials()
-		if credErr != nil {
-			return nil, credErr
-		}
-		req, err = http.NewRequest(method, u.String(), valueReader)
+		req, err = http.NewRequestWithContext(context.Background(), method, u.String(), valueReader)
 		if err != nil {
 			return nil, err
 		}
 
 	}
 
-	req.SetBasicAuth(c.basicAuth())
+	credErr := c.validateCredentials()
+	if credErr != nil {
+		return nil, credErr
+	}
+	if c.OAuth() == nil && c.Username != "" && c.Password != "" {
+		req.SetBasicAuth(c.basicAuth())
+	}
 
 	// E.g. "User-Agent": "twilio-go/1.0.0 (darwin amd64) go/go1.17.8"
-	userAgent := fmt.Sprintf("twilio-go/%s (%s %s) go/%s", LibraryVersion, runtime.GOOS, runtime.GOARCH, goVersion)
+	userAgentOnce.Do(func() {
+		baseUserAgent = fmt.Sprintf("twilio-go/%s (%s %s) go/%s", LibraryVersion, runtime.GOOS, runtime.GOARCH, goVersion)
+	})
+	userAgent := baseUserAgent
 
 	if len(c.UserAgentExtensions) > 0 {
 		userAgent += " " + strings.Join(c.UserAgentExtensions, " ")
+	}
+	if c.OAuth() != nil {
+		oauth := c.OAuth()
+		token, _ := c.OAuth().GetAccessToken(context.TODO())
+		if token != "" {
+			req.Header.Add("Authorization", "Bearer "+token)
+		}
+		c.SetOauth(oauth) // Set the OAuth token in the client which gets nullified after the token fetch
+	} else if c.Username != "" && c.Password != "" {
+		req.SetBasicAuth(c.basicAuth())
 	}
 
 	req.Header.Add("User-Agent", userAgent)
@@ -207,7 +232,15 @@ func (c *Client) SetAccountSid(sid string) {
 	c.accountSid = sid
 }
 
-// Returns the Account SID.
+// AccountSid returns the Account SID.
 func (c *Client) AccountSid() string {
 	return c.accountSid
+}
+
+func (c *Client) SetOauth(oauth OAuth) {
+	c.oAuth = oauth
+}
+
+func (c *Client) OAuth() OAuth {
+	return c.oAuth
 }

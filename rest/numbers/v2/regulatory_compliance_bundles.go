@@ -38,8 +38,10 @@ type CreateBundleParams struct {
 	IsoCountry *string `json:"IsoCountry,omitempty"`
 	//
 	EndUserType *string `json:"EndUserType,omitempty"`
-	// The type of phone number of the Bundle's ownership request. Can be `local`, `mobile`, `national`, or `toll free`.
+	// The type of phone number of the Bundle's ownership request. Can be `local`, `mobile`, `national`, or `toll-free`.
 	NumberType *string `json:"NumberType,omitempty"`
+	// Indicates that Bundle is a Test Bundle and will be Auto-Rejected
+	IsTest *bool `json:"IsTest,omitempty"`
 }
 
 func (params *CreateBundleParams) SetFriendlyName(FriendlyName string) *CreateBundleParams {
@@ -70,6 +72,10 @@ func (params *CreateBundleParams) SetNumberType(NumberType string) *CreateBundle
 	params.NumberType = &NumberType
 	return params
 }
+func (params *CreateBundleParams) SetIsTest(IsTest bool) *CreateBundleParams {
+	params.IsTest = &IsTest
+	return params
+}
 
 // Create a new Bundle.
 func (c *ApiService) CreateBundle(params *CreateBundleParams) (*NumbersV2Bundle, error) {
@@ -96,10 +102,13 @@ func (c *ApiService) CreateBundle(params *CreateBundleParams) (*NumbersV2Bundle,
 		data.Set("IsoCountry", *params.IsoCountry)
 	}
 	if params != nil && params.EndUserType != nil {
-		data.Set("EndUserType", *params.EndUserType)
+		data.Set("EndUserType", fmt.Sprint(*params.EndUserType))
 	}
 	if params != nil && params.NumberType != nil {
 		data.Set("NumberType", *params.NumberType)
+	}
+	if params != nil && params.IsTest != nil {
+		data.Set("IsTest", fmt.Sprint(*params.IsTest))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)
@@ -172,7 +181,7 @@ type ListBundleParams struct {
 	RegulationSid *string `json:"RegulationSid,omitempty"`
 	// The 2-digit [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Bundle's phone number country ownership request.
 	IsoCountry *string `json:"IsoCountry,omitempty"`
-	// The type of phone number of the Bundle's ownership request. Can be `local`, `mobile`, `national`, or `tollfree`.
+	// The type of phone number of the Bundle's ownership request. Can be `local`, `mobile`, `national`, or `toll-free`.
 	NumberType *string `json:"NumberType,omitempty"`
 	// Indicates that the Bundle is a valid Bundle until a specified expiration date.
 	HasValidUntilDate *bool `json:"HasValidUntilDate,omitempty"`
@@ -255,7 +264,7 @@ func (c *ApiService) PageBundle(params *ListBundleParams, pageToken, pageNumber 
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.FriendlyName != nil {
 		data.Set("FriendlyName", *params.FriendlyName)
@@ -273,10 +282,10 @@ func (c *ApiService) PageBundle(params *ListBundleParams, pageToken, pageNumber 
 		data.Set("HasValidUntilDate", fmt.Sprint(*params.HasValidUntilDate))
 	}
 	if params != nil && params.SortBy != nil {
-		data.Set("SortBy", *params.SortBy)
+		data.Set("SortBy", fmt.Sprint(*params.SortBy))
 	}
 	if params != nil && params.SortDirection != nil {
-		data.Set("SortDirection", *params.SortDirection)
+		data.Set("SortDirection", fmt.Sprint(*params.SortDirection))
 	}
 	if params != nil && params.ValidUntilDate != nil {
 		data.Set("ValidUntilDate", fmt.Sprint((*params.ValidUntilDate).Format(time.RFC3339)))
@@ -444,7 +453,7 @@ func (c *ApiService) UpdateBundle(Sid string, params *UpdateBundleParams) (*Numb
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.StatusCallback != nil {
 		data.Set("StatusCallback", *params.StatusCallback)

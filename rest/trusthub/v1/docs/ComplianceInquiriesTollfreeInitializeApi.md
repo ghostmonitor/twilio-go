@@ -4,7 +4,7 @@ All URIs are relative to *https://trusthub.twilio.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateComplianceTollfreeInquiry**](ComplianceInquiriesTollfreeInitializeApi.md#CreateComplianceTollfreeInquiry) | **Post** /v1/ComplianceInquiries/Tollfree/Initialize | 
+[**CreateComplianceTollfreeInquiry**](ComplianceInquiriesTollfreeInitializeApi.md#CreateComplianceTollfreeInquiry) | **Post** /v1/ComplianceInquiries/Tollfree/Initialize | Create a new Compliance Tollfree Verification Inquiry for the authenticated account. This is necessary to start a new embedded session.
 
 
 
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 > TrusthubV1ComplianceTollfreeInquiry CreateComplianceTollfreeInquiry(ctx, optional)
 
-
+Create a new Compliance Tollfree Verification Inquiry for the authenticated account. This is necessary to start a new embedded session.
 
 Create a new Compliance Tollfree Verification Inquiry for the authenticated account. This is necessary to start a new embedded session.
 
@@ -29,13 +29,14 @@ Name | Type | Description
 ------------- | ------------- | -------------
 **TollfreePhoneNumber** | **string** | The Tollfree phone number to be verified
 **NotificationEmail** | **string** | The email address to receive the notification about the verification result.
+**CustomerProfileSid** | **string** | The Customer Profile Sid associated with the Account.
 **BusinessName** | **string** | The name of the business or organization using the Tollfree number.
 **BusinessWebsite** | **string** | The website of the business or organization using the Tollfree number.
 **UseCaseCategories** | **[]string** | The category of the use case for the Tollfree Number. List as many are applicable..
 **UseCaseSummary** | **string** | Use this to further explain how messaging is used by the business or organization.
 **ProductionMessageSample** | **string** | An example of message content, i.e. a sample message.
 **OptInImageUrls** | **[]string** | Link to an image that shows the opt-in workflow. Multiple images allowed and must be a publicly hosted URL.
-**OptInType** | **string** | 
+**OptInType** | [**string**](string.md) | 
 **MessageVolume** | **string** | Estimate monthly volume of messages from the Tollfree Number.
 **BusinessStreetAddress** | **string** | The address of the business or organization using the Tollfree number.
 **BusinessStreetAddress2** | **string** | The address of the business or organization using the Tollfree number.

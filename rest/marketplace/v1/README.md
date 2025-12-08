@@ -46,22 +46,30 @@ Class | Method | HTTP request | Description
 *InstalledAddOnsUsageApi* | [**CreateBillingUsage**](docs/InstalledAddOnsUsageApi.md#createbillingusage) | **Post** /v1/InstalledAddOns/{InstalledAddOnSid}/Usage | 
 *ListingApi* | [**FetchModuleDataManagement**](docs/ListingApi.md#fetchmoduledatamanagement) | **Get** /v1/Listing/{Sid} | 
 *ListingApi* | [**UpdateModuleDataManagement**](docs/ListingApi.md#updatemoduledatamanagement) | **Post** /v1/Listing/{Sid} | 
+*ListingsApi* | [**CreateModuleData**](docs/ListingsApi.md#createmoduledata) | **Post** /v1/Listings | 
+*ListingsApi* | [**FetchModuleDataForListingOwner**](docs/ListingsApi.md#fetchmoduledataforlistingowner) | **Get** /v1/Listings | 
+*ReferralConversionApi* | [**CreateReferralConversion**](docs/ReferralConversionApi.md#createreferralconversion) | **Post** /v1/ReferralConversion | 
 
 
 ## Documentation For Models
 
  - [MarketplaceV1AvailableAddOn](docs/MarketplaceV1AvailableAddOn.md)
+ - [MarketplaceV1InstalledAddOnInstalledAddOnUsageBillableItems](docs/MarketplaceV1InstalledAddOnInstalledAddOnUsageBillableItems.md)
+ - [MarketplaceV1ReferralRecords](docs/MarketplaceV1ReferralRecords.md)
  - [ListInstalledAddOnExtensionResponse](docs/ListInstalledAddOnExtensionResponse.md)
  - [ListAvailableAddOnResponse](docs/ListAvailableAddOnResponse.md)
+ - [CreateReferralConversionRequest](docs/CreateReferralConversionRequest.md)
  - [MarketplaceV1AvailableAddOnExtension](docs/MarketplaceV1AvailableAddOnExtension.md)
  - [MarketplaceV1InstalledAddOnExtension](docs/MarketplaceV1InstalledAddOnExtension.md)
- - [CreateBillingUsageRequestBillableItems](docs/CreateBillingUsageRequestBillableItems.md)
+ - [MarketplaceV1InstalledAddOnUsage](docs/MarketplaceV1InstalledAddOnUsage.md)
  - [ListAvailableAddOnExtensionResponse](docs/ListAvailableAddOnExtensionResponse.md)
  - [MarketplaceV1InstalledAddOnBillingUsageResponseBillableItems](docs/MarketplaceV1InstalledAddOnBillingUsageResponseBillableItems.md)
- - [CreateBillingUsageRequest](docs/CreateBillingUsageRequest.md)
  - [ListInstalledAddOnResponse](docs/ListInstalledAddOnResponse.md)
  - [MarketplaceV1InstalledAddOn](docs/MarketplaceV1InstalledAddOn.md)
+ - [MarketplaceV1ReferralConversion](docs/MarketplaceV1ReferralConversion.md)
+ - [MarketplaceV1TwilioServiceErrorResponse](docs/MarketplaceV1TwilioServiceErrorResponse.md)
  - [MarketplaceV1BillingUsageResponse](docs/MarketplaceV1BillingUsageResponse.md)
+ - [FetchModuleDataForListingOwnerResponse](docs/FetchModuleDataForListingOwnerResponse.md)
  - [ListAvailableAddOnResponseMeta](docs/ListAvailableAddOnResponseMeta.md)
  - [MarketplaceV1ModuleDataManagement](docs/MarketplaceV1ModuleDataManagement.md)
 

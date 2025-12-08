@@ -16,11 +16,22 @@ package openapi
 
 // MarketplaceV1ModuleDataManagement struct for MarketplaceV1ModuleDataManagement
 type MarketplaceV1ModuleDataManagement struct {
-	Url           *string      `json:"url,omitempty"`
-	Sid           *string      `json:"sid,omitempty"`
-	Description   *interface{} `json:"description,omitempty"`
-	Support       *interface{} `json:"support,omitempty"`
-	Policies      *interface{} `json:"policies,omitempty"`
-	ModuleInfo    *interface{} `json:"module_info,omitempty"`
-	Documentation *interface{} `json:"documentation,omitempty"`
+	// URL to query the subresource.
+	Url *string `json:"url,omitempty"`
+	// ModuleSid that identifies this Listing.
+	Sid *string `json:"sid,omitempty"`
+	// A JSON object describing the module and is displayed under the Description tab of the Module detail page. You can define the main body of the description, highlight key features or aspects of the module and if applicable, provide code samples for developers
+	Description *map[string]interface{} `json:"description,omitempty"`
+	// A JSON object containing information on how customers can obtain support for the module. Use this parameter to provide details such as contact information and support description.
+	Support *map[string]interface{} `json:"support,omitempty"`
+	// A JSON object describing the module's privacy and legal policies and is displayed under the Policies tab of the Module detail page. The maximum file size for Policies is 5MB
+	Policies *map[string]interface{} `json:"policies,omitempty"`
+	// A JSON object containing essential attributes that define a module. This information is presented on the Module detail page in the Twilio Marketplace Catalog. You can pass the following attributes in the JSON object
+	ModuleInfo *map[string]interface{} `json:"module_info,omitempty"`
+	// A JSON object for providing comprehensive information, instructions, and resources related to the module
+	Documentation *map[string]interface{} `json:"documentation,omitempty"`
+	// A JSON object for providing listing specific configuration. Contains button setup, notification url, among others.
+	Configuration *map[string]interface{} `json:"configuration,omitempty"`
+	// A JSON object for providing Listing specific pricing information.
+	Pricing *map[string]interface{} `json:"pricing,omitempty"`
 }

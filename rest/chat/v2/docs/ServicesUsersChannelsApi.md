@@ -4,9 +4,9 @@ All URIs are relative to *https://chat.twilio.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**DeleteUserChannel**](ServicesUsersChannelsApi.md#DeleteUserChannel) | **Delete** /v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid} | 
+[**DeleteUserChannel**](ServicesUsersChannelsApi.md#DeleteUserChannel) | **Delete** /v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid} | Removes User from selected Channel.
 [**FetchUserChannel**](ServicesUsersChannelsApi.md#FetchUserChannel) | **Get** /v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid} | 
-[**ListUserChannel**](ServicesUsersChannelsApi.md#ListUserChannel) | **Get** /v2/Services/{ServiceSid}/Users/{UserSid}/Channels | 
+[**ListUserChannel**](ServicesUsersChannelsApi.md#ListUserChannel) | **Get** /v2/Services/{ServiceSid}/Users/{UserSid}/Channels | List all Channels for a given User.
 [**UpdateUserChannel**](ServicesUsersChannelsApi.md#UpdateUserChannel) | **Post** /v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid} | 
 
 
@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 > DeleteUserChannel(ctx, ServiceSidUserSidChannelSidoptional)
 
-
+Removes User from selected Channel.
 
 Removes User from selected Channel.
 
@@ -36,7 +36,7 @@ Other parameters are passed through a pointer to a DeleteUserChannelParams struc
 
 Name | Type | Description
 ------------- | ------------- | -------------
-**XTwilioWebhookEnabled** | **string** | The X-Twilio-Webhook-Enabled HTTP request header
+**XTwilioWebhookEnabled** | [**string**](stringstring.md) | The X-Twilio-Webhook-Enabled HTTP request header
 
 ### Return type
 
@@ -104,7 +104,7 @@ Name | Type | Description
 
 > []ChatV2UserChannel ListUserChannel(ctx, ServiceSidUserSidoptional)
 
-
+List all Channels for a given User.
 
 List all Channels for a given User.
 
@@ -124,7 +124,7 @@ Other parameters are passed through a pointer to a ListUserChannelParams struct
 
 Name | Type | Description
 ------------- | ------------- | -------------
-**PageSize** | **int** | How many resources to return in each list page. The default is 50, and the maximum is 1000.
+**PageSize** | **int** | How many resources to return in each list page. The default is 50, and the maximum is 50.
 **Limit** | **int** | Max number of records to return.
 
 ### Return type
@@ -170,7 +170,7 @@ Other parameters are passed through a pointer to a UpdateUserChannelParams struc
 
 Name | Type | Description
 ------------- | ------------- | -------------
-**NotificationLevel** | **string** | 
+**NotificationLevel** | [**string**](string.md) | 
 **LastConsumedMessageIndex** | **int** | The index of the last [Message](https://www.twilio.com/docs/chat/rest/message-resource) in the [Channel](https://www.twilio.com/docs/chat/channels) that the Member has read.
 **LastConsumptionTimestamp** | **time.Time** | The [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp of the last [Message](https://www.twilio.com/docs/chat/rest/message-resource) read event for the Member within the [Channel](https://www.twilio.com/docs/chat/channels).
 

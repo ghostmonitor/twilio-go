@@ -4,17 +4,17 @@ All URIs are relative to *https://content.twilio.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateContentApprovalRequest**](ContentApprovalRequestsWhatsappApi.md#CreateContentApprovalRequest) | **Post** /v1/Content/{ContentSid}/ApprovalRequests/whatsapp | 
+[**CreateApprovalCreate**](ContentApprovalRequestsWhatsappApi.md#CreateApprovalCreate) | **Post** /v1/Content/{ContentSid}/ApprovalRequests/whatsapp | Create Content Approval Request
 
 
 
-## CreateContentApprovalRequest
+## CreateApprovalCreate
 
-> ContentV1ApprovalCreate CreateContentApprovalRequest(ctx, ContentSidoptional)
+> ContentV1ApprovalCreate CreateApprovalCreate(ctx, ContentSidoptional)
 
+Create Content Approval Request
 
-
-
+Create a ContentApprovalRequest for a content item
 
 ### Path Parameters
 
@@ -26,7 +26,7 @@ Name | Type | Description
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a CreateContentApprovalRequestParams struct
+Other parameters are passed through a pointer to a CreateApprovalCreateParams struct
 
 
 Name | Type | Description

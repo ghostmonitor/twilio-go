@@ -87,7 +87,7 @@ func (c *ApiService) CreateTaskQueue(
 		data.Set("MaxReservedWorkers", fmt.Sprint(*params.MaxReservedWorkers))
 	}
 	if params != nil && params.TaskOrder != nil {
-		data.Set("TaskOrder", *params.TaskOrder)
+		data.Set("TaskOrder", fmt.Sprint(*params.TaskOrder))
 	}
 	if params != nil && params.ReservationActivitySid != nil {
 		data.Set("ReservationActivitySid", *params.ReservationActivitySid)
@@ -418,7 +418,7 @@ func (c *ApiService) UpdateTaskQueue(
 		data.Set("MaxReservedWorkers", fmt.Sprint(*params.MaxReservedWorkers))
 	}
 	if params != nil && params.TaskOrder != nil {
-		data.Set("TaskOrder", *params.TaskOrder)
+		data.Set("TaskOrder", fmt.Sprint(*params.TaskOrder))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)

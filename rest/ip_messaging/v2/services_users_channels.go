@@ -277,7 +277,7 @@ func (c *ApiService) UpdateUserChannel(
 	}
 
 	if params != nil && params.NotificationLevel != nil {
-		data.Set("NotificationLevel", *params.NotificationLevel)
+		data.Set("NotificationLevel", fmt.Sprint(*params.NotificationLevel))
 	}
 	if params != nil && params.LastConsumedMessageIndex != nil {
 		data.Set("LastConsumedMessageIndex", fmt.Sprint(*params.LastConsumedMessageIndex))

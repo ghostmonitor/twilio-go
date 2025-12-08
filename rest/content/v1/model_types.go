@@ -24,6 +24,10 @@ type Types struct {
 	TwilioQuickReply       *TwilioQuickReply       `json:"twilio/quick-reply,omitempty"`
 	TwilioCard             *TwilioCard             `json:"twilio/card,omitempty"`
 	TwilioCatalog          *TwilioCatalog          `json:"twilio/catalog,omitempty"`
+	TwilioCarousel         *TwilioCarousel         `json:"twilio/carousel,omitempty"`
+	TwilioFlows            *TwilioFlows            `json:"twilio/flows,omitempty"`
+	TwilioSchedule         *TwilioSchedule         `json:"twilio/schedule,omitempty"`
 	WhatsappCard           *WhatsappCard           `json:"whatsapp/card,omitempty"`
 	WhatsappAuthentication *WhatsappAuthentication `json:"whatsapp/authentication,omitempty"`
+	WhatsappFlows          *WhatsappFlows          `json:"whatsapp/flows,omitempty"`
 }

@@ -98,7 +98,7 @@ func (c *ApiService) FetchUserChannel(
 
 // Optional parameters for the method 'ListUserChannel'
 type ListUserChannelParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 50.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -296,7 +296,7 @@ func (c *ApiService) UpdateUserChannel(
 	}
 
 	if params != nil && params.NotificationLevel != nil {
-		data.Set("NotificationLevel", *params.NotificationLevel)
+		data.Set("NotificationLevel", fmt.Sprint(*params.NotificationLevel))
 	}
 	if params != nil && params.LastConsumedMessageIndex != nil {
 		data.Set("LastConsumedMessageIndex", fmt.Sprint(*params.LastConsumedMessageIndex))
