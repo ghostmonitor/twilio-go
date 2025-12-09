@@ -59,10 +59,7 @@ func (params *ListAccountUsageRecordParams) SetLimit(Limit int) *ListAccountUsag
 }
 
 // Retrieve a single page of AccountUsageRecord records from the API. Request is executed immediately.
-func (c *ApiService) PageAccountUsageRecord(
-	params *ListAccountUsageRecordParams,
-	pageToken, pageNumber string,
-) (*ListAccountUsageRecordResponse, error) {
+func (c *ApiService) PageAccountUsageRecord(params *ListAccountUsageRecordParams, pageToken, pageNumber string) (*ListAccountUsageRecordResponse, error) {
 	path := "/v1/UsageRecords"
 
 	data := url.Values{}
@@ -77,7 +74,7 @@ func (c *ApiService) PageAccountUsageRecord(
 		data.Set("Start", fmt.Sprint((*params.Start).Format(time.RFC3339)))
 	}
 	if params != nil && params.Granularity != nil {
-		data.Set("Granularity", *params.Granularity)
+		data.Set("Granularity", fmt.Sprint(*params.Granularity))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -143,12 +140,7 @@ func (c *ApiService) StreamAccountUsageRecord(params *ListAccountUsageRecordPara
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamAccountUsageRecord(
-	response *ListAccountUsageRecordResponse,
-	params *ListAccountUsageRecordParams,
-	recordChannel chan WirelessV1AccountUsageRecord,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamAccountUsageRecord(response *ListAccountUsageRecordResponse, params *ListAccountUsageRecordParams, recordChannel chan WirelessV1AccountUsageRecord, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

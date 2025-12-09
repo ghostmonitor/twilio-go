@@ -66,11 +66,7 @@ func (params *CreateChallengeParams) SetAuthPayload(AuthPayload string) *CreateC
 }
 
 // Create a new Challenge for the Factor
-func (c *ApiService) CreateChallenge(
-	ServiceSid string,
-	Identity string,
-	params *CreateChallengeParams,
-) (*VerifyV2Challenge, error) {
+func (c *ApiService) CreateChallenge(ServiceSid string, Identity string, params *CreateChallengeParams) (*VerifyV2Challenge, error) {
 	path := "/v2/Services/{ServiceSid}/Entities/{Identity}/Challenges"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"Identity"+"}", Identity, -1)
@@ -191,12 +187,7 @@ func (params *ListChallengeParams) SetLimit(Limit int) *ListChallengeParams {
 }
 
 // Retrieve a single page of Challenge records from the API. Request is executed immediately.
-func (c *ApiService) PageChallenge(
-	ServiceSid string,
-	Identity string,
-	params *ListChallengeParams,
-	pageToken, pageNumber string,
-) (*ListChallengeResponse, error) {
+func (c *ApiService) PageChallenge(ServiceSid string, Identity string, params *ListChallengeParams, pageToken, pageNumber string) (*ListChallengeResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Entities/{Identity}/Challenges"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -211,10 +202,10 @@ func (c *ApiService) PageChallenge(
 		data.Set("FactorSid", *params.FactorSid)
 	}
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.Order != nil {
-		data.Set("Order", *params.Order)
+		data.Set("Order", fmt.Sprint(*params.Order))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -243,11 +234,7 @@ func (c *ApiService) PageChallenge(
 }
 
 // Lists Challenge records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListChallenge(
-	ServiceSid string,
-	Identity string,
-	params *ListChallengeParams,
-) ([]VerifyV2Challenge, error) {
+func (c *ApiService) ListChallenge(ServiceSid string, Identity string, params *ListChallengeParams) ([]VerifyV2Challenge, error) {
 	response, errors := c.StreamChallenge(ServiceSid, Identity, params)
 
 	records := make([]VerifyV2Challenge, 0)
@@ -263,11 +250,7 @@ func (c *ApiService) ListChallenge(
 }
 
 // Streams Challenge records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamChallenge(
-	ServiceSid string,
-	Identity string,
-	params *ListChallengeParams,
-) (chan VerifyV2Challenge, chan error) {
+func (c *ApiService) StreamChallenge(ServiceSid string, Identity string, params *ListChallengeParams) (chan VerifyV2Challenge, chan error) {
 	if params == nil {
 		params = &ListChallengeParams{}
 	}
@@ -288,12 +271,7 @@ func (c *ApiService) StreamChallenge(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamChallenge(
-	response *ListChallengeResponse,
-	params *ListChallengeParams,
-	recordChannel chan VerifyV2Challenge,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamChallenge(response *ListChallengeResponse, params *ListChallengeParams, recordChannel chan VerifyV2Challenge, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -359,12 +337,7 @@ func (params *UpdateChallengeParams) SetMetadata(Metadata interface{}) *UpdateCh
 }
 
 // Verify a specific Challenge.
-func (c *ApiService) UpdateChallenge(
-	ServiceSid string,
-	Identity string,
-	Sid string,
-	params *UpdateChallengeParams,
-) (*VerifyV2Challenge, error) {
+func (c *ApiService) UpdateChallenge(ServiceSid string, Identity string, Sid string, params *UpdateChallengeParams) (*VerifyV2Challenge, error) {
 	path := "/v2/Services/{ServiceSid}/Entities/{Identity}/Challenges/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"Identity"+"}", Identity, -1)

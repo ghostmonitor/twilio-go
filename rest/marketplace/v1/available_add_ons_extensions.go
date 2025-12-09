@@ -24,10 +24,7 @@ import (
 )
 
 // Fetch an instance of an Extension for the Available Add-on.
-func (c *ApiService) FetchAvailableAddOnExtension(
-	AvailableAddOnSid string,
-	Sid string,
-) (*MarketplaceV1AvailableAddOnExtension, error) {
+func (c *ApiService) FetchAvailableAddOnExtension(AvailableAddOnSid string, Sid string) (*MarketplaceV1AvailableAddOnExtension, error) {
 	path := "/v1/AvailableAddOns/{AvailableAddOnSid}/Extensions/{Sid}"
 	path = strings.Replace(path, "{"+"AvailableAddOnSid"+"}", AvailableAddOnSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -70,11 +67,7 @@ func (params *ListAvailableAddOnExtensionParams) SetLimit(Limit int) *ListAvaila
 }
 
 // Retrieve a single page of AvailableAddOnExtension records from the API. Request is executed immediately.
-func (c *ApiService) PageAvailableAddOnExtension(
-	AvailableAddOnSid string,
-	params *ListAvailableAddOnExtensionParams,
-	pageToken, pageNumber string,
-) (*ListAvailableAddOnExtensionResponse, error) {
+func (c *ApiService) PageAvailableAddOnExtension(AvailableAddOnSid string, params *ListAvailableAddOnExtensionParams, pageToken, pageNumber string) (*ListAvailableAddOnExtensionResponse, error) {
 	path := "/v1/AvailableAddOns/{AvailableAddOnSid}/Extensions"
 
 	path = strings.Replace(path, "{"+"AvailableAddOnSid"+"}", AvailableAddOnSid, -1)
@@ -111,10 +104,7 @@ func (c *ApiService) PageAvailableAddOnExtension(
 }
 
 // Lists AvailableAddOnExtension records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListAvailableAddOnExtension(
-	AvailableAddOnSid string,
-	params *ListAvailableAddOnExtensionParams,
-) ([]MarketplaceV1AvailableAddOnExtension, error) {
+func (c *ApiService) ListAvailableAddOnExtension(AvailableAddOnSid string, params *ListAvailableAddOnExtensionParams) ([]MarketplaceV1AvailableAddOnExtension, error) {
 	response, errors := c.StreamAvailableAddOnExtension(AvailableAddOnSid, params)
 
 	records := make([]MarketplaceV1AvailableAddOnExtension, 0)
@@ -130,10 +120,7 @@ func (c *ApiService) ListAvailableAddOnExtension(
 }
 
 // Streams AvailableAddOnExtension records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamAvailableAddOnExtension(
-	AvailableAddOnSid string,
-	params *ListAvailableAddOnExtensionParams,
-) (chan MarketplaceV1AvailableAddOnExtension, chan error) {
+func (c *ApiService) StreamAvailableAddOnExtension(AvailableAddOnSid string, params *ListAvailableAddOnExtensionParams) (chan MarketplaceV1AvailableAddOnExtension, chan error) {
 	if params == nil {
 		params = &ListAvailableAddOnExtensionParams{}
 	}
@@ -154,12 +141,7 @@ func (c *ApiService) StreamAvailableAddOnExtension(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamAvailableAddOnExtension(
-	response *ListAvailableAddOnExtensionResponse,
-	params *ListAvailableAddOnExtensionParams,
-	recordChannel chan MarketplaceV1AvailableAddOnExtension,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamAvailableAddOnExtension(response *ListAvailableAddOnExtensionResponse, params *ListAvailableAddOnExtensionParams, recordChannel chan MarketplaceV1AvailableAddOnExtension, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

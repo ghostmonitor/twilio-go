@@ -34,13 +34,13 @@ type CreateTaskParams struct {
 	TaskChannel *string `json:"TaskChannel,omitempty"`
 	// The SID of the Workflow that you would like to handle routing for the new Task. If there is only one Workflow defined for the Workspace that you are posting the new task to, this parameter is optional.
 	WorkflowSid *string `json:"WorkflowSid,omitempty"`
-	// A URL-encoded JSON string with the attributes of the new task. This value is passed to the Workflow's `assignment_callback_url` when the Task is assigned to a Worker. For example: `{ \\\"task_type\\\": \\\"call\\\", \\\"twilio_call_sid\\\": \\\"CAxxx\\\", \\\"customer_ticket_number\\\": \\\"12345\\\" }`.
+	// A JSON string with the attributes of the new task. This value is passed to the Workflow's `assignment_callback_url` when the Task is assigned to a Worker. For example: `{ \\\"task_type\\\": \\\"call\\\", \\\"twilio_call_sid\\\": \\\"CAxxx\\\", \\\"customer_ticket_number\\\": \\\"12345\\\" }`.
 	Attributes *string `json:"Attributes,omitempty"`
-	// The virtual start time to assign the new task and override the default. When supplied, the new task will have this virtual start time. When not supplied, the new task will have the virtual start time equal to `date_created`. Value can't be in the future.
+	// The virtual start time to assign the new task and override the default. When supplied, the new task will have this virtual start time. When not supplied, the new task will have the virtual start time equal to `date_created`. Value can't be in the future or before the year of 1900.
 	VirtualStartTime *time.Time `json:"VirtualStartTime,omitempty"`
 	// A SID of a Worker, Queue, or Workflow to route a Task to
 	RoutingTarget *string `json:"RoutingTarget,omitempty"`
-	// A boolean indicating if a new task should respect a worker's capacity during assignment
+	// A boolean that indicates if the Task should respect a Worker's capacity and availability during assignment. This field can only be used when the `RoutingTarget` field is set to a Worker SID. By setting `IgnoreCapacity` to a value of `true`, `1`, or `yes`, the Task will be routed to the Worker without respecting their capacity and availability. Any other value will enforce the Worker's capacity and availability. The default value of `IgnoreCapacity` is `true` when the `RoutingTarget` is set to a Worker SID.
 	IgnoreCapacity *string `json:"IgnoreCapacity,omitempty"`
 	// The SID of the TaskQueue in which the Task belongs
 	TaskQueueSid *string `json:"TaskQueueSid,omitempty"`
@@ -275,11 +275,7 @@ func (params *ListTaskParams) SetLimit(Limit int) *ListTaskParams {
 }
 
 // Retrieve a single page of Task records from the API. Request is executed immediately.
-func (c *ApiService) PageTask(
-	WorkspaceSid string,
-	params *ListTaskParams,
-	pageToken, pageNumber string,
-) (*ListTaskResponse, error) {
+func (c *ApiService) PageTask(WorkspaceSid string, params *ListTaskParams, pageToken, pageNumber string) (*ListTaskResponse, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Tasks"
 
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
@@ -385,12 +381,7 @@ func (c *ApiService) StreamTask(WorkspaceSid string, params *ListTaskParams) (ch
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamTask(
-	response *ListTaskResponse,
-	params *ListTaskParams,
-	recordChannel chan TaskrouterV1Task,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamTask(response *ListTaskResponse, params *ListTaskParams, recordChannel chan TaskrouterV1Task, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -452,7 +443,7 @@ type UpdateTaskParams struct {
 	Priority *int `json:"Priority,omitempty"`
 	// When MultiTasking is enabled, specify the TaskChannel with the task to update. Can be the TaskChannel's SID or its `unique_name`, such as `voice`, `sms`, or `default`.
 	TaskChannel *string `json:"TaskChannel,omitempty"`
-	// The task's new virtual start time value. When supplied, the Task takes on the specified virtual start time. Value can't be in the future.
+	// The task's new virtual start time value. When supplied, the Task takes on the specified virtual start time. Value can't be in the future or before the year of 1900.
 	VirtualStartTime *time.Time `json:"VirtualStartTime,omitempty"`
 }
 
@@ -500,7 +491,7 @@ func (c *ApiService) UpdateTask(WorkspaceSid string, Sid string, params *UpdateT
 		data.Set("Attributes", *params.Attributes)
 	}
 	if params != nil && params.AssignmentStatus != nil {
-		data.Set("AssignmentStatus", *params.AssignmentStatus)
+		data.Set("AssignmentStatus", fmt.Sprint(*params.AssignmentStatus))
 	}
 	if params != nil && params.Reason != nil {
 		data.Set("Reason", *params.Reason)

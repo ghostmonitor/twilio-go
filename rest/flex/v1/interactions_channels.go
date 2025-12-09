@@ -67,11 +67,7 @@ func (params *ListInteractionChannelParams) SetLimit(Limit int) *ListInteraction
 }
 
 // Retrieve a single page of InteractionChannel records from the API. Request is executed immediately.
-func (c *ApiService) PageInteractionChannel(
-	InteractionSid string,
-	params *ListInteractionChannelParams,
-	pageToken, pageNumber string,
-) (*ListInteractionChannelResponse, error) {
+func (c *ApiService) PageInteractionChannel(InteractionSid string, params *ListInteractionChannelParams, pageToken, pageNumber string) (*ListInteractionChannelResponse, error) {
 	path := "/v1/Interactions/{InteractionSid}/Channels"
 
 	path = strings.Replace(path, "{"+"InteractionSid"+"}", InteractionSid, -1)
@@ -108,10 +104,7 @@ func (c *ApiService) PageInteractionChannel(
 }
 
 // Lists InteractionChannel records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListInteractionChannel(
-	InteractionSid string,
-	params *ListInteractionChannelParams,
-) ([]FlexV1InteractionChannel, error) {
+func (c *ApiService) ListInteractionChannel(InteractionSid string, params *ListInteractionChannelParams) ([]FlexV1InteractionChannel, error) {
 	response, errors := c.StreamInteractionChannel(InteractionSid, params)
 
 	records := make([]FlexV1InteractionChannel, 0)
@@ -127,10 +120,7 @@ func (c *ApiService) ListInteractionChannel(
 }
 
 // Streams InteractionChannel records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamInteractionChannel(
-	InteractionSid string,
-	params *ListInteractionChannelParams,
-) (chan FlexV1InteractionChannel, chan error) {
+func (c *ApiService) StreamInteractionChannel(InteractionSid string, params *ListInteractionChannelParams) (chan FlexV1InteractionChannel, chan error) {
 	if params == nil {
 		params = &ListInteractionChannelParams{}
 	}
@@ -151,12 +141,7 @@ func (c *ApiService) StreamInteractionChannel(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamInteractionChannel(
-	response *ListInteractionChannelResponse,
-	params *ListInteractionChannelParams,
-	recordChannel chan FlexV1InteractionChannel,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamInteractionChannel(response *ListInteractionChannelResponse, params *ListInteractionChannelParams, recordChannel chan FlexV1InteractionChannel, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -222,11 +207,7 @@ func (params *UpdateInteractionChannelParams) SetRouting(Routing interface{}) *U
 }
 
 // Update an existing Interaction Channel.
-func (c *ApiService) UpdateInteractionChannel(
-	InteractionSid string,
-	Sid string,
-	params *UpdateInteractionChannelParams,
-) (*FlexV1InteractionChannel, error) {
+func (c *ApiService) UpdateInteractionChannel(InteractionSid string, Sid string, params *UpdateInteractionChannelParams) (*FlexV1InteractionChannel, error) {
 	path := "/v1/Interactions/{InteractionSid}/Channels/{Sid}"
 	path = strings.Replace(path, "{"+"InteractionSid"+"}", InteractionSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -237,7 +218,7 @@ func (c *ApiService) UpdateInteractionChannel(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.Routing != nil {
 		v, err := json.Marshal(params.Routing)

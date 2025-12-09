@@ -125,7 +125,7 @@ func (c *ApiService) PageSim(params *ListSimParams, pageToken, pageNumber string
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.Iccid != nil {
 		data.Set("Iccid", *params.Iccid)
@@ -203,12 +203,7 @@ func (c *ApiService) StreamSim(params *ListSimParams) (chan WirelessV1Sim, chan 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSim(
-	response *ListSimResponse,
-	params *ListSimParams,
-	recordChannel chan WirelessV1Sim,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSim(response *ListSimResponse, params *ListSimParams, recordChannel chan WirelessV1Sim, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -395,7 +390,7 @@ func (c *ApiService) UpdateSim(Sid string, params *UpdateSimParams) (*WirelessV1
 		data.Set("RatePlan", *params.RatePlan)
 	}
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.CommandsCallbackMethod != nil {
 		data.Set("CommandsCallbackMethod", *params.CommandsCallbackMethod)
@@ -428,7 +423,7 @@ func (c *ApiService) UpdateSim(Sid string, params *UpdateSimParams) (*WirelessV1
 		data.Set("VoiceUrl", *params.VoiceUrl)
 	}
 	if params != nil && params.ResetStatus != nil {
-		data.Set("ResetStatus", *params.ResetStatus)
+		data.Set("ResetStatus", fmt.Sprint(*params.ResetStatus))
 	}
 	if params != nil && params.AccountSid != nil {
 		data.Set("AccountSid", *params.AccountSid)

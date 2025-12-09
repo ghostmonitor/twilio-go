@@ -157,10 +157,7 @@ func (params *ListSubscriptionParams) SetLimit(Limit int) *ListSubscriptionParam
 }
 
 // Retrieve a single page of Subscription records from the API. Request is executed immediately.
-func (c *ApiService) PageSubscription(
-	params *ListSubscriptionParams,
-	pageToken, pageNumber string,
-) (*ListSubscriptionResponse, error) {
+func (c *ApiService) PageSubscription(params *ListSubscriptionParams, pageToken, pageNumber string) (*ListSubscriptionResponse, error) {
 	path := "/v1/Subscriptions"
 
 	data := url.Values{}
@@ -235,12 +232,7 @@ func (c *ApiService) StreamSubscription(params *ListSubscriptionParams) (chan Ev
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSubscription(
-	response *ListSubscriptionResponse,
-	params *ListSubscriptionParams,
-	recordChannel chan EventsV1Subscription,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSubscription(response *ListSubscriptionResponse, params *ListSubscriptionParams, recordChannel chan EventsV1Subscription, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -292,16 +284,10 @@ func (c *ApiService) getNextListSubscriptionResponse(nextPageUrl string) (interf
 type UpdateSubscriptionParams struct {
 	// A human readable description for the Subscription.
 	Description *string `json:"Description,omitempty"`
-	// The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
-	SinkSid *string `json:"SinkSid,omitempty"`
 }
 
 func (params *UpdateSubscriptionParams) SetDescription(Description string) *UpdateSubscriptionParams {
 	params.Description = &Description
-	return params
-}
-func (params *UpdateSubscriptionParams) SetSinkSid(SinkSid string) *UpdateSubscriptionParams {
-	params.SinkSid = &SinkSid
 	return params
 }
 
@@ -317,9 +303,6 @@ func (c *ApiService) UpdateSubscription(Sid string, params *UpdateSubscriptionPa
 
 	if params != nil && params.Description != nil {
 		data.Set("Description", *params.Description)
-	}
-	if params != nil && params.SinkSid != nil {
-		data.Set("SinkSid", *params.SinkSid)
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)

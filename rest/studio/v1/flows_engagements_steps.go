@@ -68,12 +68,7 @@ func (params *ListStepParams) SetLimit(Limit int) *ListStepParams {
 }
 
 // Retrieve a single page of Step records from the API. Request is executed immediately.
-func (c *ApiService) PageStep(
-	FlowSid string,
-	EngagementSid string,
-	params *ListStepParams,
-	pageToken, pageNumber string,
-) (*ListStepResponse, error) {
+func (c *ApiService) PageStep(FlowSid string, EngagementSid string, params *ListStepParams, pageToken, pageNumber string) (*ListStepResponse, error) {
 	path := "/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps"
 
 	path = strings.Replace(path, "{"+"FlowSid"+"}", FlowSid, -1)
@@ -127,11 +122,7 @@ func (c *ApiService) ListStep(FlowSid string, EngagementSid string, params *List
 }
 
 // Streams Step records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamStep(
-	FlowSid string,
-	EngagementSid string,
-	params *ListStepParams,
-) (chan StudioV1Step, chan error) {
+func (c *ApiService) StreamStep(FlowSid string, EngagementSid string, params *ListStepParams) (chan StudioV1Step, chan error) {
 	if params == nil {
 		params = &ListStepParams{}
 	}
@@ -152,12 +143,7 @@ func (c *ApiService) StreamStep(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamStep(
-	response *ListStepResponse,
-	params *ListStepParams,
-	recordChannel chan StudioV1Step,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamStep(response *ListStepResponse, params *ListStepParams, recordChannel chan StudioV1Step, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -193,12 +193,7 @@ func (c *ApiService) StreamEvent(params *ListEventParams) (chan MonitorV1Event, 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamEvent(
-	response *ListEventResponse,
-	params *ListEventParams,
-	recordChannel chan MonitorV1Event,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamEvent(response *ListEventResponse, params *ListEventParams, recordChannel chan MonitorV1Event, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -117,10 +117,7 @@ func (params *ListAccountParams) SetLimit(Limit int) *ListAccountParams {
 }
 
 // Retrieve a single page of Account records from the API. Request is executed immediately.
-func (c *ApiService) PageAccount(
-	params *ListAccountParams,
-	pageToken, pageNumber string,
-) (*ListAccountResponse, error) {
+func (c *ApiService) PageAccount(params *ListAccountParams, pageToken, pageNumber string) (*ListAccountResponse, error) {
 	path := "/2010-04-01/Accounts.json"
 
 	data := url.Values{}
@@ -132,7 +129,7 @@ func (c *ApiService) PageAccount(
 		data.Set("FriendlyName", *params.FriendlyName)
 	}
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -198,12 +195,7 @@ func (c *ApiService) StreamAccount(params *ListAccountParams) (chan ApiV2010Acco
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamAccount(
-	response *ListAccountResponse,
-	params *ListAccountParams,
-	recordChannel chan ApiV2010Account,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamAccount(response *ListAccountResponse, params *ListAccountParams, recordChannel chan ApiV2010Account, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -282,7 +274,7 @@ func (c *ApiService) UpdateAccount(Sid string, params *UpdateAccountParams) (*Ap
 		data.Set("FriendlyName", *params.FriendlyName)
 	}
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)

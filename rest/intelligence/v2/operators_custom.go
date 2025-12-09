@@ -161,10 +161,7 @@ func (params *ListCustomOperatorParams) SetLimit(Limit int) *ListCustomOperatorP
 }
 
 // Retrieve a single page of CustomOperator records from the API. Request is executed immediately.
-func (c *ApiService) PageCustomOperator(
-	params *ListCustomOperatorParams,
-	pageToken, pageNumber string,
-) (*ListCustomOperatorResponse, error) {
+func (c *ApiService) PageCustomOperator(params *ListCustomOperatorParams, pageToken, pageNumber string) (*ListCustomOperatorResponse, error) {
 	path := "/v2/Operators/Custom"
 
 	data := url.Values{}
@@ -173,7 +170,7 @@ func (c *ApiService) PageCustomOperator(
 	}
 
 	if params != nil && params.Availability != nil {
-		data.Set("Availability", *params.Availability)
+		data.Set("Availability", fmt.Sprint(*params.Availability))
 	}
 	if params != nil && params.LanguageCode != nil {
 		data.Set("LanguageCode", *params.LanguageCode)
@@ -242,12 +239,7 @@ func (c *ApiService) StreamCustomOperator(params *ListCustomOperatorParams) (cha
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCustomOperator(
-	response *ListCustomOperatorResponse,
-	params *ListCustomOperatorParams,
-	recordChannel chan IntelligenceV2CustomOperator,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCustomOperator(response *ListCustomOperatorResponse, params *ListCustomOperatorParams, recordChannel chan IntelligenceV2CustomOperator, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -319,10 +311,7 @@ func (params *UpdateCustomOperatorParams) SetConfig(Config interface{}) *UpdateC
 }
 
 // Update a specific Custom Operator.
-func (c *ApiService) UpdateCustomOperator(
-	Sid string,
-	params *UpdateCustomOperatorParams,
-) (*IntelligenceV2CustomOperator, error) {
+func (c *ApiService) UpdateCustomOperator(Sid string, params *UpdateCustomOperatorParams) (*IntelligenceV2CustomOperator, error) {
 	path := "/v2/Operators/Custom/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 

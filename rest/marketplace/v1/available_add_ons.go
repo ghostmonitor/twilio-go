@@ -66,10 +66,7 @@ func (params *ListAvailableAddOnParams) SetLimit(Limit int) *ListAvailableAddOnP
 }
 
 // Retrieve a single page of AvailableAddOn records from the API. Request is executed immediately.
-func (c *ApiService) PageAvailableAddOn(
-	params *ListAvailableAddOnParams,
-	pageToken, pageNumber string,
-) (*ListAvailableAddOnResponse, error) {
+func (c *ApiService) PageAvailableAddOn(params *ListAvailableAddOnParams, pageToken, pageNumber string) (*ListAvailableAddOnResponse, error) {
 	path := "/v1/AvailableAddOns"
 
 	data := url.Values{}
@@ -141,12 +138,7 @@ func (c *ApiService) StreamAvailableAddOn(params *ListAvailableAddOnParams) (cha
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamAvailableAddOn(
-	response *ListAvailableAddOnResponse,
-	params *ListAvailableAddOnParams,
-	recordChannel chan MarketplaceV1AvailableAddOn,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamAvailableAddOn(response *ListAvailableAddOnResponse, params *ListAvailableAddOnParams, recordChannel chan MarketplaceV1AvailableAddOn, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

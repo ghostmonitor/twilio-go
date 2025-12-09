@@ -11,14 +11,13 @@ Name | Type | Description | Notes
 **WorkerSid** | Pointer to **string** | The unique SID identifier of the worker. |
 **WorkspaceSid** | Pointer to **string** | The unique SID identifier of the workspace. |
 **FlexTeamSid** | Pointer to **string** | The unique SID identifier of the Flex Team. |
-**FirstName** | Pointer to **string** | First name of the User. |
-**LastName** | Pointer to **string** | Last name of the User. |
 **Username** | Pointer to **string** | Username of the User. |
 **Email** | Pointer to **string** | Email of the User. |
-**FriendlyName** | Pointer to **string** | Friendly name of the User. |
+**Locale** | Pointer to **string** | The locale preference of the user. |
+**Roles** | Pointer to **[]string** | The roles of the user. |
 **CreatedDate** | Pointer to [**time.Time**](time.Time.md) | The date that this user was created, given in ISO 8601 format. |
 **UpdatedDate** | Pointer to [**time.Time**](time.Time.md) | The date that this user was updated, given in ISO 8601 format. |
-**Version** | Pointer to **int** | The current version of the user. |
+**Version** | **int** | The current version of the user. |[optional] [default to 0]
 **Url** | Pointer to **string** |  |
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

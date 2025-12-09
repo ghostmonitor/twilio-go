@@ -4,8 +4,8 @@ All URIs are relative to *https://intelligence.twilio.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**FetchOperatorType**](OperatorTypesApi.md#FetchOperatorType) | **Get** /v2/OperatorTypes/{Sid} | 
-[**ListOperatorType**](OperatorTypesApi.md#ListOperatorType) | **Get** /v2/OperatorTypes | 
+[**FetchOperatorType**](OperatorTypesApi.md#FetchOperatorType) | **Get** /v2/OperatorTypes/{Sid} | Fetch a specific Operator Type.
+[**ListOperatorType**](OperatorTypesApi.md#ListOperatorType) | **Get** /v2/OperatorTypes | Retrieves a list of all Operator Types for an Account.
 
 
 
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 > IntelligenceV2OperatorType FetchOperatorType(ctx, Sid)
 
-
+Fetch a specific Operator Type.
 
 Fetch a specific Operator Type.
 
@@ -23,7 +23,7 @@ Fetch a specific Operator Type.
 Name | Type | Description
 ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**Sid** | **string** | A 34 character string that uniquely identifies this Operator Type.
+**Sid** | **string** | Either a 34 character string that uniquely identifies this Operator Type or the unique name that references an Operator Type.
 
 ### Other Parameters
 
@@ -55,7 +55,7 @@ Name | Type | Description
 
 > []IntelligenceV2OperatorType ListOperatorType(ctx, optional)
 
-
+Retrieves a list of all Operator Types for an Account.
 
 Retrieves a list of all Operator Types for an Account.
 

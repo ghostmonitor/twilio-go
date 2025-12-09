@@ -170,10 +170,7 @@ func (params *ListTrustProductParams) SetLimit(Limit int) *ListTrustProductParam
 }
 
 // Retrieve a single page of TrustProduct records from the API. Request is executed immediately.
-func (c *ApiService) PageTrustProduct(
-	params *ListTrustProductParams,
-	pageToken, pageNumber string,
-) (*ListTrustProductResponse, error) {
+func (c *ApiService) PageTrustProduct(params *ListTrustProductParams, pageToken, pageNumber string) (*ListTrustProductResponse, error) {
 	path := "/v1/TrustProducts"
 
 	data := url.Values{}
@@ -182,7 +179,7 @@ func (c *ApiService) PageTrustProduct(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.FriendlyName != nil {
 		data.Set("FriendlyName", *params.FriendlyName)
@@ -254,12 +251,7 @@ func (c *ApiService) StreamTrustProduct(params *ListTrustProductParams) (chan Tr
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamTrustProduct(
-	response *ListTrustProductResponse,
-	params *ListTrustProductParams,
-	recordChannel chan TrusthubV1TrustProduct,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamTrustProduct(response *ListTrustProductResponse, params *ListTrustProductParams, recordChannel chan TrusthubV1TrustProduct, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -347,7 +339,7 @@ func (c *ApiService) UpdateTrustProduct(Sid string, params *UpdateTrustProductPa
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.StatusCallback != nil {
 		data.Set("StatusCallback", *params.StatusCallback)

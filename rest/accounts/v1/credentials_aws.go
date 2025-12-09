@@ -143,10 +143,7 @@ func (params *ListCredentialAwsParams) SetLimit(Limit int) *ListCredentialAwsPar
 }
 
 // Retrieve a single page of CredentialAws records from the API. Request is executed immediately.
-func (c *ApiService) PageCredentialAws(
-	params *ListCredentialAwsParams,
-	pageToken, pageNumber string,
-) (*ListCredentialAwsResponse, error) {
+func (c *ApiService) PageCredentialAws(params *ListCredentialAwsParams, pageToken, pageNumber string) (*ListCredentialAwsResponse, error) {
 	path := "/v1/Credentials/AWS"
 
 	data := url.Values{}
@@ -218,12 +215,7 @@ func (c *ApiService) StreamCredentialAws(params *ListCredentialAwsParams) (chan 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCredentialAws(
-	response *ListCredentialAwsResponse,
-	params *ListCredentialAwsParams,
-	recordChannel chan AccountsV1CredentialAws,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCredentialAws(response *ListCredentialAwsResponse, params *ListCredentialAwsParams, recordChannel chan AccountsV1CredentialAws, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -283,10 +275,7 @@ func (params *UpdateCredentialAwsParams) SetFriendlyName(FriendlyName string) *U
 }
 
 // Modify the properties of a given Account
-func (c *ApiService) UpdateCredentialAws(
-	Sid string,
-	params *UpdateCredentialAwsParams,
-) (*AccountsV1CredentialAws, error) {
+func (c *ApiService) UpdateCredentialAws(Sid string, params *UpdateCredentialAwsParams) (*AccountsV1CredentialAws, error) {
 	path := "/v1/Credentials/AWS/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 

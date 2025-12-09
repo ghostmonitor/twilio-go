@@ -24,11 +24,7 @@ import (
 )
 
 //
-func (c *ApiService) FetchWorkerReservation(
-	WorkspaceSid string,
-	WorkerSid string,
-	Sid string,
-) (*TaskrouterV1WorkerReservation, error) {
+func (c *ApiService) FetchWorkerReservation(WorkspaceSid string, WorkerSid string, Sid string) (*TaskrouterV1WorkerReservation, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Reservations/{Sid}"
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
 	path = strings.Replace(path, "{"+"WorkerSid"+"}", WorkerSid, -1)
@@ -78,12 +74,7 @@ func (params *ListWorkerReservationParams) SetLimit(Limit int) *ListWorkerReserv
 }
 
 // Retrieve a single page of WorkerReservation records from the API. Request is executed immediately.
-func (c *ApiService) PageWorkerReservation(
-	WorkspaceSid string,
-	WorkerSid string,
-	params *ListWorkerReservationParams,
-	pageToken, pageNumber string,
-) (*ListWorkerReservationResponse, error) {
+func (c *ApiService) PageWorkerReservation(WorkspaceSid string, WorkerSid string, params *ListWorkerReservationParams, pageToken, pageNumber string) (*ListWorkerReservationResponse, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Reservations"
 
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
@@ -95,7 +86,7 @@ func (c *ApiService) PageWorkerReservation(
 	}
 
 	if params != nil && params.ReservationStatus != nil {
-		data.Set("ReservationStatus", *params.ReservationStatus)
+		data.Set("ReservationStatus", fmt.Sprint(*params.ReservationStatus))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -124,11 +115,7 @@ func (c *ApiService) PageWorkerReservation(
 }
 
 // Lists WorkerReservation records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListWorkerReservation(
-	WorkspaceSid string,
-	WorkerSid string,
-	params *ListWorkerReservationParams,
-) ([]TaskrouterV1WorkerReservation, error) {
+func (c *ApiService) ListWorkerReservation(WorkspaceSid string, WorkerSid string, params *ListWorkerReservationParams) ([]TaskrouterV1WorkerReservation, error) {
 	response, errors := c.StreamWorkerReservation(WorkspaceSid, WorkerSid, params)
 
 	records := make([]TaskrouterV1WorkerReservation, 0)
@@ -144,11 +131,7 @@ func (c *ApiService) ListWorkerReservation(
 }
 
 // Streams WorkerReservation records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamWorkerReservation(
-	WorkspaceSid string,
-	WorkerSid string,
-	params *ListWorkerReservationParams,
-) (chan TaskrouterV1WorkerReservation, chan error) {
+func (c *ApiService) StreamWorkerReservation(WorkspaceSid string, WorkerSid string, params *ListWorkerReservationParams) (chan TaskrouterV1WorkerReservation, chan error) {
 	if params == nil {
 		params = &ListWorkerReservationParams{}
 	}
@@ -169,12 +152,7 @@ func (c *ApiService) StreamWorkerReservation(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamWorkerReservation(
-	response *ListWorkerReservationResponse,
-	params *ListWorkerReservationParams,
-	recordChannel chan TaskrouterV1WorkerReservation,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamWorkerReservation(response *ListWorkerReservationResponse, params *ListWorkerReservationParams, recordChannel chan TaskrouterV1WorkerReservation, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -314,7 +292,7 @@ type UpdateWorkerReservationParams struct {
 	ConferenceRecordingStatusCallback *string `json:"ConferenceRecordingStatusCallback,omitempty"`
 	// The HTTP method we should use to call `conference_recording_status_callback`. Can be: `GET` or `POST` and defaults to `POST`.
 	ConferenceRecordingStatusCallbackMethod *string `json:"ConferenceRecordingStatusCallbackMethod,omitempty"`
-	// The [region](https://support.twilio.com/hc/en-us/articles/223132167-How-global-low-latency-routing-and-region-selection-work-for-conferences-and-Client-calls) where we should mix the recorded audio. Can be:`us1`, `ie1`, `de1`, `sg1`, `br1`, `au1`, or `jp1`.
+	// The [region](https://support.twilio.com/hc/en-us/articles/223132167-How-global-low-latency-routing-and-region-selection-work-for-conferences-and-Client-calls) where we should mix the recorded audio. Can be:`us1`, `us2`, `ie1`, `de1`, `sg1`, `br1`, `au1`, or `jp1`.
 	Region *string `json:"Region,omitempty"`
 	// The SIP username used for authentication.
 	SipAuthUsername *string `json:"SipAuthUsername,omitempty"`
@@ -546,12 +524,7 @@ func (params *UpdateWorkerReservationParams) SetJitterBufferSize(JitterBufferSiz
 }
 
 //
-func (c *ApiService) UpdateWorkerReservation(
-	WorkspaceSid string,
-	WorkerSid string,
-	Sid string,
-	params *UpdateWorkerReservationParams,
-) (*TaskrouterV1WorkerReservation, error) {
+func (c *ApiService) UpdateWorkerReservation(WorkspaceSid string, WorkerSid string, Sid string, params *UpdateWorkerReservationParams) (*TaskrouterV1WorkerReservation, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Reservations/{Sid}"
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
 	path = strings.Replace(path, "{"+"WorkerSid"+"}", WorkerSid, -1)
@@ -563,7 +536,7 @@ func (c *ApiService) UpdateWorkerReservation(
 	}
 
 	if params != nil && params.ReservationStatus != nil {
-		data.Set("ReservationStatus", *params.ReservationStatus)
+		data.Set("ReservationStatus", fmt.Sprint(*params.ReservationStatus))
 	}
 	if params != nil && params.WorkerActivitySid != nil {
 		data.Set("WorkerActivitySid", *params.WorkerActivitySid)

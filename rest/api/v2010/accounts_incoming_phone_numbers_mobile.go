@@ -241,7 +241,7 @@ func (c *ApiService) CreateIncomingPhoneNumberMobile(params *CreateIncomingPhone
 		data.Set("AddressSid", *params.AddressSid)
 	}
 	if params != nil && params.EmergencyStatus != nil {
-		data.Set("EmergencyStatus", *params.EmergencyStatus)
+		data.Set("EmergencyStatus", fmt.Sprint(*params.EmergencyStatus))
 	}
 	if params != nil && params.EmergencyAddressSid != nil {
 		data.Set("EmergencyAddressSid", *params.EmergencyAddressSid)
@@ -250,7 +250,7 @@ func (c *ApiService) CreateIncomingPhoneNumberMobile(params *CreateIncomingPhone
 		data.Set("TrunkSid", *params.TrunkSid)
 	}
 	if params != nil && params.VoiceReceiveMode != nil {
-		data.Set("VoiceReceiveMode", *params.VoiceReceiveMode)
+		data.Set("VoiceReceiveMode", fmt.Sprint(*params.VoiceReceiveMode))
 	}
 	if params != nil && params.BundleSid != nil {
 		data.Set("BundleSid", *params.BundleSid)
@@ -319,10 +319,7 @@ func (params *ListIncomingPhoneNumberMobileParams) SetLimit(Limit int) *ListInco
 }
 
 // Retrieve a single page of IncomingPhoneNumberMobile records from the API. Request is executed immediately.
-func (c *ApiService) PageIncomingPhoneNumberMobile(
-	params *ListIncomingPhoneNumberMobileParams,
-	pageToken, pageNumber string,
-) (*ListIncomingPhoneNumberMobileResponse, error) {
+func (c *ApiService) PageIncomingPhoneNumberMobile(params *ListIncomingPhoneNumberMobileParams, pageToken, pageNumber string) (*ListIncomingPhoneNumberMobileResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -412,12 +409,7 @@ func (c *ApiService) StreamIncomingPhoneNumberMobile(params *ListIncomingPhoneNu
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamIncomingPhoneNumberMobile(
-	response *ListIncomingPhoneNumberMobileResponse,
-	params *ListIncomingPhoneNumberMobileParams,
-	recordChannel chan ApiV2010IncomingPhoneNumberMobile,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamIncomingPhoneNumberMobile(response *ListIncomingPhoneNumberMobileResponse, params *ListIncomingPhoneNumberMobileParams, recordChannel chan ApiV2010IncomingPhoneNumberMobile, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

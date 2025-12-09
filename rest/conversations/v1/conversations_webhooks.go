@@ -71,10 +71,7 @@ func (params *CreateConversationScopedWebhookParams) SetConfigurationReplayAfter
 }
 
 // Create a new webhook scoped to the conversation
-func (c *ApiService) CreateConversationScopedWebhook(
-	ConversationSid string,
-	params *CreateConversationScopedWebhookParams,
-) (*ConversationsV1ConversationScopedWebhook, error) {
+func (c *ApiService) CreateConversationScopedWebhook(ConversationSid string, params *CreateConversationScopedWebhookParams) (*ConversationsV1ConversationScopedWebhook, error) {
 	path := "/v1/Conversations/{ConversationSid}/Webhooks"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 
@@ -84,13 +81,13 @@ func (c *ApiService) CreateConversationScopedWebhook(
 	}
 
 	if params != nil && params.Target != nil {
-		data.Set("Target", *params.Target)
+		data.Set("Target", fmt.Sprint(*params.Target))
 	}
 	if params != nil && params.ConfigurationUrl != nil {
 		data.Set("Configuration.Url", *params.ConfigurationUrl)
 	}
 	if params != nil && params.ConfigurationMethod != nil {
-		data.Set("Configuration.Method", *params.ConfigurationMethod)
+		data.Set("Configuration.Method", fmt.Sprint(*params.ConfigurationMethod))
 	}
 	if params != nil && params.ConfigurationFilters != nil {
 		for _, item := range *params.ConfigurationFilters {
@@ -146,10 +143,7 @@ func (c *ApiService) DeleteConversationScopedWebhook(ConversationSid string, Sid
 }
 
 // Fetch the configuration of a conversation-scoped webhook
-func (c *ApiService) FetchConversationScopedWebhook(
-	ConversationSid string,
-	Sid string,
-) (*ConversationsV1ConversationScopedWebhook, error) {
+func (c *ApiService) FetchConversationScopedWebhook(ConversationSid string, Sid string) (*ConversationsV1ConversationScopedWebhook, error) {
 	path := "/v1/Conversations/{ConversationSid}/Webhooks/{Sid}"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -176,7 +170,7 @@ func (c *ApiService) FetchConversationScopedWebhook(
 
 // Optional parameters for the method 'ListConversationScopedWebhook'
 type ListConversationScopedWebhookParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 5, and the maximum is 5.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -192,11 +186,7 @@ func (params *ListConversationScopedWebhookParams) SetLimit(Limit int) *ListConv
 }
 
 // Retrieve a single page of ConversationScopedWebhook records from the API. Request is executed immediately.
-func (c *ApiService) PageConversationScopedWebhook(
-	ConversationSid string,
-	params *ListConversationScopedWebhookParams,
-	pageToken, pageNumber string,
-) (*ListConversationScopedWebhookResponse, error) {
+func (c *ApiService) PageConversationScopedWebhook(ConversationSid string, params *ListConversationScopedWebhookParams, pageToken, pageNumber string) (*ListConversationScopedWebhookResponse, error) {
 	path := "/v1/Conversations/{ConversationSid}/Webhooks"
 
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
@@ -233,10 +223,7 @@ func (c *ApiService) PageConversationScopedWebhook(
 }
 
 // Lists ConversationScopedWebhook records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListConversationScopedWebhook(
-	ConversationSid string,
-	params *ListConversationScopedWebhookParams,
-) ([]ConversationsV1ConversationScopedWebhook, error) {
+func (c *ApiService) ListConversationScopedWebhook(ConversationSid string, params *ListConversationScopedWebhookParams) ([]ConversationsV1ConversationScopedWebhook, error) {
 	response, errors := c.StreamConversationScopedWebhook(ConversationSid, params)
 
 	records := make([]ConversationsV1ConversationScopedWebhook, 0)
@@ -252,10 +239,7 @@ func (c *ApiService) ListConversationScopedWebhook(
 }
 
 // Streams ConversationScopedWebhook records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamConversationScopedWebhook(
-	ConversationSid string,
-	params *ListConversationScopedWebhookParams,
-) (chan ConversationsV1ConversationScopedWebhook, chan error) {
+func (c *ApiService) StreamConversationScopedWebhook(ConversationSid string, params *ListConversationScopedWebhookParams) (chan ConversationsV1ConversationScopedWebhook, chan error) {
 	if params == nil {
 		params = &ListConversationScopedWebhookParams{}
 	}
@@ -276,12 +260,7 @@ func (c *ApiService) StreamConversationScopedWebhook(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConversationScopedWebhook(
-	response *ListConversationScopedWebhookResponse,
-	params *ListConversationScopedWebhookParams,
-	recordChannel chan ConversationsV1ConversationScopedWebhook,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConversationScopedWebhook(response *ListConversationScopedWebhookResponse, params *ListConversationScopedWebhookParams, recordChannel chan ConversationsV1ConversationScopedWebhook, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -365,11 +344,7 @@ func (params *UpdateConversationScopedWebhookParams) SetConfigurationFlowSid(Con
 }
 
 // Update an existing conversation-scoped webhook
-func (c *ApiService) UpdateConversationScopedWebhook(
-	ConversationSid string,
-	Sid string,
-	params *UpdateConversationScopedWebhookParams,
-) (*ConversationsV1ConversationScopedWebhook, error) {
+func (c *ApiService) UpdateConversationScopedWebhook(ConversationSid string, Sid string, params *UpdateConversationScopedWebhookParams) (*ConversationsV1ConversationScopedWebhook, error) {
 	path := "/v1/Conversations/{ConversationSid}/Webhooks/{Sid}"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -383,7 +358,7 @@ func (c *ApiService) UpdateConversationScopedWebhook(
 		data.Set("Configuration.Url", *params.ConfigurationUrl)
 	}
 	if params != nil && params.ConfigurationMethod != nil {
-		data.Set("Configuration.Method", *params.ConfigurationMethod)
+		data.Set("Configuration.Method", fmt.Sprint(*params.ConfigurationMethod))
 	}
 	if params != nil && params.ConfigurationFilters != nil {
 		for _, item := range *params.ConfigurationFilters {

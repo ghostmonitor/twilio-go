@@ -134,10 +134,7 @@ func (params *ListPluginReleaseParams) SetLimit(Limit int) *ListPluginReleasePar
 }
 
 // Retrieve a single page of PluginRelease records from the API. Request is executed immediately.
-func (c *ApiService) PagePluginRelease(
-	params *ListPluginReleaseParams,
-	pageToken, pageNumber string,
-) (*ListPluginReleaseResponse, error) {
+func (c *ApiService) PagePluginRelease(params *ListPluginReleaseParams, pageToken, pageNumber string) (*ListPluginReleaseResponse, error) {
 	path := "/v1/PluginService/Releases"
 
 	data := url.Values{}
@@ -209,12 +206,7 @@ func (c *ApiService) StreamPluginRelease(params *ListPluginReleaseParams) (chan 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamPluginRelease(
-	response *ListPluginReleaseResponse,
-	params *ListPluginReleaseParams,
-	recordChannel chan FlexV1PluginRelease,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamPluginRelease(response *ListPluginReleaseResponse, params *ListPluginReleaseParams, recordChannel chan FlexV1PluginRelease, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

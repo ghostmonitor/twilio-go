@@ -51,7 +51,7 @@ func (c *ApiService) FetchDay(ResourceType string, Day string) (*BulkexportsV1Da
 
 // Optional parameters for the method 'ListDay'
 type ListDayParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 400.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -67,11 +67,7 @@ func (params *ListDayParams) SetLimit(Limit int) *ListDayParams {
 }
 
 // Retrieve a single page of Day records from the API. Request is executed immediately.
-func (c *ApiService) PageDay(
-	ResourceType string,
-	params *ListDayParams,
-	pageToken, pageNumber string,
-) (*ListDayResponse, error) {
+func (c *ApiService) PageDay(ResourceType string, params *ListDayParams, pageToken, pageNumber string) (*ListDayResponse, error) {
 	path := "/v1/Exports/{ResourceType}/Days"
 
 	path = strings.Replace(path, "{"+"ResourceType"+"}", ResourceType, -1)
@@ -145,12 +141,7 @@ func (c *ApiService) StreamDay(ResourceType string, params *ListDayParams) (chan
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamDay(
-	response *ListDayResponse,
-	params *ListDayParams,
-	recordChannel chan BulkexportsV1Day,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamDay(response *ListDayResponse, params *ListDayParams, recordChannel chan BulkexportsV1Day, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

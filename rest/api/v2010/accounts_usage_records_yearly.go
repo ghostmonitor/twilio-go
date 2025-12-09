@@ -71,10 +71,7 @@ func (params *ListUsageRecordYearlyParams) SetLimit(Limit int) *ListUsageRecordY
 }
 
 // Retrieve a single page of UsageRecordYearly records from the API. Request is executed immediately.
-func (c *ApiService) PageUsageRecordYearly(
-	params *ListUsageRecordYearlyParams,
-	pageToken, pageNumber string,
-) (*ListUsageRecordYearlyResponse, error) {
+func (c *ApiService) PageUsageRecordYearly(params *ListUsageRecordYearlyParams, pageToken, pageNumber string) (*ListUsageRecordYearlyResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -164,12 +161,7 @@ func (c *ApiService) StreamUsageRecordYearly(params *ListUsageRecordYearlyParams
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUsageRecordYearly(
-	response *ListUsageRecordYearlyResponse,
-	params *ListUsageRecordYearlyParams,
-	recordChannel chan ApiV2010UsageRecordYearly,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUsageRecordYearly(response *ListUsageRecordYearlyResponse, params *ListUsageRecordYearlyParams, recordChannel chan ApiV2010UsageRecordYearly, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -41,11 +41,7 @@ func (params *FetchConferenceParticipantParams) SetMetrics(Metrics string) *Fetc
 }
 
 // Get a specific Conference Participant Summary for a Conference.
-func (c *ApiService) FetchConferenceParticipant(
-	ConferenceSid string,
-	ParticipantSid string,
-	params *FetchConferenceParticipantParams,
-) (*InsightsV1ConferenceParticipant, error) {
+func (c *ApiService) FetchConferenceParticipant(ConferenceSid string, ParticipantSid string, params *FetchConferenceParticipantParams) (*InsightsV1ConferenceParticipant, error) {
 	path := "/v1/Conferences/{ConferenceSid}/Participants/{ParticipantSid}"
 	path = strings.Replace(path, "{"+"ConferenceSid"+"}", ConferenceSid, -1)
 	path = strings.Replace(path, "{"+"ParticipantSid"+"}", ParticipantSid, -1)
@@ -113,11 +109,7 @@ func (params *ListConferenceParticipantParams) SetLimit(Limit int) *ListConferen
 }
 
 // Retrieve a single page of ConferenceParticipant records from the API. Request is executed immediately.
-func (c *ApiService) PageConferenceParticipant(
-	ConferenceSid string,
-	params *ListConferenceParticipantParams,
-	pageToken, pageNumber string,
-) (*ListConferenceParticipantResponse, error) {
+func (c *ApiService) PageConferenceParticipant(ConferenceSid string, params *ListConferenceParticipantParams, pageToken, pageNumber string) (*ListConferenceParticipantResponse, error) {
 	path := "/v1/Conferences/{ConferenceSid}/Participants"
 
 	path = strings.Replace(path, "{"+"ConferenceSid"+"}", ConferenceSid, -1)
@@ -163,10 +155,7 @@ func (c *ApiService) PageConferenceParticipant(
 }
 
 // Lists ConferenceParticipant records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListConferenceParticipant(
-	ConferenceSid string,
-	params *ListConferenceParticipantParams,
-) ([]InsightsV1ConferenceParticipant, error) {
+func (c *ApiService) ListConferenceParticipant(ConferenceSid string, params *ListConferenceParticipantParams) ([]InsightsV1ConferenceParticipant, error) {
 	response, errors := c.StreamConferenceParticipant(ConferenceSid, params)
 
 	records := make([]InsightsV1ConferenceParticipant, 0)
@@ -182,10 +171,7 @@ func (c *ApiService) ListConferenceParticipant(
 }
 
 // Streams ConferenceParticipant records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamConferenceParticipant(
-	ConferenceSid string,
-	params *ListConferenceParticipantParams,
-) (chan InsightsV1ConferenceParticipant, chan error) {
+func (c *ApiService) StreamConferenceParticipant(ConferenceSid string, params *ListConferenceParticipantParams) (chan InsightsV1ConferenceParticipant, chan error) {
 	if params == nil {
 		params = &ListConferenceParticipantParams{}
 	}
@@ -206,12 +192,7 @@ func (c *ApiService) StreamConferenceParticipant(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConferenceParticipant(
-	response *ListConferenceParticipantResponse,
-	params *ListConferenceParticipantParams,
-	recordChannel chan InsightsV1ConferenceParticipant,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConferenceParticipant(response *ListConferenceParticipantResponse, params *ListConferenceParticipantParams, recordChannel chan InsightsV1ConferenceParticipant, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

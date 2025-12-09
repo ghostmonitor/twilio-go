@@ -112,10 +112,7 @@ func (params *DeleteInsightsQuestionnairesParams) SetAuthorization(Authorization
 }
 
 // To delete the questionnaire
-func (c *ApiService) DeleteInsightsQuestionnaires(
-	QuestionnaireSid string,
-	params *DeleteInsightsQuestionnairesParams,
-) error {
+func (c *ApiService) DeleteInsightsQuestionnaires(QuestionnaireSid string, params *DeleteInsightsQuestionnairesParams) error {
 	path := "/v1/Insights/QualityManagement/Questionnaires/{QuestionnaireSid}"
 	path = strings.Replace(path, "{"+"QuestionnaireSid"+"}", QuestionnaireSid, -1)
 
@@ -149,10 +146,7 @@ func (params *FetchInsightsQuestionnairesParams) SetAuthorization(Authorization 
 }
 
 // To get the Questionnaire Detail
-func (c *ApiService) FetchInsightsQuestionnaires(
-	QuestionnaireSid string,
-	params *FetchInsightsQuestionnairesParams,
-) (*FlexV1InsightsQuestionnaires, error) {
+func (c *ApiService) FetchInsightsQuestionnaires(QuestionnaireSid string, params *FetchInsightsQuestionnairesParams) (*FlexV1InsightsQuestionnaires, error) {
 	path := "/v1/Insights/QualityManagement/Questionnaires/{QuestionnaireSid}"
 	path = strings.Replace(path, "{"+"QuestionnaireSid"+"}", QuestionnaireSid, -1)
 
@@ -209,10 +203,7 @@ func (params *ListInsightsQuestionnairesParams) SetLimit(Limit int) *ListInsight
 }
 
 // Retrieve a single page of InsightsQuestionnaires records from the API. Request is executed immediately.
-func (c *ApiService) PageInsightsQuestionnaires(
-	params *ListInsightsQuestionnairesParams,
-	pageToken, pageNumber string,
-) (*ListInsightsQuestionnairesResponse, error) {
+func (c *ApiService) PageInsightsQuestionnaires(params *ListInsightsQuestionnairesParams, pageToken, pageNumber string) (*ListInsightsQuestionnairesResponse, error) {
 	path := "/v1/Insights/QualityManagement/Questionnaires"
 
 	data := url.Values{}
@@ -287,12 +278,7 @@ func (c *ApiService) StreamInsightsQuestionnaires(params *ListInsightsQuestionna
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamInsightsQuestionnaires(
-	response *ListInsightsQuestionnairesResponse,
-	params *ListInsightsQuestionnairesParams,
-	recordChannel chan FlexV1InsightsQuestionnaires,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamInsightsQuestionnaires(response *ListInsightsQuestionnairesResponse, params *ListInsightsQuestionnairesParams, recordChannel chan FlexV1InsightsQuestionnaires, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -376,10 +362,7 @@ func (params *UpdateInsightsQuestionnairesParams) SetQuestionSids(QuestionSids [
 }
 
 // To update the questionnaire
-func (c *ApiService) UpdateInsightsQuestionnaires(
-	QuestionnaireSid string,
-	params *UpdateInsightsQuestionnairesParams,
-) (*FlexV1InsightsQuestionnaires, error) {
+func (c *ApiService) UpdateInsightsQuestionnaires(QuestionnaireSid string, params *UpdateInsightsQuestionnairesParams) (*FlexV1InsightsQuestionnaires, error) {
 	path := "/v1/Insights/QualityManagement/Questionnaires/{QuestionnaireSid}"
 	path = strings.Replace(path, "{"+"QuestionnaireSid"+"}", QuestionnaireSid, -1)
 

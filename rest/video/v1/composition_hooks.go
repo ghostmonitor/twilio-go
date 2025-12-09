@@ -127,7 +127,7 @@ func (c *ApiService) CreateCompositionHook(params *CreateCompositionHookParams) 
 		data.Set("Resolution", *params.Resolution)
 	}
 	if params != nil && params.Format != nil {
-		data.Set("Format", *params.Format)
+		data.Set("Format", fmt.Sprint(*params.Format))
 	}
 	if params != nil && params.StatusCallback != nil {
 		data.Set("StatusCallback", *params.StatusCallback)
@@ -241,10 +241,7 @@ func (params *ListCompositionHookParams) SetLimit(Limit int) *ListCompositionHoo
 }
 
 // Retrieve a single page of CompositionHook records from the API. Request is executed immediately.
-func (c *ApiService) PageCompositionHook(
-	params *ListCompositionHookParams,
-	pageToken, pageNumber string,
-) (*ListCompositionHookResponse, error) {
+func (c *ApiService) PageCompositionHook(params *ListCompositionHookParams, pageToken, pageNumber string) (*ListCompositionHookResponse, error) {
 	path := "/v1/CompositionHooks"
 
 	data := url.Values{}
@@ -328,12 +325,7 @@ func (c *ApiService) StreamCompositionHook(params *ListCompositionHookParams) (c
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCompositionHook(
-	response *ListCompositionHookResponse,
-	params *ListCompositionHookParams,
-	recordChannel chan VideoV1CompositionHook,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCompositionHook(response *ListCompositionHookResponse, params *ListCompositionHookParams, recordChannel chan VideoV1CompositionHook, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -447,10 +439,7 @@ func (params *UpdateCompositionHookParams) SetStatusCallbackMethod(StatusCallbac
 }
 
 //
-func (c *ApiService) UpdateCompositionHook(
-	Sid string,
-	params *UpdateCompositionHookParams,
-) (*VideoV1CompositionHook, error) {
+func (c *ApiService) UpdateCompositionHook(Sid string, params *UpdateCompositionHookParams) (*VideoV1CompositionHook, error) {
 	path := "/v1/CompositionHooks/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 
@@ -488,7 +477,7 @@ func (c *ApiService) UpdateCompositionHook(
 		data.Set("Trim", fmt.Sprint(*params.Trim))
 	}
 	if params != nil && params.Format != nil {
-		data.Set("Format", *params.Format)
+		data.Set("Format", fmt.Sprint(*params.Format))
 	}
 	if params != nil && params.Resolution != nil {
 		data.Set("Resolution", *params.Resolution)

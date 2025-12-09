@@ -241,7 +241,7 @@ func (c *ApiService) CreateIncomingPhoneNumberTollFree(params *CreateIncomingPho
 		data.Set("AddressSid", *params.AddressSid)
 	}
 	if params != nil && params.EmergencyStatus != nil {
-		data.Set("EmergencyStatus", *params.EmergencyStatus)
+		data.Set("EmergencyStatus", fmt.Sprint(*params.EmergencyStatus))
 	}
 	if params != nil && params.EmergencyAddressSid != nil {
 		data.Set("EmergencyAddressSid", *params.EmergencyAddressSid)
@@ -250,7 +250,7 @@ func (c *ApiService) CreateIncomingPhoneNumberTollFree(params *CreateIncomingPho
 		data.Set("TrunkSid", *params.TrunkSid)
 	}
 	if params != nil && params.VoiceReceiveMode != nil {
-		data.Set("VoiceReceiveMode", *params.VoiceReceiveMode)
+		data.Set("VoiceReceiveMode", fmt.Sprint(*params.VoiceReceiveMode))
 	}
 	if params != nil && params.BundleSid != nil {
 		data.Set("BundleSid", *params.BundleSid)
@@ -319,10 +319,7 @@ func (params *ListIncomingPhoneNumberTollFreeParams) SetLimit(Limit int) *ListIn
 }
 
 // Retrieve a single page of IncomingPhoneNumberTollFree records from the API. Request is executed immediately.
-func (c *ApiService) PageIncomingPhoneNumberTollFree(
-	params *ListIncomingPhoneNumberTollFreeParams,
-	pageToken, pageNumber string,
-) (*ListIncomingPhoneNumberTollFreeResponse, error) {
+func (c *ApiService) PageIncomingPhoneNumberTollFree(params *ListIncomingPhoneNumberTollFreeParams, pageToken, pageNumber string) (*ListIncomingPhoneNumberTollFreeResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -412,12 +409,7 @@ func (c *ApiService) StreamIncomingPhoneNumberTollFree(params *ListIncomingPhone
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamIncomingPhoneNumberTollFree(
-	response *ListIncomingPhoneNumberTollFreeResponse,
-	params *ListIncomingPhoneNumberTollFreeParams,
-	recordChannel chan ApiV2010IncomingPhoneNumberTollFree,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamIncomingPhoneNumberTollFree(response *ListIncomingPhoneNumberTollFreeResponse, params *ListIncomingPhoneNumberTollFreeParams, recordChannel chan ApiV2010IncomingPhoneNumberTollFree, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -41,11 +41,7 @@ func (params *CreateBucketParams) SetInterval(Interval int) *CreateBucketParams 
 }
 
 // Create a new Bucket for a Rate Limit
-func (c *ApiService) CreateBucket(
-	ServiceSid string,
-	RateLimitSid string,
-	params *CreateBucketParams,
-) (*VerifyV2Bucket, error) {
+func (c *ApiService) CreateBucket(ServiceSid string, RateLimitSid string, params *CreateBucketParams) (*VerifyV2Bucket, error) {
 	path := "/v2/Services/{ServiceSid}/RateLimits/{RateLimitSid}/Buckets"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"RateLimitSid"+"}", RateLimitSid, -1)
@@ -144,12 +140,7 @@ func (params *ListBucketParams) SetLimit(Limit int) *ListBucketParams {
 }
 
 // Retrieve a single page of Bucket records from the API. Request is executed immediately.
-func (c *ApiService) PageBucket(
-	ServiceSid string,
-	RateLimitSid string,
-	params *ListBucketParams,
-	pageToken, pageNumber string,
-) (*ListBucketResponse, error) {
+func (c *ApiService) PageBucket(ServiceSid string, RateLimitSid string, params *ListBucketParams, pageToken, pageNumber string) (*ListBucketResponse, error) {
 	path := "/v2/Services/{ServiceSid}/RateLimits/{RateLimitSid}/Buckets"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -187,11 +178,7 @@ func (c *ApiService) PageBucket(
 }
 
 // Lists Bucket records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListBucket(
-	ServiceSid string,
-	RateLimitSid string,
-	params *ListBucketParams,
-) ([]VerifyV2Bucket, error) {
+func (c *ApiService) ListBucket(ServiceSid string, RateLimitSid string, params *ListBucketParams) ([]VerifyV2Bucket, error) {
 	response, errors := c.StreamBucket(ServiceSid, RateLimitSid, params)
 
 	records := make([]VerifyV2Bucket, 0)
@@ -207,11 +194,7 @@ func (c *ApiService) ListBucket(
 }
 
 // Streams Bucket records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamBucket(
-	ServiceSid string,
-	RateLimitSid string,
-	params *ListBucketParams,
-) (chan VerifyV2Bucket, chan error) {
+func (c *ApiService) StreamBucket(ServiceSid string, RateLimitSid string, params *ListBucketParams) (chan VerifyV2Bucket, chan error) {
 	if params == nil {
 		params = &ListBucketParams{}
 	}
@@ -232,12 +215,7 @@ func (c *ApiService) StreamBucket(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamBucket(
-	response *ListBucketResponse,
-	params *ListBucketParams,
-	recordChannel chan VerifyV2Bucket,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamBucket(response *ListBucketResponse, params *ListBucketParams, recordChannel chan VerifyV2Bucket, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -303,12 +281,7 @@ func (params *UpdateBucketParams) SetInterval(Interval int) *UpdateBucketParams 
 }
 
 // Update a specific Bucket.
-func (c *ApiService) UpdateBucket(
-	ServiceSid string,
-	RateLimitSid string,
-	Sid string,
-	params *UpdateBucketParams,
-) (*VerifyV2Bucket, error) {
+func (c *ApiService) UpdateBucket(ServiceSid string, RateLimitSid string, Sid string, params *UpdateBucketParams) (*VerifyV2Bucket, error) {
 	path := "/v2/Services/{ServiceSid}/RateLimits/{RateLimitSid}/Buckets/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"RateLimitSid"+"}", RateLimitSid, -1)

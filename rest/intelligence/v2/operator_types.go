@@ -66,10 +66,7 @@ func (params *ListOperatorTypeParams) SetLimit(Limit int) *ListOperatorTypeParam
 }
 
 // Retrieve a single page of OperatorType records from the API. Request is executed immediately.
-func (c *ApiService) PageOperatorType(
-	params *ListOperatorTypeParams,
-	pageToken, pageNumber string,
-) (*ListOperatorTypeResponse, error) {
+func (c *ApiService) PageOperatorType(params *ListOperatorTypeParams, pageToken, pageNumber string) (*ListOperatorTypeResponse, error) {
 	path := "/v2/OperatorTypes"
 
 	data := url.Values{}
@@ -141,12 +138,7 @@ func (c *ApiService) StreamOperatorType(params *ListOperatorTypeParams) (chan In
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamOperatorType(
-	response *ListOperatorTypeResponse,
-	params *ListOperatorTypeParams,
-	recordChannel chan IntelligenceV2OperatorType,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamOperatorType(response *ListOperatorTypeResponse, params *ListOperatorTypeParams, recordChannel chan IntelligenceV2OperatorType, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

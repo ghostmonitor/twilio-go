@@ -68,7 +68,7 @@ func (c *ApiService) CreateSink(params *CreateSinkParams) (*EventsV1Sink, error)
 		data.Set("SinkConfiguration", string(v))
 	}
 	if params != nil && params.SinkType != nil {
-		data.Set("SinkType", *params.SinkType)
+		data.Set("SinkType", fmt.Sprint(*params.SinkType))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)
@@ -239,12 +239,7 @@ func (c *ApiService) StreamSink(params *ListSinkParams) (chan EventsV1Sink, chan
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSink(
-	response *ListSinkResponse,
-	params *ListSinkParams,
-	recordChannel chan EventsV1Sink,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSink(response *ListSinkResponse, params *ListSinkParams, recordChannel chan EventsV1Sink, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

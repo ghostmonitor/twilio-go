@@ -130,7 +130,7 @@ func (c *ApiService) FetchSyncList(ServiceSid string, Sid string) (*SyncV1SyncLi
 
 // Optional parameters for the method 'ListSyncList'
 type ListSyncListParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -146,11 +146,7 @@ func (params *ListSyncListParams) SetLimit(Limit int) *ListSyncListParams {
 }
 
 // Retrieve a single page of SyncList records from the API. Request is executed immediately.
-func (c *ApiService) PageSyncList(
-	ServiceSid string,
-	params *ListSyncListParams,
-	pageToken, pageNumber string,
-) (*ListSyncListResponse, error) {
+func (c *ApiService) PageSyncList(ServiceSid string, params *ListSyncListParams, pageToken, pageNumber string) (*ListSyncListResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Lists"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -224,12 +220,7 @@ func (c *ApiService) StreamSyncList(ServiceSid string, params *ListSyncListParam
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSyncList(
-	response *ListSyncListResponse,
-	params *ListSyncListParams,
-	recordChannel chan SyncV1SyncList,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSyncList(response *ListSyncListResponse, params *ListSyncListParams, recordChannel chan SyncV1SyncList, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -295,11 +286,7 @@ func (params *UpdateSyncListParams) SetCollectionTtl(CollectionTtl int) *UpdateS
 }
 
 //
-func (c *ApiService) UpdateSyncList(
-	ServiceSid string,
-	Sid string,
-	params *UpdateSyncListParams,
-) (*SyncV1SyncList, error) {
+func (c *ApiService) UpdateSyncList(ServiceSid string, Sid string, params *UpdateSyncListParams) (*SyncV1SyncList, error) {
 	path := "/v1/Services/{ServiceSid}/Lists/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

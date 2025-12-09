@@ -118,7 +118,7 @@ func (c *ApiService) CreateComposition(params *CreateCompositionParams) (*VideoV
 		data.Set("Resolution", *params.Resolution)
 	}
 	if params != nil && params.Format != nil {
-		data.Set("Format", *params.Format)
+		data.Set("Format", fmt.Sprint(*params.Format))
 	}
 	if params != nil && params.StatusCallback != nil {
 		data.Set("StatusCallback", *params.StatusCallback)
@@ -200,7 +200,7 @@ type ListCompositionParams struct {
 	DateCreatedBefore *time.Time `json:"DateCreatedBefore,omitempty"`
 	// Read only Composition resources with this Room SID.
 	RoomSid *string `json:"RoomSid,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -232,10 +232,7 @@ func (params *ListCompositionParams) SetLimit(Limit int) *ListCompositionParams 
 }
 
 // Retrieve a single page of Composition records from the API. Request is executed immediately.
-func (c *ApiService) PageComposition(
-	params *ListCompositionParams,
-	pageToken, pageNumber string,
-) (*ListCompositionResponse, error) {
+func (c *ApiService) PageComposition(params *ListCompositionParams, pageToken, pageNumber string) (*ListCompositionResponse, error) {
 	path := "/v1/Compositions"
 
 	data := url.Values{}
@@ -244,7 +241,7 @@ func (c *ApiService) PageComposition(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.DateCreatedAfter != nil {
 		data.Set("DateCreatedAfter", fmt.Sprint((*params.DateCreatedAfter).Format(time.RFC3339)))
@@ -319,12 +316,7 @@ func (c *ApiService) StreamComposition(params *ListCompositionParams) (chan Vide
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamComposition(
-	response *ListCompositionResponse,
-	params *ListCompositionParams,
-	recordChannel chan VideoV1Composition,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamComposition(response *ListCompositionResponse, params *ListCompositionParams, recordChannel chan VideoV1Composition, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

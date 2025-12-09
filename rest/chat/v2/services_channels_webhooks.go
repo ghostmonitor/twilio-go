@@ -71,11 +71,7 @@ func (params *CreateChannelWebhookParams) SetConfigurationRetryCount(Configurati
 }
 
 //
-func (c *ApiService) CreateChannelWebhook(
-	ServiceSid string,
-	ChannelSid string,
-	params *CreateChannelWebhookParams,
-) (*ChatV2ChannelWebhook, error) {
+func (c *ApiService) CreateChannelWebhook(ServiceSid string, ChannelSid string, params *CreateChannelWebhookParams) (*ChatV2ChannelWebhook, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Webhooks"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)
@@ -86,13 +82,13 @@ func (c *ApiService) CreateChannelWebhook(
 	}
 
 	if params != nil && params.Type != nil {
-		data.Set("Type", *params.Type)
+		data.Set("Type", fmt.Sprint(*params.Type))
 	}
 	if params != nil && params.ConfigurationUrl != nil {
 		data.Set("Configuration.Url", *params.ConfigurationUrl)
 	}
 	if params != nil && params.ConfigurationMethod != nil {
-		data.Set("Configuration.Method", *params.ConfigurationMethod)
+		data.Set("Configuration.Method", fmt.Sprint(*params.ConfigurationMethod))
 	}
 	if params != nil && params.ConfigurationFilters != nil {
 		for _, item := range *params.ConfigurationFilters {
@@ -149,11 +145,7 @@ func (c *ApiService) DeleteChannelWebhook(ServiceSid string, ChannelSid string, 
 }
 
 //
-func (c *ApiService) FetchChannelWebhook(
-	ServiceSid string,
-	ChannelSid string,
-	Sid string,
-) (*ChatV2ChannelWebhook, error) {
+func (c *ApiService) FetchChannelWebhook(ServiceSid string, ChannelSid string, Sid string) (*ChatV2ChannelWebhook, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Webhooks/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)
@@ -181,7 +173,7 @@ func (c *ApiService) FetchChannelWebhook(
 
 // Optional parameters for the method 'ListChannelWebhook'
 type ListChannelWebhookParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 5, and the maximum is 5.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -197,12 +189,7 @@ func (params *ListChannelWebhookParams) SetLimit(Limit int) *ListChannelWebhookP
 }
 
 // Retrieve a single page of ChannelWebhook records from the API. Request is executed immediately.
-func (c *ApiService) PageChannelWebhook(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListChannelWebhookParams,
-	pageToken, pageNumber string,
-) (*ListChannelWebhookResponse, error) {
+func (c *ApiService) PageChannelWebhook(ServiceSid string, ChannelSid string, params *ListChannelWebhookParams, pageToken, pageNumber string) (*ListChannelWebhookResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Webhooks"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -240,11 +227,7 @@ func (c *ApiService) PageChannelWebhook(
 }
 
 // Lists ChannelWebhook records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListChannelWebhook(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListChannelWebhookParams,
-) ([]ChatV2ChannelWebhook, error) {
+func (c *ApiService) ListChannelWebhook(ServiceSid string, ChannelSid string, params *ListChannelWebhookParams) ([]ChatV2ChannelWebhook, error) {
 	response, errors := c.StreamChannelWebhook(ServiceSid, ChannelSid, params)
 
 	records := make([]ChatV2ChannelWebhook, 0)
@@ -260,11 +243,7 @@ func (c *ApiService) ListChannelWebhook(
 }
 
 // Streams ChannelWebhook records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamChannelWebhook(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListChannelWebhookParams,
-) (chan ChatV2ChannelWebhook, chan error) {
+func (c *ApiService) StreamChannelWebhook(ServiceSid string, ChannelSid string, params *ListChannelWebhookParams) (chan ChatV2ChannelWebhook, chan error) {
 	if params == nil {
 		params = &ListChannelWebhookParams{}
 	}
@@ -285,12 +264,7 @@ func (c *ApiService) StreamChannelWebhook(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamChannelWebhook(
-	response *ListChannelWebhookResponse,
-	params *ListChannelWebhookParams,
-	recordChannel chan ChatV2ChannelWebhook,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamChannelWebhook(response *ListChannelWebhookResponse, params *ListChannelWebhookParams, recordChannel chan ChatV2ChannelWebhook, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -380,12 +354,7 @@ func (params *UpdateChannelWebhookParams) SetConfigurationRetryCount(Configurati
 }
 
 //
-func (c *ApiService) UpdateChannelWebhook(
-	ServiceSid string,
-	ChannelSid string,
-	Sid string,
-	params *UpdateChannelWebhookParams,
-) (*ChatV2ChannelWebhook, error) {
+func (c *ApiService) UpdateChannelWebhook(ServiceSid string, ChannelSid string, Sid string, params *UpdateChannelWebhookParams) (*ChatV2ChannelWebhook, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Webhooks/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)
@@ -400,7 +369,7 @@ func (c *ApiService) UpdateChannelWebhook(
 		data.Set("Configuration.Url", *params.ConfigurationUrl)
 	}
 	if params != nil && params.ConfigurationMethod != nil {
-		data.Set("Configuration.Method", *params.ConfigurationMethod)
+		data.Set("Configuration.Method", fmt.Sprint(*params.ConfigurationMethod))
 	}
 	if params != nil && params.ConfigurationFilters != nil {
 		for _, item := range *params.ConfigurationFilters {

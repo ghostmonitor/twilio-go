@@ -35,10 +35,7 @@ func (params *CreateTrustProductEntityAssignmentParams) SetObjectSid(ObjectSid s
 }
 
 // Create a new Assigned Item.
-func (c *ApiService) CreateTrustProductEntityAssignment(
-	TrustProductSid string,
-	params *CreateTrustProductEntityAssignmentParams,
-) (*TrusthubV1TrustProductEntityAssignment, error) {
+func (c *ApiService) CreateTrustProductEntityAssignment(TrustProductSid string, params *CreateTrustProductEntityAssignmentParams) (*TrusthubV1TrustProductEntityAssignment, error) {
 	path := "/v1/TrustProducts/{TrustProductSid}/EntityAssignments"
 	path = strings.Replace(path, "{"+"TrustProductSid"+"}", TrustProductSid, -1)
 
@@ -88,10 +85,7 @@ func (c *ApiService) DeleteTrustProductEntityAssignment(TrustProductSid string, 
 }
 
 // Fetch specific Assigned Item Instance.
-func (c *ApiService) FetchTrustProductEntityAssignment(
-	TrustProductSid string,
-	Sid string,
-) (*TrusthubV1TrustProductEntityAssignment, error) {
+func (c *ApiService) FetchTrustProductEntityAssignment(TrustProductSid string, Sid string) (*TrusthubV1TrustProductEntityAssignment, error) {
 	path := "/v1/TrustProducts/{TrustProductSid}/EntityAssignments/{Sid}"
 	path = strings.Replace(path, "{"+"TrustProductSid"+"}", TrustProductSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -140,11 +134,7 @@ func (params *ListTrustProductEntityAssignmentParams) SetLimit(Limit int) *ListT
 }
 
 // Retrieve a single page of TrustProductEntityAssignment records from the API. Request is executed immediately.
-func (c *ApiService) PageTrustProductEntityAssignment(
-	TrustProductSid string,
-	params *ListTrustProductEntityAssignmentParams,
-	pageToken, pageNumber string,
-) (*ListTrustProductEntityAssignmentResponse, error) {
+func (c *ApiService) PageTrustProductEntityAssignment(TrustProductSid string, params *ListTrustProductEntityAssignmentParams, pageToken, pageNumber string) (*ListTrustProductEntityAssignmentResponse, error) {
 	path := "/v1/TrustProducts/{TrustProductSid}/EntityAssignments"
 
 	path = strings.Replace(path, "{"+"TrustProductSid"+"}", TrustProductSid, -1)
@@ -184,10 +174,7 @@ func (c *ApiService) PageTrustProductEntityAssignment(
 }
 
 // Lists TrustProductEntityAssignment records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListTrustProductEntityAssignment(
-	TrustProductSid string,
-	params *ListTrustProductEntityAssignmentParams,
-) ([]TrusthubV1TrustProductEntityAssignment, error) {
+func (c *ApiService) ListTrustProductEntityAssignment(TrustProductSid string, params *ListTrustProductEntityAssignmentParams) ([]TrusthubV1TrustProductEntityAssignment, error) {
 	response, errors := c.StreamTrustProductEntityAssignment(TrustProductSid, params)
 
 	records := make([]TrusthubV1TrustProductEntityAssignment, 0)
@@ -203,10 +190,7 @@ func (c *ApiService) ListTrustProductEntityAssignment(
 }
 
 // Streams TrustProductEntityAssignment records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamTrustProductEntityAssignment(
-	TrustProductSid string,
-	params *ListTrustProductEntityAssignmentParams,
-) (chan TrusthubV1TrustProductEntityAssignment, chan error) {
+func (c *ApiService) StreamTrustProductEntityAssignment(TrustProductSid string, params *ListTrustProductEntityAssignmentParams) (chan TrusthubV1TrustProductEntityAssignment, chan error) {
 	if params == nil {
 		params = &ListTrustProductEntityAssignmentParams{}
 	}
@@ -227,12 +211,7 @@ func (c *ApiService) StreamTrustProductEntityAssignment(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamTrustProductEntityAssignment(
-	response *ListTrustProductEntityAssignmentResponse,
-	params *ListTrustProductEntityAssignmentParams,
-	recordChannel chan TrusthubV1TrustProductEntityAssignment,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamTrustProductEntityAssignment(response *ListTrustProductEntityAssignmentResponse, params *ListTrustProductEntityAssignmentParams, recordChannel chan TrusthubV1TrustProductEntityAssignment, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

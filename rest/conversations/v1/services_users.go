@@ -59,10 +59,7 @@ func (params *CreateServiceUserParams) SetRoleSid(RoleSid string) *CreateService
 }
 
 // Add a new conversation user to your service
-func (c *ApiService) CreateServiceUser(
-	ChatServiceSid string,
-	params *CreateServiceUserParams,
-) (*ConversationsV1ServiceUser, error) {
+func (c *ApiService) CreateServiceUser(ChatServiceSid string, params *CreateServiceUserParams) (*ConversationsV1ServiceUser, error) {
 	path := "/v1/Services/{ChatServiceSid}/Users"
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
 
@@ -165,7 +162,7 @@ func (c *ApiService) FetchServiceUser(ChatServiceSid string, Sid string) (*Conve
 
 // Optional parameters for the method 'ListServiceUser'
 type ListServiceUserParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 50.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -181,11 +178,7 @@ func (params *ListServiceUserParams) SetLimit(Limit int) *ListServiceUserParams 
 }
 
 // Retrieve a single page of ServiceUser records from the API. Request is executed immediately.
-func (c *ApiService) PageServiceUser(
-	ChatServiceSid string,
-	params *ListServiceUserParams,
-	pageToken, pageNumber string,
-) (*ListServiceUserResponse, error) {
+func (c *ApiService) PageServiceUser(ChatServiceSid string, params *ListServiceUserParams, pageToken, pageNumber string) (*ListServiceUserResponse, error) {
 	path := "/v1/Services/{ChatServiceSid}/Users"
 
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
@@ -222,10 +215,7 @@ func (c *ApiService) PageServiceUser(
 }
 
 // Lists ServiceUser records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListServiceUser(
-	ChatServiceSid string,
-	params *ListServiceUserParams,
-) ([]ConversationsV1ServiceUser, error) {
+func (c *ApiService) ListServiceUser(ChatServiceSid string, params *ListServiceUserParams) ([]ConversationsV1ServiceUser, error) {
 	response, errors := c.StreamServiceUser(ChatServiceSid, params)
 
 	records := make([]ConversationsV1ServiceUser, 0)
@@ -241,10 +231,7 @@ func (c *ApiService) ListServiceUser(
 }
 
 // Streams ServiceUser records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamServiceUser(
-	ChatServiceSid string,
-	params *ListServiceUserParams,
-) (chan ConversationsV1ServiceUser, chan error) {
+func (c *ApiService) StreamServiceUser(ChatServiceSid string, params *ListServiceUserParams) (chan ConversationsV1ServiceUser, chan error) {
 	if params == nil {
 		params = &ListServiceUserParams{}
 	}
@@ -265,12 +252,7 @@ func (c *ApiService) StreamServiceUser(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamServiceUser(
-	response *ListServiceUserResponse,
-	params *ListServiceUserParams,
-	recordChannel chan ConversationsV1ServiceUser,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamServiceUser(response *ListServiceUserResponse, params *ListServiceUserParams, recordChannel chan ConversationsV1ServiceUser, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -348,11 +330,7 @@ func (params *UpdateServiceUserParams) SetRoleSid(RoleSid string) *UpdateService
 }
 
 // Update an existing conversation user in your service
-func (c *ApiService) UpdateServiceUser(
-	ChatServiceSid string,
-	Sid string,
-	params *UpdateServiceUserParams,
-) (*ConversationsV1ServiceUser, error) {
+func (c *ApiService) UpdateServiceUser(ChatServiceSid string, Sid string, params *UpdateServiceUserParams) (*ConversationsV1ServiceUser, error) {
 	path := "/v1/Services/{ChatServiceSid}/Users/{Sid}"
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

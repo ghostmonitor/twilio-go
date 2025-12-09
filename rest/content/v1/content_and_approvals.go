@@ -40,10 +40,7 @@ func (params *ListContentAndApprovalsParams) SetLimit(Limit int) *ListContentAnd
 }
 
 // Retrieve a single page of ContentAndApprovals records from the API. Request is executed immediately.
-func (c *ApiService) PageContentAndApprovals(
-	params *ListContentAndApprovalsParams,
-	pageToken, pageNumber string,
-) (*ListContentAndApprovalsResponse, error) {
+func (c *ApiService) PageContentAndApprovals(params *ListContentAndApprovalsParams, pageToken, pageNumber string) (*ListContentAndApprovalsResponse, error) {
 	path := "/v1/ContentAndApprovals"
 
 	data := url.Values{}
@@ -115,12 +112,7 @@ func (c *ApiService) StreamContentAndApprovals(params *ListContentAndApprovalsPa
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamContentAndApprovals(
-	response *ListContentAndApprovalsResponse,
-	params *ListContentAndApprovalsParams,
-	recordChannel chan ContentV1ContentAndApprovals,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamContentAndApprovals(response *ListContentAndApprovalsResponse, params *ListContentAndApprovalsParams, recordChannel chan ContentV1ContentAndApprovals, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

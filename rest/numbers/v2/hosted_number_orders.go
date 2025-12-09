@@ -292,10 +292,7 @@ func (params *ListHostedNumberOrderParams) SetLimit(Limit int) *ListHostedNumber
 }
 
 // Retrieve a single page of HostedNumberOrder records from the API. Request is executed immediately.
-func (c *ApiService) PageHostedNumberOrder(
-	params *ListHostedNumberOrderParams,
-	pageToken, pageNumber string,
-) (*ListHostedNumberOrderResponse, error) {
+func (c *ApiService) PageHostedNumberOrder(params *ListHostedNumberOrderParams, pageToken, pageNumber string) (*ListHostedNumberOrderResponse, error) {
 	path := "/v2/HostedNumber/Orders"
 
 	data := url.Values{}
@@ -304,7 +301,7 @@ func (c *ApiService) PageHostedNumberOrder(
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.SmsCapability != nil {
 		data.Set("SmsCapability", fmt.Sprint(*params.SmsCapability))
@@ -382,12 +379,7 @@ func (c *ApiService) StreamHostedNumberOrder(params *ListHostedNumberOrderParams
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamHostedNumberOrder(
-	response *ListHostedNumberOrderResponse,
-	params *ListHostedNumberOrderParams,
-	recordChannel chan NumbersV2HostedNumberOrder,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamHostedNumberOrder(response *ListHostedNumberOrderResponse, params *ListHostedNumberOrderParams, recordChannel chan NumbersV2HostedNumberOrder, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -433,4 +425,62 @@ func (c *ApiService) getNextListHostedNumberOrderResponse(nextPageUrl string) (i
 		return nil, err
 	}
 	return ps, nil
+}
+
+// Optional parameters for the method 'UpdateHostedNumberOrder'
+type UpdateHostedNumberOrderParams struct {
+	//
+	Status *string `json:"Status,omitempty"`
+	// The number of seconds to wait before initiating the ownership verification call. Can be a value between 0 and 60, inclusive.
+	VerificationCallDelay *int `json:"VerificationCallDelay,omitempty"`
+	// The numerical extension to dial when making the ownership verification call.
+	VerificationCallExtension *string `json:"VerificationCallExtension,omitempty"`
+}
+
+func (params *UpdateHostedNumberOrderParams) SetStatus(Status string) *UpdateHostedNumberOrderParams {
+	params.Status = &Status
+	return params
+}
+func (params *UpdateHostedNumberOrderParams) SetVerificationCallDelay(VerificationCallDelay int) *UpdateHostedNumberOrderParams {
+	params.VerificationCallDelay = &VerificationCallDelay
+	return params
+}
+func (params *UpdateHostedNumberOrderParams) SetVerificationCallExtension(VerificationCallExtension string) *UpdateHostedNumberOrderParams {
+	params.VerificationCallExtension = &VerificationCallExtension
+	return params
+}
+
+// Updates a specific HostedNumberOrder.
+func (c *ApiService) UpdateHostedNumberOrder(Sid string, params *UpdateHostedNumberOrderParams) (*NumbersV2HostedNumberOrder, error) {
+	path := "/v2/HostedNumber/Orders/{Sid}"
+	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
+
+	data := url.Values{}
+	headers := map[string]interface{}{
+		"Content-Type": "application/x-www-form-urlencoded",
+	}
+
+	if params != nil && params.Status != nil {
+		data.Set("Status", fmt.Sprint(*params.Status))
+	}
+	if params != nil && params.VerificationCallDelay != nil {
+		data.Set("VerificationCallDelay", fmt.Sprint(*params.VerificationCallDelay))
+	}
+	if params != nil && params.VerificationCallExtension != nil {
+		data.Set("VerificationCallExtension", *params.VerificationCallExtension)
+	}
+
+	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	ps := &NumbersV2HostedNumberOrder{}
+	if err := json.NewDecoder(resp.Body).Decode(ps); err != nil {
+		return nil, err
+	}
+
+	return ps, err
 }

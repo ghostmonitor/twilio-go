@@ -35,12 +35,7 @@ func (params *FetchIncomingPhoneNumberAssignedAddOnExtensionParams) SetPathAccou
 }
 
 // Fetch an instance of an Extension for the Assigned Add-on.
-func (c *ApiService) FetchIncomingPhoneNumberAssignedAddOnExtension(
-	ResourceSid string,
-	AssignedAddOnSid string,
-	Sid string,
-	params *FetchIncomingPhoneNumberAssignedAddOnExtensionParams,
-) (*ApiV2010IncomingPhoneNumberAssignedAddOnExtension, error) {
+func (c *ApiService) FetchIncomingPhoneNumberAssignedAddOnExtension(ResourceSid string, AssignedAddOnSid string, Sid string, params *FetchIncomingPhoneNumberAssignedAddOnExtensionParams) (*ApiV2010IncomingPhoneNumberAssignedAddOnExtension, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -95,12 +90,7 @@ func (params *ListIncomingPhoneNumberAssignedAddOnExtensionParams) SetLimit(Limi
 }
 
 // Retrieve a single page of IncomingPhoneNumberAssignedAddOnExtension records from the API. Request is executed immediately.
-func (c *ApiService) PageIncomingPhoneNumberAssignedAddOnExtension(
-	ResourceSid string,
-	AssignedAddOnSid string,
-	params *ListIncomingPhoneNumberAssignedAddOnExtensionParams,
-	pageToken, pageNumber string,
-) (*ListIncomingPhoneNumberAssignedAddOnExtensionResponse, error) {
+func (c *ApiService) PageIncomingPhoneNumberAssignedAddOnExtension(ResourceSid string, AssignedAddOnSid string, params *ListIncomingPhoneNumberAssignedAddOnExtensionParams, pageToken, pageNumber string) (*ListIncomingPhoneNumberAssignedAddOnExtensionResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -143,11 +133,7 @@ func (c *ApiService) PageIncomingPhoneNumberAssignedAddOnExtension(
 }
 
 // Lists IncomingPhoneNumberAssignedAddOnExtension records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListIncomingPhoneNumberAssignedAddOnExtension(
-	ResourceSid string,
-	AssignedAddOnSid string,
-	params *ListIncomingPhoneNumberAssignedAddOnExtensionParams,
-) ([]ApiV2010IncomingPhoneNumberAssignedAddOnExtension, error) {
+func (c *ApiService) ListIncomingPhoneNumberAssignedAddOnExtension(ResourceSid string, AssignedAddOnSid string, params *ListIncomingPhoneNumberAssignedAddOnExtensionParams) ([]ApiV2010IncomingPhoneNumberAssignedAddOnExtension, error) {
 	response, errors := c.StreamIncomingPhoneNumberAssignedAddOnExtension(ResourceSid, AssignedAddOnSid, params)
 
 	records := make([]ApiV2010IncomingPhoneNumberAssignedAddOnExtension, 0)
@@ -163,11 +149,7 @@ func (c *ApiService) ListIncomingPhoneNumberAssignedAddOnExtension(
 }
 
 // Streams IncomingPhoneNumberAssignedAddOnExtension records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamIncomingPhoneNumberAssignedAddOnExtension(
-	ResourceSid string,
-	AssignedAddOnSid string,
-	params *ListIncomingPhoneNumberAssignedAddOnExtensionParams,
-) (chan ApiV2010IncomingPhoneNumberAssignedAddOnExtension, chan error) {
+func (c *ApiService) StreamIncomingPhoneNumberAssignedAddOnExtension(ResourceSid string, AssignedAddOnSid string, params *ListIncomingPhoneNumberAssignedAddOnExtensionParams) (chan ApiV2010IncomingPhoneNumberAssignedAddOnExtension, chan error) {
 	if params == nil {
 		params = &ListIncomingPhoneNumberAssignedAddOnExtensionParams{}
 	}
@@ -188,12 +170,7 @@ func (c *ApiService) StreamIncomingPhoneNumberAssignedAddOnExtension(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamIncomingPhoneNumberAssignedAddOnExtension(
-	response *ListIncomingPhoneNumberAssignedAddOnExtensionResponse,
-	params *ListIncomingPhoneNumberAssignedAddOnExtensionParams,
-	recordChannel chan ApiV2010IncomingPhoneNumberAssignedAddOnExtension,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamIncomingPhoneNumberAssignedAddOnExtension(response *ListIncomingPhoneNumberAssignedAddOnExtensionResponse, params *ListIncomingPhoneNumberAssignedAddOnExtensionParams, recordChannel chan ApiV2010IncomingPhoneNumberAssignedAddOnExtension, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -208,11 +185,7 @@ func (c *ApiService) streamIncomingPhoneNumberAssignedAddOnExtension(
 			}
 		}
 
-		record, err := client.GetNext(
-			c.baseURL,
-			response,
-			c.getNextListIncomingPhoneNumberAssignedAddOnExtensionResponse,
-		)
+		record, err := client.GetNext(c.baseURL, response, c.getNextListIncomingPhoneNumberAssignedAddOnExtensionResponse)
 		if err != nil {
 			errorChannel <- err
 			break

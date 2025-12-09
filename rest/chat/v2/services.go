@@ -109,7 +109,7 @@ func (c *ApiService) FetchService(Sid string) (*ChatV2Service, error) {
 
 // Optional parameters for the method 'ListService'
 type ListServiceParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -125,10 +125,7 @@ func (params *ListServiceParams) SetLimit(Limit int) *ListServiceParams {
 }
 
 // Retrieve a single page of Service records from the API. Request is executed immediately.
-func (c *ApiService) PageService(
-	params *ListServiceParams,
-	pageToken, pageNumber string,
-) (*ListServiceResponse, error) {
+func (c *ApiService) PageService(params *ListServiceParams, pageToken, pageNumber string) (*ListServiceResponse, error) {
 	path := "/v2/Services"
 
 	data := url.Values{}
@@ -200,12 +197,7 @@ func (c *ApiService) StreamService(params *ListServiceParams) (chan ChatV2Servic
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamService(
-	response *ListServiceResponse,
-	params *ListServiceParams,
-	recordChannel chan ChatV2Service,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamService(response *ListServiceResponse, params *ListServiceParams, recordChannel chan ChatV2Service, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -488,10 +480,7 @@ func (c *ApiService) UpdateService(Sid string, params *UpdateServiceParams) (*Ch
 		data.Set("Notifications.NewMessage.Sound", *params.NotificationsNewMessageSound)
 	}
 	if params != nil && params.NotificationsNewMessageBadgeCountEnabled != nil {
-		data.Set(
-			"Notifications.NewMessage.BadgeCountEnabled",
-			fmt.Sprint(*params.NotificationsNewMessageBadgeCountEnabled),
-		)
+		data.Set("Notifications.NewMessage.BadgeCountEnabled", fmt.Sprint(*params.NotificationsNewMessageBadgeCountEnabled))
 	}
 	if params != nil && params.NotificationsAddedToChannelEnabled != nil {
 		data.Set("Notifications.AddedToChannel.Enabled", fmt.Sprint(*params.NotificationsAddedToChannelEnabled))

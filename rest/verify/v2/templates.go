@@ -46,10 +46,7 @@ func (params *ListVerificationTemplateParams) SetLimit(Limit int) *ListVerificat
 }
 
 // Retrieve a single page of VerificationTemplate records from the API. Request is executed immediately.
-func (c *ApiService) PageVerificationTemplate(
-	params *ListVerificationTemplateParams,
-	pageToken, pageNumber string,
-) (*ListVerificationTemplateResponse, error) {
+func (c *ApiService) PageVerificationTemplate(params *ListVerificationTemplateParams, pageToken, pageNumber string) (*ListVerificationTemplateResponse, error) {
 	path := "/v2/Templates"
 
 	data := url.Values{}
@@ -124,12 +121,7 @@ func (c *ApiService) StreamVerificationTemplate(params *ListVerificationTemplate
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamVerificationTemplate(
-	response *ListVerificationTemplateResponse,
-	params *ListVerificationTemplateParams,
-	recordChannel chan VerifyV2VerificationTemplate,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamVerificationTemplate(response *ListVerificationTemplateResponse, params *ListVerificationTemplateParams, recordChannel chan VerifyV2VerificationTemplate, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

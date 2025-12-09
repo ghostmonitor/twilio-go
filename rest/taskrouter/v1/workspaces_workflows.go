@@ -170,11 +170,7 @@ func (params *ListWorkflowParams) SetLimit(Limit int) *ListWorkflowParams {
 }
 
 // Retrieve a single page of Workflow records from the API. Request is executed immediately.
-func (c *ApiService) PageWorkflow(
-	WorkspaceSid string,
-	params *ListWorkflowParams,
-	pageToken, pageNumber string,
-) (*ListWorkflowResponse, error) {
+func (c *ApiService) PageWorkflow(WorkspaceSid string, params *ListWorkflowParams, pageToken, pageNumber string) (*ListWorkflowResponse, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Workflows"
 
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
@@ -230,10 +226,7 @@ func (c *ApiService) ListWorkflow(WorkspaceSid string, params *ListWorkflowParam
 }
 
 // Streams Workflow records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamWorkflow(
-	WorkspaceSid string,
-	params *ListWorkflowParams,
-) (chan TaskrouterV1Workflow, chan error) {
+func (c *ApiService) StreamWorkflow(WorkspaceSid string, params *ListWorkflowParams) (chan TaskrouterV1Workflow, chan error) {
 	if params == nil {
 		params = &ListWorkflowParams{}
 	}
@@ -254,12 +247,7 @@ func (c *ApiService) StreamWorkflow(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamWorkflow(
-	response *ListWorkflowResponse,
-	params *ListWorkflowParams,
-	recordChannel chan TaskrouterV1Workflow,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamWorkflow(response *ListWorkflowResponse, params *ListWorkflowParams, recordChannel chan TaskrouterV1Workflow, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -349,11 +337,7 @@ func (params *UpdateWorkflowParams) SetReEvaluateTasks(ReEvaluateTasks string) *
 }
 
 //
-func (c *ApiService) UpdateWorkflow(
-	WorkspaceSid string,
-	Sid string,
-	params *UpdateWorkflowParams,
-) (*TaskrouterV1Workflow, error) {
+func (c *ApiService) UpdateWorkflow(WorkspaceSid string, Sid string, params *UpdateWorkflowParams) (*TaskrouterV1Workflow, error) {
 	path := "/v1/Workspaces/{WorkspaceSid}/Workflows/{Sid}"
 	path = strings.Replace(path, "{"+"WorkspaceSid"+"}", WorkspaceSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

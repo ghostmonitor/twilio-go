@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ghostmonitor/twilio-go/client"
 	assert "github.com/stretchr/testify/require"
+	"github.com/ghostmonitor/twilio-go/client"
 )
 
 const (

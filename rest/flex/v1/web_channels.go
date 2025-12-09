@@ -170,10 +170,7 @@ func (params *ListWebChannelParams) SetLimit(Limit int) *ListWebChannelParams {
 }
 
 // Retrieve a single page of WebChannel records from the API. Request is executed immediately.
-func (c *ApiService) PageWebChannel(
-	params *ListWebChannelParams,
-	pageToken, pageNumber string,
-) (*ListWebChannelResponse, error) {
+func (c *ApiService) PageWebChannel(params *ListWebChannelParams, pageToken, pageNumber string) (*ListWebChannelResponse, error) {
 	path := "/v1/WebChannels"
 
 	data := url.Values{}
@@ -245,12 +242,7 @@ func (c *ApiService) StreamWebChannel(params *ListWebChannelParams) (chan FlexV1
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamWebChannel(
-	response *ListWebChannelResponse,
-	params *ListWebChannelParams,
-	recordChannel chan FlexV1WebChannel,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamWebChannel(response *ListWebChannelResponse, params *ListWebChannelParams, recordChannel chan FlexV1WebChannel, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -326,7 +318,7 @@ func (c *ApiService) UpdateWebChannel(Sid string, params *UpdateWebChannelParams
 	}
 
 	if params != nil && params.ChatStatus != nil {
-		data.Set("ChatStatus", *params.ChatStatus)
+		data.Set("ChatStatus", fmt.Sprint(*params.ChatStatus))
 	}
 	if params != nil && params.PostEngagementData != nil {
 		data.Set("PostEngagementData", *params.PostEngagementData)

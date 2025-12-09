@@ -49,7 +49,7 @@ type CreateServiceParams struct {
 	FallbackToLongCode *bool `json:"FallbackToLongCode,omitempty"`
 	// Whether to enable [Area Code Geomatch](https://www.twilio.com/docs/messaging/services#area-code-geomatch) on the Service Instance.
 	AreaCodeGeomatch *bool `json:"AreaCodeGeomatch,omitempty"`
-	// How long, in seconds, messages sent from the Service are valid. Can be an integer from `1` to `14,400`.
+	// How long, in seconds, messages sent from the Service are valid. Can be an integer from `1` to `36,000`. Default value is `36,000`.
 	ValidityPeriod *int `json:"ValidityPeriod,omitempty"`
 	// Reserved.
 	SynchronousValidation *bool `json:"SynchronousValidation,omitempty"`
@@ -161,7 +161,7 @@ func (c *ApiService) CreateService(params *CreateServiceParams) (*MessagingV1Ser
 		data.Set("SmartEncoding", fmt.Sprint(*params.SmartEncoding))
 	}
 	if params != nil && params.ScanMessageContent != nil {
-		data.Set("ScanMessageContent", *params.ScanMessageContent)
+		data.Set("ScanMessageContent", fmt.Sprint(*params.ScanMessageContent))
 	}
 	if params != nil && params.FallbackToLongCode != nil {
 		data.Set("FallbackToLongCode", fmt.Sprint(*params.FallbackToLongCode))
@@ -260,10 +260,7 @@ func (params *ListServiceParams) SetLimit(Limit int) *ListServiceParams {
 }
 
 // Retrieve a single page of Service records from the API. Request is executed immediately.
-func (c *ApiService) PageService(
-	params *ListServiceParams,
-	pageToken, pageNumber string,
-) (*ListServiceResponse, error) {
+func (c *ApiService) PageService(params *ListServiceParams, pageToken, pageNumber string) (*ListServiceResponse, error) {
 	path := "/v1/Services"
 
 	data := url.Values{}
@@ -335,12 +332,7 @@ func (c *ApiService) StreamService(params *ListServiceParams) (chan MessagingV1S
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamService(
-	response *ListServiceResponse,
-	params *ListServiceParams,
-	recordChannel chan MessagingV1Service,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamService(response *ListServiceResponse, params *ListServiceParams, recordChannel chan MessagingV1Service, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -414,7 +406,7 @@ type UpdateServiceParams struct {
 	FallbackToLongCode *bool `json:"FallbackToLongCode,omitempty"`
 	// Whether to enable [Area Code Geomatch](https://www.twilio.com/docs/messaging/services#area-code-geomatch) on the Service Instance.
 	AreaCodeGeomatch *bool `json:"AreaCodeGeomatch,omitempty"`
-	// How long, in seconds, messages sent from the Service are valid. Can be an integer from `1` to `14,400`.
+	// How long, in seconds, messages sent from the Service are valid. Can be an integer from `1` to `36,000`. Default value is `36,000`.
 	ValidityPeriod *int `json:"ValidityPeriod,omitempty"`
 	// Reserved.
 	SynchronousValidation *bool `json:"SynchronousValidation,omitempty"`
@@ -527,7 +519,7 @@ func (c *ApiService) UpdateService(Sid string, params *UpdateServiceParams) (*Me
 		data.Set("SmartEncoding", fmt.Sprint(*params.SmartEncoding))
 	}
 	if params != nil && params.ScanMessageContent != nil {
-		data.Set("ScanMessageContent", *params.ScanMessageContent)
+		data.Set("ScanMessageContent", fmt.Sprint(*params.ScanMessageContent))
 	}
 	if params != nil && params.FallbackToLongCode != nil {
 		data.Set("FallbackToLongCode", fmt.Sprint(*params.FallbackToLongCode))

@@ -90,10 +90,7 @@ func (params *CreateConversationMessageParams) SetSubject(Subject string) *Creat
 }
 
 // Add a new message to the conversation
-func (c *ApiService) CreateConversationMessage(
-	ConversationSid string,
-	params *CreateConversationMessageParams,
-) (*ConversationsV1ConversationMessage, error) {
+func (c *ApiService) CreateConversationMessage(ConversationSid string, params *CreateConversationMessageParams) (*ConversationsV1ConversationMessage, error) {
 	path := "/v1/Conversations/{ConversationSid}/Messages"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 
@@ -160,11 +157,7 @@ func (params *DeleteConversationMessageParams) SetXTwilioWebhookEnabled(XTwilioW
 }
 
 // Remove a message from the conversation
-func (c *ApiService) DeleteConversationMessage(
-	ConversationSid string,
-	Sid string,
-	params *DeleteConversationMessageParams,
-) error {
+func (c *ApiService) DeleteConversationMessage(ConversationSid string, Sid string, params *DeleteConversationMessageParams) error {
 	path := "/v1/Conversations/{ConversationSid}/Messages/{Sid}"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -188,10 +181,7 @@ func (c *ApiService) DeleteConversationMessage(
 }
 
 // Fetch a message from the conversation
-func (c *ApiService) FetchConversationMessage(
-	ConversationSid string,
-	Sid string,
-) (*ConversationsV1ConversationMessage, error) {
+func (c *ApiService) FetchConversationMessage(ConversationSid string, Sid string) (*ConversationsV1ConversationMessage, error) {
 	path := "/v1/Conversations/{ConversationSid}/Messages/{Sid}"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -220,7 +210,7 @@ func (c *ApiService) FetchConversationMessage(
 type ListConversationMessageParams struct {
 	// The sort order of the returned messages. Can be: `asc` (ascending) or `desc` (descending), with `asc` as the default.
 	Order *string `json:"Order,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -240,11 +230,7 @@ func (params *ListConversationMessageParams) SetLimit(Limit int) *ListConversati
 }
 
 // Retrieve a single page of ConversationMessage records from the API. Request is executed immediately.
-func (c *ApiService) PageConversationMessage(
-	ConversationSid string,
-	params *ListConversationMessageParams,
-	pageToken, pageNumber string,
-) (*ListConversationMessageResponse, error) {
+func (c *ApiService) PageConversationMessage(ConversationSid string, params *ListConversationMessageParams, pageToken, pageNumber string) (*ListConversationMessageResponse, error) {
 	path := "/v1/Conversations/{ConversationSid}/Messages"
 
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
@@ -255,7 +241,7 @@ func (c *ApiService) PageConversationMessage(
 	}
 
 	if params != nil && params.Order != nil {
-		data.Set("Order", *params.Order)
+		data.Set("Order", fmt.Sprint(*params.Order))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -284,10 +270,7 @@ func (c *ApiService) PageConversationMessage(
 }
 
 // Lists ConversationMessage records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListConversationMessage(
-	ConversationSid string,
-	params *ListConversationMessageParams,
-) ([]ConversationsV1ConversationMessage, error) {
+func (c *ApiService) ListConversationMessage(ConversationSid string, params *ListConversationMessageParams) ([]ConversationsV1ConversationMessage, error) {
 	response, errors := c.StreamConversationMessage(ConversationSid, params)
 
 	records := make([]ConversationsV1ConversationMessage, 0)
@@ -303,10 +286,7 @@ func (c *ApiService) ListConversationMessage(
 }
 
 // Streams ConversationMessage records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamConversationMessage(
-	ConversationSid string,
-	params *ListConversationMessageParams,
-) (chan ConversationsV1ConversationMessage, chan error) {
+func (c *ApiService) StreamConversationMessage(ConversationSid string, params *ListConversationMessageParams) (chan ConversationsV1ConversationMessage, chan error) {
 	if params == nil {
 		params = &ListConversationMessageParams{}
 	}
@@ -327,12 +307,7 @@ func (c *ApiService) StreamConversationMessage(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConversationMessage(
-	response *ListConversationMessageResponse,
-	params *ListConversationMessageParams,
-	recordChannel chan ConversationsV1ConversationMessage,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConversationMessage(response *ListConversationMessageResponse, params *ListConversationMessageParams, recordChannel chan ConversationsV1ConversationMessage, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -428,11 +403,7 @@ func (params *UpdateConversationMessageParams) SetSubject(Subject string) *Updat
 }
 
 // Update an existing message in the conversation
-func (c *ApiService) UpdateConversationMessage(
-	ConversationSid string,
-	Sid string,
-	params *UpdateConversationMessageParams,
-) (*ConversationsV1ConversationMessage, error) {
+func (c *ApiService) UpdateConversationMessage(ConversationSid string, Sid string, params *UpdateConversationMessageParams) (*ConversationsV1ConversationMessage, error) {
 	path := "/v1/Conversations/{ConversationSid}/Messages/{Sid}"
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)

@@ -28,7 +28,7 @@ type ListParticipantConversationParams struct {
 	Identity *string `json:"Identity,omitempty"`
 	// A unique string identifier for the conversation participant who's not a Conversation User. This parameter could be found in messaging_binding.address field of Participant resource. It should be url-encoded.
 	Address *string `json:"Address,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 50.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -52,10 +52,7 @@ func (params *ListParticipantConversationParams) SetLimit(Limit int) *ListPartic
 }
 
 // Retrieve a single page of ParticipantConversation records from the API. Request is executed immediately.
-func (c *ApiService) PageParticipantConversation(
-	params *ListParticipantConversationParams,
-	pageToken, pageNumber string,
-) (*ListParticipantConversationResponse, error) {
+func (c *ApiService) PageParticipantConversation(params *ListParticipantConversationParams, pageToken, pageNumber string) (*ListParticipantConversationResponse, error) {
 	path := "/v1/ParticipantConversations"
 
 	data := url.Values{}
@@ -133,12 +130,7 @@ func (c *ApiService) StreamParticipantConversation(params *ListParticipantConver
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamParticipantConversation(
-	response *ListParticipantConversationResponse,
-	params *ListParticipantConversationParams,
-	recordChannel chan ConversationsV1ParticipantConversation,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamParticipantConversation(response *ListParticipantConversationResponse, params *ListParticipantConversationParams, recordChannel chan ConversationsV1ParticipantConversation, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -129,7 +129,7 @@ func (c *ApiService) CreateConversation(params *CreateConversationParams) (*Conv
 		data.Set("Attributes", *params.Attributes)
 	}
 	if params != nil && params.State != nil {
-		data.Set("State", *params.State)
+		data.Set("State", fmt.Sprint(*params.State))
 	}
 	if params != nil && params.TimersInactive != nil {
 		data.Set("Timers.Inactive", *params.TimersInactive)
@@ -229,7 +229,7 @@ type ListConversationParams struct {
 	EndDate *string `json:"EndDate,omitempty"`
 	// State for sorting and filtering list of Conversations. Can be `active`, `inactive` or `closed`
 	State *string `json:"State,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -257,10 +257,7 @@ func (params *ListConversationParams) SetLimit(Limit int) *ListConversationParam
 }
 
 // Retrieve a single page of Conversation records from the API. Request is executed immediately.
-func (c *ApiService) PageConversation(
-	params *ListConversationParams,
-	pageToken, pageNumber string,
-) (*ListConversationResponse, error) {
+func (c *ApiService) PageConversation(params *ListConversationParams, pageToken, pageNumber string) (*ListConversationResponse, error) {
 	path := "/v1/Conversations"
 
 	data := url.Values{}
@@ -275,7 +272,7 @@ func (c *ApiService) PageConversation(
 		data.Set("EndDate", *params.EndDate)
 	}
 	if params != nil && params.State != nil {
-		data.Set("State", *params.State)
+		data.Set("State", fmt.Sprint(*params.State))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -341,12 +338,7 @@ func (c *ApiService) StreamConversation(params *ListConversationParams) (chan Co
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamConversation(
-	response *ListConversationResponse,
-	params *ListConversationParams,
-	recordChannel chan ConversationsV1Conversation,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamConversation(response *ListConversationResponse, params *ListConversationParams, recordChannel chan ConversationsV1Conversation, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -472,10 +464,7 @@ func (params *UpdateConversationParams) SetBindingsEmailName(BindingsEmailName s
 }
 
 // Update an existing conversation in your account's default service
-func (c *ApiService) UpdateConversation(
-	Sid string,
-	params *UpdateConversationParams,
-) (*ConversationsV1Conversation, error) {
+func (c *ApiService) UpdateConversation(Sid string, params *UpdateConversationParams) (*ConversationsV1Conversation, error) {
 	path := "/v1/Conversations/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 
@@ -500,7 +489,7 @@ func (c *ApiService) UpdateConversation(
 		data.Set("MessagingServiceSid", *params.MessagingServiceSid)
 	}
 	if params != nil && params.State != nil {
-		data.Set("State", *params.State)
+		data.Set("State", fmt.Sprint(*params.State))
 	}
 	if params != nil && params.TimersInactive != nil {
 		data.Set("Timers.Inactive", *params.TimersInactive)

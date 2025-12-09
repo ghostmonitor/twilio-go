@@ -60,11 +60,7 @@ func (params *ListUsageRecordParams) SetLimit(Limit int) *ListUsageRecordParams 
 }
 
 // Retrieve a single page of UsageRecord records from the API. Request is executed immediately.
-func (c *ApiService) PageUsageRecord(
-	SimSid string,
-	params *ListUsageRecordParams,
-	pageToken, pageNumber string,
-) (*ListUsageRecordResponse, error) {
+func (c *ApiService) PageUsageRecord(SimSid string, params *ListUsageRecordParams, pageToken, pageNumber string) (*ListUsageRecordResponse, error) {
 	path := "/v1/Sims/{SimSid}/UsageRecords"
 
 	path = strings.Replace(path, "{"+"SimSid"+"}", SimSid, -1)
@@ -81,7 +77,7 @@ func (c *ApiService) PageUsageRecord(
 		data.Set("Start", fmt.Sprint((*params.Start).Format(time.RFC3339)))
 	}
 	if params != nil && params.Granularity != nil {
-		data.Set("Granularity", *params.Granularity)
+		data.Set("Granularity", fmt.Sprint(*params.Granularity))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -126,10 +122,7 @@ func (c *ApiService) ListUsageRecord(SimSid string, params *ListUsageRecordParam
 }
 
 // Streams UsageRecord records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamUsageRecord(
-	SimSid string,
-	params *ListUsageRecordParams,
-) (chan WirelessV1UsageRecord, chan error) {
+func (c *ApiService) StreamUsageRecord(SimSid string, params *ListUsageRecordParams) (chan WirelessV1UsageRecord, chan error) {
 	if params == nil {
 		params = &ListUsageRecordParams{}
 	}
@@ -150,12 +143,7 @@ func (c *ApiService) StreamUsageRecord(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUsageRecord(
-	response *ListUsageRecordResponse,
-	params *ListUsageRecordParams,
-	recordChannel chan WirelessV1UsageRecord,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUsageRecord(response *ListUsageRecordResponse, params *ListUsageRecordParams, recordChannel chan WirelessV1UsageRecord, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

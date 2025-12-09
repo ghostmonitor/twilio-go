@@ -35,10 +35,7 @@ func (params *CreateCredentialListParams) SetCredentialListSid(CredentialListSid
 }
 
 //
-func (c *ApiService) CreateCredentialList(
-	TrunkSid string,
-	params *CreateCredentialListParams,
-) (*TrunkingV1CredentialList, error) {
+func (c *ApiService) CreateCredentialList(TrunkSid string, params *CreateCredentialListParams) (*TrunkingV1CredentialList, error) {
 	path := "/v1/Trunks/{TrunkSid}/CredentialLists"
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
 
@@ -131,11 +128,7 @@ func (params *ListCredentialListParams) SetLimit(Limit int) *ListCredentialListP
 }
 
 // Retrieve a single page of CredentialList records from the API. Request is executed immediately.
-func (c *ApiService) PageCredentialList(
-	TrunkSid string,
-	params *ListCredentialListParams,
-	pageToken, pageNumber string,
-) (*ListCredentialListResponse, error) {
+func (c *ApiService) PageCredentialList(TrunkSid string, params *ListCredentialListParams, pageToken, pageNumber string) (*ListCredentialListResponse, error) {
 	path := "/v1/Trunks/{TrunkSid}/CredentialLists"
 
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
@@ -172,10 +165,7 @@ func (c *ApiService) PageCredentialList(
 }
 
 // Lists CredentialList records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListCredentialList(
-	TrunkSid string,
-	params *ListCredentialListParams,
-) ([]TrunkingV1CredentialList, error) {
+func (c *ApiService) ListCredentialList(TrunkSid string, params *ListCredentialListParams) ([]TrunkingV1CredentialList, error) {
 	response, errors := c.StreamCredentialList(TrunkSid, params)
 
 	records := make([]TrunkingV1CredentialList, 0)
@@ -191,10 +181,7 @@ func (c *ApiService) ListCredentialList(
 }
 
 // Streams CredentialList records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamCredentialList(
-	TrunkSid string,
-	params *ListCredentialListParams,
-) (chan TrunkingV1CredentialList, chan error) {
+func (c *ApiService) StreamCredentialList(TrunkSid string, params *ListCredentialListParams) (chan TrunkingV1CredentialList, chan error) {
 	if params == nil {
 		params = &ListCredentialListParams{}
 	}
@@ -215,12 +202,7 @@ func (c *ApiService) StreamCredentialList(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCredentialList(
-	response *ListCredentialListResponse,
-	params *ListCredentialListParams,
-	recordChannel chan TrunkingV1CredentialList,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCredentialList(response *ListCredentialListResponse, params *ListCredentialListParams, recordChannel chan TrunkingV1CredentialList, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

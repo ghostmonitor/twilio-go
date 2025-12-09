@@ -29,7 +29,7 @@ type ListAvailablePhoneNumberVoipParams struct {
 	PathAccountSid *string `json:"PathAccountSid,omitempty"`
 	// The area code of the phone numbers to read. Applies to only phone numbers in the US and Canada.
 	AreaCode *int `json:"AreaCode,omitempty"`
-	// The pattern on which to match phone numbers. Valid characters are `*`, `0-9`, `a-z`, and `A-Z`. The `*` character matches any single digit. For examples, see [Example 2](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-2) and [Example 3](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#local-get-basic-example-3). If specified, this value must have at least two characters.
+	// Matching pattern to identify phone numbers. This pattern can be between 2 and 16 characters long and allows all digits (0-9) and all non-diacritic latin alphabet letters (a-z, A-Z). It accepts four meta-characters: `*`, `%`, `+`, `$`. The `*` and `%` meta-characters can appear multiple times in the pattern. To match wildcards at the beginning or end of the pattern, use `*` to match any single character or `%` to match a sequence of characters. If you use the wildcard patterns, it must include at least two non-meta-characters, and wildcards cannot be used between non-meta-characters. To match the beginning of a pattern, start the pattern with `+`. To match the end of the pattern, append the pattern with `$`. These meta-characters can't be adjacent to each other.
 	Contains *string `json:"Contains,omitempty"`
 	// Whether the phone numbers can receive text messages. Can be: `true` or `false`.
 	SmsEnabled *bool `json:"SmsEnabled,omitempty"`
@@ -155,11 +155,7 @@ func (params *ListAvailablePhoneNumberVoipParams) SetLimit(Limit int) *ListAvail
 }
 
 // Retrieve a single page of AvailablePhoneNumberVoip records from the API. Request is executed immediately.
-func (c *ApiService) PageAvailablePhoneNumberVoip(
-	CountryCode string,
-	params *ListAvailablePhoneNumberVoipParams,
-	pageToken, pageNumber string,
-) (*ListAvailablePhoneNumberVoipResponse, error) {
+func (c *ApiService) PageAvailablePhoneNumberVoip(CountryCode string, params *ListAvailablePhoneNumberVoipParams, pageToken, pageNumber string) (*ListAvailablePhoneNumberVoipResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -255,10 +251,7 @@ func (c *ApiService) PageAvailablePhoneNumberVoip(
 }
 
 // Lists AvailablePhoneNumberVoip records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListAvailablePhoneNumberVoip(
-	CountryCode string,
-	params *ListAvailablePhoneNumberVoipParams,
-) ([]ApiV2010AvailablePhoneNumberVoip, error) {
+func (c *ApiService) ListAvailablePhoneNumberVoip(CountryCode string, params *ListAvailablePhoneNumberVoipParams) ([]ApiV2010AvailablePhoneNumberVoip, error) {
 	response, errors := c.StreamAvailablePhoneNumberVoip(CountryCode, params)
 
 	records := make([]ApiV2010AvailablePhoneNumberVoip, 0)
@@ -274,10 +267,7 @@ func (c *ApiService) ListAvailablePhoneNumberVoip(
 }
 
 // Streams AvailablePhoneNumberVoip records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamAvailablePhoneNumberVoip(
-	CountryCode string,
-	params *ListAvailablePhoneNumberVoipParams,
-) (chan ApiV2010AvailablePhoneNumberVoip, chan error) {
+func (c *ApiService) StreamAvailablePhoneNumberVoip(CountryCode string, params *ListAvailablePhoneNumberVoipParams) (chan ApiV2010AvailablePhoneNumberVoip, chan error) {
 	if params == nil {
 		params = &ListAvailablePhoneNumberVoipParams{}
 	}
@@ -298,12 +288,7 @@ func (c *ApiService) StreamAvailablePhoneNumberVoip(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamAvailablePhoneNumberVoip(
-	response *ListAvailablePhoneNumberVoipResponse,
-	params *ListAvailablePhoneNumberVoipParams,
-	recordChannel chan ApiV2010AvailablePhoneNumberVoip,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamAvailablePhoneNumberVoip(response *ListAvailablePhoneNumberVoipResponse, params *ListAvailablePhoneNumberVoipParams, recordChannel chan ApiV2010AvailablePhoneNumberVoip, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -76,7 +76,7 @@ type ListBindingParams struct {
 	BindingType *[]string `json:"BindingType,omitempty"`
 	// The [User](https://www.twilio.com/docs/chat/rest/user-resource)'s `identity` value of the resources to read. See [access tokens](https://www.twilio.com/docs/chat/create-tokens) for more details.
 	Identity *[]string `json:"Identity,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 50.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -100,11 +100,7 @@ func (params *ListBindingParams) SetLimit(Limit int) *ListBindingParams {
 }
 
 // Retrieve a single page of Binding records from the API. Request is executed immediately.
-func (c *ApiService) PageBinding(
-	ServiceSid string,
-	params *ListBindingParams,
-	pageToken, pageNumber string,
-) (*ListBindingResponse, error) {
+func (c *ApiService) PageBinding(ServiceSid string, params *ListBindingParams, pageToken, pageNumber string) (*ListBindingResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Bindings"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -188,12 +184,7 @@ func (c *ApiService) StreamBinding(ServiceSid string, params *ListBindingParams)
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamBinding(
-	response *ListBindingResponse,
-	params *ListBindingParams,
-	recordChannel chan ChatV2Binding,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamBinding(response *ListBindingResponse, params *ListBindingParams, recordChannel chan ChatV2Binding, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

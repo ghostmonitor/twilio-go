@@ -78,10 +78,7 @@ func (params *ListOperatorParams) SetLimit(Limit int) *ListOperatorParams {
 }
 
 // Retrieve a single page of Operator records from the API. Request is executed immediately.
-func (c *ApiService) PageOperator(
-	params *ListOperatorParams,
-	pageToken, pageNumber string,
-) (*ListOperatorResponse, error) {
+func (c *ApiService) PageOperator(params *ListOperatorParams, pageToken, pageNumber string) (*ListOperatorResponse, error) {
 	path := "/v2/Operators"
 
 	data := url.Values{}
@@ -90,7 +87,7 @@ func (c *ApiService) PageOperator(
 	}
 
 	if params != nil && params.Availability != nil {
-		data.Set("Availability", *params.Availability)
+		data.Set("Availability", fmt.Sprint(*params.Availability))
 	}
 	if params != nil && params.LanguageCode != nil {
 		data.Set("LanguageCode", *params.LanguageCode)
@@ -159,12 +156,7 @@ func (c *ApiService) StreamOperator(params *ListOperatorParams) (chan Intelligen
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamOperator(
-	response *ListOperatorResponse,
-	params *ListOperatorParams,
-	recordChannel chan IntelligenceV2Operator,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamOperator(response *ListOperatorResponse, params *ListOperatorParams, recordChannel chan IntelligenceV2Operator, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

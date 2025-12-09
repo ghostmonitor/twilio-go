@@ -60,7 +60,7 @@ func (c *ApiService) CreateRole(ServiceSid string, params *CreateRoleParams) (*C
 		data.Set("FriendlyName", *params.FriendlyName)
 	}
 	if params != nil && params.Type != nil {
-		data.Set("Type", *params.Type)
+		data.Set("Type", fmt.Sprint(*params.Type))
 	}
 	if params != nil && params.Permission != nil {
 		for _, item := range *params.Permission {
@@ -132,7 +132,7 @@ func (c *ApiService) FetchRole(ServiceSid string, Sid string) (*ChatV2Role, erro
 
 // Optional parameters for the method 'ListRole'
 type ListRoleParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -148,11 +148,7 @@ func (params *ListRoleParams) SetLimit(Limit int) *ListRoleParams {
 }
 
 // Retrieve a single page of Role records from the API. Request is executed immediately.
-func (c *ApiService) PageRole(
-	ServiceSid string,
-	params *ListRoleParams,
-	pageToken, pageNumber string,
-) (*ListRoleResponse, error) {
+func (c *ApiService) PageRole(ServiceSid string, params *ListRoleParams, pageToken, pageNumber string) (*ListRoleResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Roles"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -226,12 +222,7 @@ func (c *ApiService) StreamRole(ServiceSid string, params *ListRoleParams) (chan
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamRole(
-	response *ListRoleResponse,
-	params *ListRoleParams,
-	recordChannel chan ChatV2Role,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamRole(response *ListRoleResponse, params *ListRoleParams, recordChannel chan ChatV2Role, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

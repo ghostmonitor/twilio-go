@@ -80,7 +80,7 @@ func (c *ApiService) CreateCredential(params *CreateCredentialParams) (*IpMessag
 	}
 
 	if params != nil && params.Type != nil {
-		data.Set("Type", *params.Type)
+		data.Set("Type", fmt.Sprint(*params.Type))
 	}
 	if params != nil && params.FriendlyName != nil {
 		data.Set("FriendlyName", *params.FriendlyName)
@@ -179,10 +179,7 @@ func (params *ListCredentialParams) SetLimit(Limit int) *ListCredentialParams {
 }
 
 // Retrieve a single page of Credential records from the API. Request is executed immediately.
-func (c *ApiService) PageCredential(
-	params *ListCredentialParams,
-	pageToken, pageNumber string,
-) (*ListCredentialResponse, error) {
+func (c *ApiService) PageCredential(params *ListCredentialParams, pageToken, pageNumber string) (*ListCredentialResponse, error) {
 	path := "/v1/Credentials"
 
 	data := url.Values{}
@@ -254,12 +251,7 @@ func (c *ApiService) StreamCredential(params *ListCredentialParams) (chan IpMess
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamCredential(
-	response *ListCredentialResponse,
-	params *ListCredentialParams,
-	recordChannel chan IpMessagingV1Credential,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamCredential(response *ListCredentialResponse, params *ListCredentialParams, recordChannel chan IpMessagingV1Credential, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

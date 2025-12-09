@@ -130,7 +130,7 @@ func (c *ApiService) FetchSyncMap(ServiceSid string, Sid string) (*SyncV1SyncMap
 
 // Optional parameters for the method 'ListSyncMap'
 type ListSyncMapParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -146,11 +146,7 @@ func (params *ListSyncMapParams) SetLimit(Limit int) *ListSyncMapParams {
 }
 
 // Retrieve a single page of SyncMap records from the API. Request is executed immediately.
-func (c *ApiService) PageSyncMap(
-	ServiceSid string,
-	params *ListSyncMapParams,
-	pageToken, pageNumber string,
-) (*ListSyncMapResponse, error) {
+func (c *ApiService) PageSyncMap(ServiceSid string, params *ListSyncMapParams, pageToken, pageNumber string) (*ListSyncMapResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Maps"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -224,12 +220,7 @@ func (c *ApiService) StreamSyncMap(ServiceSid string, params *ListSyncMapParams)
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSyncMap(
-	response *ListSyncMapResponse,
-	params *ListSyncMapParams,
-	recordChannel chan SyncV1SyncMap,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSyncMap(response *ListSyncMapResponse, params *ListSyncMapParams, recordChannel chan SyncV1SyncMap, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

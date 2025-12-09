@@ -66,10 +66,7 @@ func (params *ListPoliciesParams) SetLimit(Limit int) *ListPoliciesParams {
 }
 
 // Retrieve a single page of Policies records from the API. Request is executed immediately.
-func (c *ApiService) PagePolicies(
-	params *ListPoliciesParams,
-	pageToken, pageNumber string,
-) (*ListPoliciesResponse, error) {
+func (c *ApiService) PagePolicies(params *ListPoliciesParams, pageToken, pageNumber string) (*ListPoliciesResponse, error) {
 	path := "/v1/Policies"
 
 	data := url.Values{}
@@ -141,12 +138,7 @@ func (c *ApiService) StreamPolicies(params *ListPoliciesParams) (chan TrusthubV1
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamPolicies(
-	response *ListPoliciesResponse,
-	params *ListPoliciesParams,
-	recordChannel chan TrusthubV1Policies,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamPolicies(response *ListPoliciesResponse, params *ListPoliciesParams, recordChannel chan TrusthubV1Policies, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

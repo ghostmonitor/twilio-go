@@ -107,6 +107,7 @@ type VoiceTranscription struct {
 	// speech_model: Speech Model used by the transcription engine
 	// hints: Hints to be provided to the transcription engine
 	// enable_automatic_punctuation: Enable Automatic Punctuation
+	// intelligence_service: The SID or the unique name of the Intelligence Service to be used
 	// OptionalAttributes: additional attributes
 	Name                       string
 	Track                      string
@@ -121,6 +122,7 @@ type VoiceTranscription struct {
 	SpeechModel                string
 	Hints                      string
 	EnableAutomaticPunctuation string
+	IntelligenceService        string
 	InnerElements              []Element
 	OptionalAttributes         map[string]string
 }
@@ -148,6 +150,7 @@ func (m VoiceTranscription) GetAttr() (map[string]string, map[string]string) {
 		"SpeechModel":                m.SpeechModel,
 		"Hints":                      m.Hints,
 		"EnableAutomaticPunctuation": m.EnableAutomaticPunctuation,
+		"IntelligenceService":        m.IntelligenceService,
 	}
 	return m.OptionalAttributes, paramsAttr
 }
@@ -329,6 +332,49 @@ func (m VoiceStart) GetAttr() (map[string]string, map[string]string) {
 }
 
 func (m VoiceStart) GetInnerElements() []Element {
+	return m.InnerElements
+}
+
+//VoiceRecording <Recording> TwiML Noun
+type VoiceRecording struct {
+	// recording_status_callback: Recording Status Callback URL
+	// recording_status_callback_method: Recording Status Callback URL method
+	// recording_status_callback_event: Recording Status Callback Events
+	// trim: Trim the recording
+	// track: To indicate which audio track should be recorded
+	// channels: The recording channels for the final recording
+	// OptionalAttributes: additional attributes
+	RecordingStatusCallback       string
+	RecordingStatusCallbackMethod string
+	RecordingStatusCallbackEvent  string
+	Trim                          string
+	Track                         string
+	Channels                      string
+	InnerElements                 []Element
+	OptionalAttributes            map[string]string
+}
+
+func (m VoiceRecording) GetName() string {
+	return "Recording"
+}
+
+func (m VoiceRecording) GetText() string {
+	return ""
+}
+
+func (m VoiceRecording) GetAttr() (map[string]string, map[string]string) {
+	paramsAttr := map[string]string{
+		"RecordingStatusCallback":       m.RecordingStatusCallback,
+		"RecordingStatusCallbackMethod": m.RecordingStatusCallbackMethod,
+		"RecordingStatusCallbackEvent":  m.RecordingStatusCallbackEvent,
+		"Trim":                          m.Trim,
+		"Track":                         m.Track,
+		"Channels":                      m.Channels,
+	}
+	return m.OptionalAttributes, paramsAttr
+}
+
+func (m VoiceRecording) GetInnerElements() []Element {
 	return m.InnerElements
 }
 
@@ -1297,6 +1343,7 @@ type VoiceDial struct {
 	// sequential: Used to determine if child TwiML nouns should be dialed in order, one after the other (sequential) or dial all at once (parallel). Default is false, parallel
 	// refer_url: Webhook that will receive future SIP REFER requests
 	// refer_method: The HTTP method to use for the refer Webhook
+	// events: Subscription to events
 	// OptionalAttributes: additional attributes
 	Number                        string
 	Action                        string
@@ -1316,6 +1363,7 @@ type VoiceDial struct {
 	Sequential                    string
 	ReferUrl                      string
 	ReferMethod                   string
+	Events                        string
 	InnerElements                 []Element
 	OptionalAttributes            map[string]string
 }
@@ -1347,11 +1395,54 @@ func (m VoiceDial) GetAttr() (map[string]string, map[string]string) {
 		"Sequential":                    m.Sequential,
 		"ReferUrl":                      m.ReferUrl,
 		"ReferMethod":                   m.ReferMethod,
+		"Events":                        m.Events,
 	}
 	return m.OptionalAttributes, paramsAttr
 }
 
 func (m VoiceDial) GetInnerElements() []Element {
+	return m.InnerElements
+}
+
+//VoiceWhatsApp <WhatsApp> TwiML Noun
+type VoiceWhatsApp struct {
+	// phone_number: WhatsApp Phone Number to dial
+	// url: TwiML URL
+	// method: TwiML URL Method
+	// status_callback_event: Events to trigger status callback
+	// status_callback: Status Callback URL
+	// status_callback_method: Status Callback URL Method
+	// OptionalAttributes: additional attributes
+	PhoneNumber          string
+	Url                  string
+	Method               string
+	StatusCallbackEvent  string
+	StatusCallback       string
+	StatusCallbackMethod string
+	InnerElements        []Element
+	OptionalAttributes   map[string]string
+}
+
+func (m VoiceWhatsApp) GetName() string {
+	return "WhatsApp"
+}
+
+func (m VoiceWhatsApp) GetText() string {
+	return m.PhoneNumber
+}
+
+func (m VoiceWhatsApp) GetAttr() (map[string]string, map[string]string) {
+	paramsAttr := map[string]string{
+		"Url":                  m.Url,
+		"Method":               m.Method,
+		"StatusCallbackEvent":  m.StatusCallbackEvent,
+		"StatusCallback":       m.StatusCallback,
+		"StatusCallbackMethod": m.StatusCallbackMethod,
+	}
+	return m.OptionalAttributes, paramsAttr
+}
+
+func (m VoiceWhatsApp) GetInnerElements() []Element {
 	return m.InnerElements
 }
 
@@ -1773,6 +1864,284 @@ func (m VoiceConnect) GetAttr() (map[string]string, map[string]string) {
 }
 
 func (m VoiceConnect) GetInnerElements() []Element {
+	return m.InnerElements
+}
+
+//VoiceConversationRelaySession <ConversationRelaySession> TwiML Noun
+type VoiceConversationRelaySession struct {
+	// connector: The unique name or installed add-on sid that identifies the installed addon resource for the ConversationRelaySession Connector
+	// session_configuration: The unique name or id of the ConversationRelaySession  Configuration resource.
+	// OptionalAttributes: additional attributes
+	Connector            string
+	SessionConfiguration string
+	InnerElements        []Element
+	OptionalAttributes   map[string]string
+}
+
+func (m VoiceConversationRelaySession) GetName() string {
+	return "ConversationRelaySession"
+}
+
+func (m VoiceConversationRelaySession) GetText() string {
+	return ""
+}
+
+func (m VoiceConversationRelaySession) GetAttr() (map[string]string, map[string]string) {
+	paramsAttr := map[string]string{
+		"Connector":            m.Connector,
+		"SessionConfiguration": m.SessionConfiguration,
+	}
+	return m.OptionalAttributes, paramsAttr
+}
+
+func (m VoiceConversationRelaySession) GetInnerElements() []Element {
+	return m.InnerElements
+}
+
+//VoiceAiSession <AiSession> TwiML Noun
+type VoiceAiSession struct {
+	// ai_connector: The unique name or installed add-on sid that identifies the installed addon resource for the AI Connector
+	// ai_session_configuration: The unique name or id of the AiSession Configuration resource.
+	// OptionalAttributes: additional attributes
+	AiConnector            string
+	AiSessionConfiguration string
+	InnerElements          []Element
+	OptionalAttributes     map[string]string
+}
+
+func (m VoiceAiSession) GetName() string {
+	return "AiSession"
+}
+
+func (m VoiceAiSession) GetText() string {
+	return ""
+}
+
+func (m VoiceAiSession) GetAttr() (map[string]string, map[string]string) {
+	paramsAttr := map[string]string{
+		"AiConnector":            m.AiConnector,
+		"AiSessionConfiguration": m.AiSessionConfiguration,
+	}
+	return m.OptionalAttributes, paramsAttr
+}
+
+func (m VoiceAiSession) GetInnerElements() []Element {
+	return m.InnerElements
+}
+
+//VoiceAssistant <Assistant> TwiML Noun
+type VoiceAssistant struct {
+	// id: The assistant ID of the AI Assistant
+	// language: Language to be used for both text-to-speech and transcription
+	// tts_language: Language to be used for text-to-speech
+	// transcription_language: Language to be used for transcription
+	// tts_provider: Provider to be used for text-to-speech
+	// voice: Voice to be used for text-to-speech
+	// transcription_provider: Provider to be used for transcription
+	// speech_model: Speech model to be used for transcription
+	// profanity_filter: Whether profanities should be filtered out of the speech transcription
+	// dtmf_detection: Whether DTMF tones should be detected and reported in speech transcription
+	// welcome_greeting: The sentence to be played automatically when the session is connected
+	// partial_prompts: Whether partial prompts should be reported to WebSocket server before the caller finishes speaking
+	// welcome_greeting_interruptible: "Whether and how the input from a caller, such as speaking or DTMF can interrupt the welcome greeting
+	// interruptible: Whether and how the input from a caller, such as speaking or DTMF can interrupt the play of text-to-speech
+	// preemptible: Whether subsequent text-to-speech or play media can interrupt the on-going play of text-to-speech or media
+	// hints: Phrases to help better accuracy in speech recognition of these pharases
+	// intelligence_service: The Conversational Intelligence Service id or unique name to be used for the session
+	// report_input_during_agent_speech: Whether prompts should be reported to WebSocket server when text-to-speech playing and interrupt is disabled
+	// elevenlabs_text_normalization: When using ElevenLabs as TTS provider, this parameter allows you to enable or disable its text normalization feature
+	// interrupt_sensitivity: Set the sensitivity of the interrupt feature for speech. The value can be low, medium, or high
+	// debug: Multiple debug options to be used for troubleshooting
+	// OptionalAttributes: additional attributes
+	Id                           string
+	Language                     string
+	TtsLanguage                  string
+	TranscriptionLanguage        string
+	TtsProvider                  string
+	Voice                        string
+	TranscriptionProvider        string
+	SpeechModel                  string
+	ProfanityFilter              string
+	DtmfDetection                string
+	WelcomeGreeting              string
+	PartialPrompts               string
+	WelcomeGreetingInterruptible string
+	Interruptible                string
+	Preemptible                  string
+	Hints                        string
+	IntelligenceService          string
+	ReportInputDuringAgentSpeech string
+	ElevenlabsTextNormalization  string
+	InterruptSensitivity         string
+	Debug                        string
+	InnerElements                []Element
+	OptionalAttributes           map[string]string
+}
+
+func (m VoiceAssistant) GetName() string {
+	return "Assistant"
+}
+
+func (m VoiceAssistant) GetText() string {
+	return ""
+}
+
+func (m VoiceAssistant) GetAttr() (map[string]string, map[string]string) {
+	paramsAttr := map[string]string{
+		"Id":                           m.Id,
+		"Language":                     m.Language,
+		"TtsLanguage":                  m.TtsLanguage,
+		"TranscriptionLanguage":        m.TranscriptionLanguage,
+		"TtsProvider":                  m.TtsProvider,
+		"Voice":                        m.Voice,
+		"TranscriptionProvider":        m.TranscriptionProvider,
+		"SpeechModel":                  m.SpeechModel,
+		"ProfanityFilter":              m.ProfanityFilter,
+		"DtmfDetection":                m.DtmfDetection,
+		"WelcomeGreeting":              m.WelcomeGreeting,
+		"PartialPrompts":               m.PartialPrompts,
+		"WelcomeGreetingInterruptible": m.WelcomeGreetingInterruptible,
+		"Interruptible":                m.Interruptible,
+		"Preemptible":                  m.Preemptible,
+		"Hints":                        m.Hints,
+		"IntelligenceService":          m.IntelligenceService,
+		"ReportInputDuringAgentSpeech": m.ReportInputDuringAgentSpeech,
+		"ElevenlabsTextNormalization":  m.ElevenlabsTextNormalization,
+		"InterruptSensitivity":         m.InterruptSensitivity,
+		"Debug":                        m.Debug,
+	}
+	return m.OptionalAttributes, paramsAttr
+}
+
+func (m VoiceAssistant) GetInnerElements() []Element {
+	return m.InnerElements
+}
+
+//VoiceLanguage <Language> TwiML Noun
+type VoiceLanguage struct {
+	// code: Language code of this language setting is for
+	// tts_provider: Provider to be used for text-to-speech of this language
+	// voice: Voice to be used for text-to-speech of this language
+	// transcription_provider: Provider to be used for transcription of this language
+	// speech_model: Speech model to be used for transcription of this language
+	// OptionalAttributes: additional attributes
+	Code                  string
+	TtsProvider           string
+	Voice                 string
+	TranscriptionProvider string
+	SpeechModel           string
+	InnerElements         []Element
+	OptionalAttributes    map[string]string
+}
+
+func (m VoiceLanguage) GetName() string {
+	return "Language"
+}
+
+func (m VoiceLanguage) GetText() string {
+	return ""
+}
+
+func (m VoiceLanguage) GetAttr() (map[string]string, map[string]string) {
+	paramsAttr := map[string]string{
+		"Code":                  m.Code,
+		"TtsProvider":           m.TtsProvider,
+		"Voice":                 m.Voice,
+		"TranscriptionProvider": m.TranscriptionProvider,
+		"SpeechModel":           m.SpeechModel,
+	}
+	return m.OptionalAttributes, paramsAttr
+}
+
+func (m VoiceLanguage) GetInnerElements() []Element {
+	return m.InnerElements
+}
+
+//VoiceConversationRelay <ConversationRelay> TwiML Noun
+type VoiceConversationRelay struct {
+	// url: URL of the remote service where the session is connected to
+	// language: Language to be used for both text-to-speech and transcription
+	// tts_language: Language to be used for text-to-speech
+	// transcription_language: Language to be used for transcription
+	// tts_provider: Provider to be used for text-to-speech
+	// voice: Voice to be used for text-to-speech
+	// transcription_provider: Provider to be used for transcription
+	// speech_model: Speech model to be used for transcription
+	// profanity_filter: Whether profanities should be filtered out of the speech transcription
+	// dtmf_detection: Whether DTMF tones should be detected and reported in speech transcription
+	// welcome_greeting: The sentence to be played automatically when the session is connected
+	// partial_prompts: Whether partial prompts should be reported to WebSocket server before the caller finishes speaking
+	// welcome_greeting_interruptible: "Whether and how the input from a caller, such as speaking or DTMF can interrupt the welcome greeting
+	// interruptible: Whether and how the input from a caller, such as speaking or DTMF can interrupt the play of text-to-speech
+	// preemptible: Whether subsequent text-to-speech or play media can interrupt the on-going play of text-to-speech or media
+	// hints: Phrases to help better accuracy in speech recognition of these pharases
+	// intelligence_service: The Conversational Intelligence Service id or unique name to be used for the session
+	// report_input_during_agent_speech: Whether prompts should be reported to WebSocket server when text-to-speech playing and interrupt is disabled
+	// elevenlabs_text_normalization: When using ElevenLabs as TTS provider, this parameter allows you to enable or disable its text normalization feature
+	// interrupt_sensitivity: Set the sensitivity of the interrupt feature for speech. The value can be low, medium, or high
+	// debug: Multiple debug options to be used for troubleshooting
+	// OptionalAttributes: additional attributes
+	Url                          string
+	Language                     string
+	TtsLanguage                  string
+	TranscriptionLanguage        string
+	TtsProvider                  string
+	Voice                        string
+	TranscriptionProvider        string
+	SpeechModel                  string
+	ProfanityFilter              string
+	DtmfDetection                string
+	WelcomeGreeting              string
+	PartialPrompts               string
+	WelcomeGreetingInterruptible string
+	Interruptible                string
+	Preemptible                  string
+	Hints                        string
+	IntelligenceService          string
+	ReportInputDuringAgentSpeech string
+	ElevenlabsTextNormalization  string
+	InterruptSensitivity         string
+	Debug                        string
+	InnerElements                []Element
+	OptionalAttributes           map[string]string
+}
+
+func (m VoiceConversationRelay) GetName() string {
+	return "ConversationRelay"
+}
+
+func (m VoiceConversationRelay) GetText() string {
+	return ""
+}
+
+func (m VoiceConversationRelay) GetAttr() (map[string]string, map[string]string) {
+	paramsAttr := map[string]string{
+		"Url":                          m.Url,
+		"Language":                     m.Language,
+		"TtsLanguage":                  m.TtsLanguage,
+		"TranscriptionLanguage":        m.TranscriptionLanguage,
+		"TtsProvider":                  m.TtsProvider,
+		"Voice":                        m.Voice,
+		"TranscriptionProvider":        m.TranscriptionProvider,
+		"SpeechModel":                  m.SpeechModel,
+		"ProfanityFilter":              m.ProfanityFilter,
+		"DtmfDetection":                m.DtmfDetection,
+		"WelcomeGreeting":              m.WelcomeGreeting,
+		"PartialPrompts":               m.PartialPrompts,
+		"WelcomeGreetingInterruptible": m.WelcomeGreetingInterruptible,
+		"Interruptible":                m.Interruptible,
+		"Preemptible":                  m.Preemptible,
+		"Hints":                        m.Hints,
+		"IntelligenceService":          m.IntelligenceService,
+		"ReportInputDuringAgentSpeech": m.ReportInputDuringAgentSpeech,
+		"ElevenlabsTextNormalization":  m.ElevenlabsTextNormalization,
+		"InterruptSensitivity":         m.InterruptSensitivity,
+		"Debug":                        m.Debug,
+	}
+	return m.OptionalAttributes, paramsAttr
+}
+
+func (m VoiceConversationRelay) GetInnerElements() []Element {
 	return m.InnerElements
 }
 

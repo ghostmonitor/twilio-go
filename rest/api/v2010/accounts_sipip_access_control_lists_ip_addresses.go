@@ -53,10 +53,7 @@ func (params *CreateSipIpAddressParams) SetCidrPrefixLength(CidrPrefixLength int
 }
 
 // Create a new IpAddress resource.
-func (c *ApiService) CreateSipIpAddress(
-	IpAccessControlListSid string,
-	params *CreateSipIpAddressParams,
-) (*ApiV2010SipIpAddress, error) {
+func (c *ApiService) CreateSipIpAddress(IpAccessControlListSid string, params *CreateSipIpAddressParams) (*ApiV2010SipIpAddress, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -107,11 +104,7 @@ func (params *DeleteSipIpAddressParams) SetPathAccountSid(PathAccountSid string)
 }
 
 // Delete an IpAddress resource.
-func (c *ApiService) DeleteSipIpAddress(
-	IpAccessControlListSid string,
-	Sid string,
-	params *DeleteSipIpAddressParams,
-) error {
+func (c *ApiService) DeleteSipIpAddress(IpAccessControlListSid string, Sid string, params *DeleteSipIpAddressParams) error {
 	path := "/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -148,11 +141,7 @@ func (params *FetchSipIpAddressParams) SetPathAccountSid(PathAccountSid string) 
 }
 
 // Read one IpAddress resource.
-func (c *ApiService) FetchSipIpAddress(
-	IpAccessControlListSid string,
-	Sid string,
-	params *FetchSipIpAddressParams,
-) (*ApiV2010SipIpAddress, error) {
+func (c *ApiService) FetchSipIpAddress(IpAccessControlListSid string, Sid string, params *FetchSipIpAddressParams) (*ApiV2010SipIpAddress, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -206,11 +195,7 @@ func (params *ListSipIpAddressParams) SetLimit(Limit int) *ListSipIpAddressParam
 }
 
 // Retrieve a single page of SipIpAddress records from the API. Request is executed immediately.
-func (c *ApiService) PageSipIpAddress(
-	IpAccessControlListSid string,
-	params *ListSipIpAddressParams,
-	pageToken, pageNumber string,
-) (*ListSipIpAddressResponse, error) {
+func (c *ApiService) PageSipIpAddress(IpAccessControlListSid string, params *ListSipIpAddressParams, pageToken, pageNumber string) (*ListSipIpAddressResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -252,10 +237,7 @@ func (c *ApiService) PageSipIpAddress(
 }
 
 // Lists SipIpAddress records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListSipIpAddress(
-	IpAccessControlListSid string,
-	params *ListSipIpAddressParams,
-) ([]ApiV2010SipIpAddress, error) {
+func (c *ApiService) ListSipIpAddress(IpAccessControlListSid string, params *ListSipIpAddressParams) ([]ApiV2010SipIpAddress, error) {
 	response, errors := c.StreamSipIpAddress(IpAccessControlListSid, params)
 
 	records := make([]ApiV2010SipIpAddress, 0)
@@ -271,10 +253,7 @@ func (c *ApiService) ListSipIpAddress(
 }
 
 // Streams SipIpAddress records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamSipIpAddress(
-	IpAccessControlListSid string,
-	params *ListSipIpAddressParams,
-) (chan ApiV2010SipIpAddress, chan error) {
+func (c *ApiService) StreamSipIpAddress(IpAccessControlListSid string, params *ListSipIpAddressParams) (chan ApiV2010SipIpAddress, chan error) {
 	if params == nil {
 		params = &ListSipIpAddressParams{}
 	}
@@ -295,12 +274,7 @@ func (c *ApiService) StreamSipIpAddress(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSipIpAddress(
-	response *ListSipIpAddressResponse,
-	params *ListSipIpAddressParams,
-	recordChannel chan ApiV2010SipIpAddress,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSipIpAddress(response *ListSipIpAddressResponse, params *ListSipIpAddressParams, recordChannel chan ApiV2010SipIpAddress, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -378,11 +352,7 @@ func (params *UpdateSipIpAddressParams) SetCidrPrefixLength(CidrPrefixLength int
 }
 
 // Update an IpAddress resource.
-func (c *ApiService) UpdateSipIpAddress(
-	IpAccessControlListSid string,
-	Sid string,
-	params *UpdateSipIpAddressParams,
-) (*ApiV2010SipIpAddress, error) {
+func (c *ApiService) UpdateSipIpAddress(IpAccessControlListSid string, Sid string, params *UpdateSipIpAddressParams) (*ApiV2010SipIpAddress, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)

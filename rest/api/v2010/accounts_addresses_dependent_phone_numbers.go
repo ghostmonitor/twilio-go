@@ -47,11 +47,7 @@ func (params *ListDependentPhoneNumberParams) SetLimit(Limit int) *ListDependent
 }
 
 // Retrieve a single page of DependentPhoneNumber records from the API. Request is executed immediately.
-func (c *ApiService) PageDependentPhoneNumber(
-	AddressSid string,
-	params *ListDependentPhoneNumberParams,
-	pageToken, pageNumber string,
-) (*ListDependentPhoneNumberResponse, error) {
+func (c *ApiService) PageDependentPhoneNumber(AddressSid string, params *ListDependentPhoneNumberParams, pageToken, pageNumber string) (*ListDependentPhoneNumberResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Addresses/{AddressSid}/DependentPhoneNumbers.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -93,10 +89,7 @@ func (c *ApiService) PageDependentPhoneNumber(
 }
 
 // Lists DependentPhoneNumber records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListDependentPhoneNumber(
-	AddressSid string,
-	params *ListDependentPhoneNumberParams,
-) ([]ApiV2010DependentPhoneNumber, error) {
+func (c *ApiService) ListDependentPhoneNumber(AddressSid string, params *ListDependentPhoneNumberParams) ([]ApiV2010DependentPhoneNumber, error) {
 	response, errors := c.StreamDependentPhoneNumber(AddressSid, params)
 
 	records := make([]ApiV2010DependentPhoneNumber, 0)
@@ -112,10 +105,7 @@ func (c *ApiService) ListDependentPhoneNumber(
 }
 
 // Streams DependentPhoneNumber records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamDependentPhoneNumber(
-	AddressSid string,
-	params *ListDependentPhoneNumberParams,
-) (chan ApiV2010DependentPhoneNumber, chan error) {
+func (c *ApiService) StreamDependentPhoneNumber(AddressSid string, params *ListDependentPhoneNumberParams) (chan ApiV2010DependentPhoneNumber, chan error) {
 	if params == nil {
 		params = &ListDependentPhoneNumberParams{}
 	}
@@ -136,12 +126,7 @@ func (c *ApiService) StreamDependentPhoneNumber(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamDependentPhoneNumber(
-	response *ListDependentPhoneNumberResponse,
-	params *ListDependentPhoneNumberParams,
-	recordChannel chan ApiV2010DependentPhoneNumber,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamDependentPhoneNumber(response *ListDependentPhoneNumberResponse, params *ListDependentPhoneNumberParams, recordChannel chan ApiV2010DependentPhoneNumber, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

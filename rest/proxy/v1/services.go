@@ -95,10 +95,10 @@ func (c *ApiService) CreateService(params *CreateServiceParams) (*ProxyV1Service
 		data.Set("CallbackUrl", *params.CallbackUrl)
 	}
 	if params != nil && params.GeoMatchLevel != nil {
-		data.Set("GeoMatchLevel", *params.GeoMatchLevel)
+		data.Set("GeoMatchLevel", fmt.Sprint(*params.GeoMatchLevel))
 	}
 	if params != nil && params.NumberSelectionBehavior != nil {
-		data.Set("NumberSelectionBehavior", *params.NumberSelectionBehavior)
+		data.Set("NumberSelectionBehavior", fmt.Sprint(*params.NumberSelectionBehavior))
 	}
 	if params != nil && params.InterceptCallbackUrl != nil {
 		data.Set("InterceptCallbackUrl", *params.InterceptCallbackUrl)
@@ -188,10 +188,7 @@ func (params *ListServiceParams) SetLimit(Limit int) *ListServiceParams {
 }
 
 // Retrieve a single page of Service records from the API. Request is executed immediately.
-func (c *ApiService) PageService(
-	params *ListServiceParams,
-	pageToken, pageNumber string,
-) (*ListServiceResponse, error) {
+func (c *ApiService) PageService(params *ListServiceParams, pageToken, pageNumber string) (*ListServiceResponse, error) {
 	path := "/v1/Services"
 
 	data := url.Values{}
@@ -263,12 +260,7 @@ func (c *ApiService) StreamService(params *ListServiceParams) (chan ProxyV1Servi
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamService(
-	response *ListServiceResponse,
-	params *ListServiceParams,
-	recordChannel chan ProxyV1Service,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamService(response *ListServiceResponse, params *ListServiceParams, recordChannel chan ProxyV1Service, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -389,10 +381,10 @@ func (c *ApiService) UpdateService(Sid string, params *UpdateServiceParams) (*Pr
 		data.Set("CallbackUrl", *params.CallbackUrl)
 	}
 	if params != nil && params.GeoMatchLevel != nil {
-		data.Set("GeoMatchLevel", *params.GeoMatchLevel)
+		data.Set("GeoMatchLevel", fmt.Sprint(*params.GeoMatchLevel))
 	}
 	if params != nil && params.NumberSelectionBehavior != nil {
-		data.Set("NumberSelectionBehavior", *params.NumberSelectionBehavior)
+		data.Set("NumberSelectionBehavior", fmt.Sprint(*params.NumberSelectionBehavior))
 	}
 	if params != nil && params.InterceptCallbackUrl != nil {
 		data.Set("InterceptCallbackUrl", *params.InterceptCallbackUrl)

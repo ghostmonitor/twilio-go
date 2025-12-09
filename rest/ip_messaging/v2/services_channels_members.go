@@ -78,11 +78,7 @@ func (params *CreateMemberParams) SetAttributes(Attributes string) *CreateMember
 }
 
 //
-func (c *ApiService) CreateMember(
-	ServiceSid string,
-	ChannelSid string,
-	params *CreateMemberParams,
-) (*IpMessagingV2Member, error) {
+func (c *ApiService) CreateMember(ServiceSid string, ChannelSid string, params *CreateMemberParams) (*IpMessagingV2Member, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Members"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)
@@ -219,12 +215,7 @@ func (params *ListMemberParams) SetLimit(Limit int) *ListMemberParams {
 }
 
 // Retrieve a single page of Member records from the API. Request is executed immediately.
-func (c *ApiService) PageMember(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListMemberParams,
-	pageToken, pageNumber string,
-) (*ListMemberResponse, error) {
+func (c *ApiService) PageMember(ServiceSid string, ChannelSid string, params *ListMemberParams, pageToken, pageNumber string) (*ListMemberResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Members"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -267,11 +258,7 @@ func (c *ApiService) PageMember(
 }
 
 // Lists Member records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListMember(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListMemberParams,
-) ([]IpMessagingV2Member, error) {
+func (c *ApiService) ListMember(ServiceSid string, ChannelSid string, params *ListMemberParams) ([]IpMessagingV2Member, error) {
 	response, errors := c.StreamMember(ServiceSid, ChannelSid, params)
 
 	records := make([]IpMessagingV2Member, 0)
@@ -287,11 +274,7 @@ func (c *ApiService) ListMember(
 }
 
 // Streams Member records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamMember(
-	ServiceSid string,
-	ChannelSid string,
-	params *ListMemberParams,
-) (chan IpMessagingV2Member, chan error) {
+func (c *ApiService) StreamMember(ServiceSid string, ChannelSid string, params *ListMemberParams) (chan IpMessagingV2Member, chan error) {
 	if params == nil {
 		params = &ListMemberParams{}
 	}
@@ -312,12 +295,7 @@ func (c *ApiService) StreamMember(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamMember(
-	response *ListMemberResponse,
-	params *ListMemberParams,
-	recordChannel chan IpMessagingV2Member,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamMember(response *ListMemberResponse, params *ListMemberParams, recordChannel chan IpMessagingV2Member, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -413,12 +391,7 @@ func (params *UpdateMemberParams) SetAttributes(Attributes string) *UpdateMember
 }
 
 //
-func (c *ApiService) UpdateMember(
-	ServiceSid string,
-	ChannelSid string,
-	Sid string,
-	params *UpdateMemberParams,
-) (*IpMessagingV2Member, error) {
+func (c *ApiService) UpdateMember(ServiceSid string, ChannelSid string, Sid string, params *UpdateMemberParams) (*IpMessagingV2Member, error) {
 	path := "/v2/Services/{ServiceSid}/Channels/{ChannelSid}/Members/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ChannelSid"+"}", ChannelSid, -1)

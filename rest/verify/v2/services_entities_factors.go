@@ -113,11 +113,7 @@ func (params *CreateNewFactorParams) SetMetadata(Metadata interface{}) *CreateNe
 }
 
 // Create a new Factor for the Entity
-func (c *ApiService) CreateNewFactor(
-	ServiceSid string,
-	Identity string,
-	params *CreateNewFactorParams,
-) (*VerifyV2NewFactor, error) {
+func (c *ApiService) CreateNewFactor(ServiceSid string, Identity string, params *CreateNewFactorParams) (*VerifyV2NewFactor, error) {
 	path := "/v2/Services/{ServiceSid}/Entities/{Identity}/Factors"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"Identity"+"}", Identity, -1)
@@ -131,7 +127,7 @@ func (c *ApiService) CreateNewFactor(
 		data.Set("FriendlyName", *params.FriendlyName)
 	}
 	if params != nil && params.FactorType != nil {
-		data.Set("FactorType", *params.FactorType)
+		data.Set("FactorType", fmt.Sprint(*params.FactorType))
 	}
 	if params != nil && params.BindingAlg != nil {
 		data.Set("Binding.Alg", *params.BindingAlg)
@@ -143,7 +139,7 @@ func (c *ApiService) CreateNewFactor(
 		data.Set("Config.AppId", *params.ConfigAppId)
 	}
 	if params != nil && params.ConfigNotificationPlatform != nil {
-		data.Set("Config.NotificationPlatform", *params.ConfigNotificationPlatform)
+		data.Set("Config.NotificationPlatform", fmt.Sprint(*params.ConfigNotificationPlatform))
 	}
 	if params != nil && params.ConfigNotificationToken != nil {
 		data.Set("Config.NotificationToken", *params.ConfigNotificationToken)
@@ -164,7 +160,7 @@ func (c *ApiService) CreateNewFactor(
 		data.Set("Config.CodeLength", fmt.Sprint(*params.ConfigCodeLength))
 	}
 	if params != nil && params.ConfigAlg != nil {
-		data.Set("Config.Alg", *params.ConfigAlg)
+		data.Set("Config.Alg", fmt.Sprint(*params.ConfigAlg))
 	}
 	if params != nil && params.Metadata != nil {
 		v, err := json.Marshal(params.Metadata)
@@ -258,12 +254,7 @@ func (params *ListFactorParams) SetLimit(Limit int) *ListFactorParams {
 }
 
 // Retrieve a single page of Factor records from the API. Request is executed immediately.
-func (c *ApiService) PageFactor(
-	ServiceSid string,
-	Identity string,
-	params *ListFactorParams,
-	pageToken, pageNumber string,
-) (*ListFactorResponse, error) {
+func (c *ApiService) PageFactor(ServiceSid string, Identity string, params *ListFactorParams, pageToken, pageNumber string) (*ListFactorResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Entities/{Identity}/Factors"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -301,11 +292,7 @@ func (c *ApiService) PageFactor(
 }
 
 // Lists Factor records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListFactor(
-	ServiceSid string,
-	Identity string,
-	params *ListFactorParams,
-) ([]VerifyV2Factor, error) {
+func (c *ApiService) ListFactor(ServiceSid string, Identity string, params *ListFactorParams) ([]VerifyV2Factor, error) {
 	response, errors := c.StreamFactor(ServiceSid, Identity, params)
 
 	records := make([]VerifyV2Factor, 0)
@@ -321,11 +308,7 @@ func (c *ApiService) ListFactor(
 }
 
 // Streams Factor records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamFactor(
-	ServiceSid string,
-	Identity string,
-	params *ListFactorParams,
-) (chan VerifyV2Factor, chan error) {
+func (c *ApiService) StreamFactor(ServiceSid string, Identity string, params *ListFactorParams) (chan VerifyV2Factor, chan error) {
 	if params == nil {
 		params = &ListFactorParams{}
 	}
@@ -346,12 +329,7 @@ func (c *ApiService) StreamFactor(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamFactor(
-	response *ListFactorResponse,
-	params *ListFactorParams,
-	recordChannel chan VerifyV2Factor,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamFactor(response *ListFactorResponse, params *ListFactorParams, recordChannel chan VerifyV2Factor, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -459,12 +437,7 @@ func (params *UpdateFactorParams) SetConfigNotificationPlatform(ConfigNotificati
 }
 
 // Update a specific Factor. This endpoint can be used to Verify a Factor if passed an `AuthPayload` param.
-func (c *ApiService) UpdateFactor(
-	ServiceSid string,
-	Identity string,
-	Sid string,
-	params *UpdateFactorParams,
-) (*VerifyV2Factor, error) {
+func (c *ApiService) UpdateFactor(ServiceSid string, Identity string, Sid string, params *UpdateFactorParams) (*VerifyV2Factor, error) {
 	path := "/v2/Services/{ServiceSid}/Entities/{Identity}/Factors/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"Identity"+"}", Identity, -1)
@@ -497,7 +470,7 @@ func (c *ApiService) UpdateFactor(
 		data.Set("Config.CodeLength", fmt.Sprint(*params.ConfigCodeLength))
 	}
 	if params != nil && params.ConfigAlg != nil {
-		data.Set("Config.Alg", *params.ConfigAlg)
+		data.Set("Config.Alg", fmt.Sprint(*params.ConfigAlg))
 	}
 	if params != nil && params.ConfigNotificationPlatform != nil {
 		data.Set("Config.NotificationPlatform", *params.ConfigNotificationPlatform)

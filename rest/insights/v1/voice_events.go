@@ -47,11 +47,7 @@ func (params *ListEventParams) SetLimit(Limit int) *ListEventParams {
 }
 
 // Retrieve a single page of Event records from the API. Request is executed immediately.
-func (c *ApiService) PageEvent(
-	CallSid string,
-	params *ListEventParams,
-	pageToken, pageNumber string,
-) (*ListEventResponse, error) {
+func (c *ApiService) PageEvent(CallSid string, params *ListEventParams, pageToken, pageNumber string) (*ListEventResponse, error) {
 	path := "/v1/Voice/{CallSid}/Events"
 
 	path = strings.Replace(path, "{"+"CallSid"+"}", CallSid, -1)
@@ -128,12 +124,7 @@ func (c *ApiService) StreamEvent(CallSid string, params *ListEventParams) (chan 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamEvent(
-	response *ListEventResponse,
-	params *ListEventParams,
-	recordChannel chan InsightsV1Event,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamEvent(response *ListEventResponse, params *ListEventParams, recordChannel chan InsightsV1Event, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

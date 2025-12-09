@@ -72,7 +72,7 @@ func (c *ApiService) CreateChannel(ServiceSid string, params *CreateChannelParam
 		data.Set("Attributes", *params.Attributes)
 	}
 	if params != nil && params.Type != nil {
-		data.Set("Type", *params.Type)
+		data.Set("Type", fmt.Sprint(*params.Type))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)
@@ -161,11 +161,7 @@ func (params *ListChannelParams) SetLimit(Limit int) *ListChannelParams {
 }
 
 // Retrieve a single page of Channel records from the API. Request is executed immediately.
-func (c *ApiService) PageChannel(
-	ServiceSid string,
-	params *ListChannelParams,
-	pageToken, pageNumber string,
-) (*ListChannelResponse, error) {
+func (c *ApiService) PageChannel(ServiceSid string, params *ListChannelParams, pageToken, pageNumber string) (*ListChannelResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Channels"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -244,12 +240,7 @@ func (c *ApiService) StreamChannel(ServiceSid string, params *ListChannelParams)
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamChannel(
-	response *ListChannelResponse,
-	params *ListChannelParams,
-	recordChannel chan ChatV1Channel,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamChannel(response *ListChannelResponse, params *ListChannelParams, recordChannel chan ChatV1Channel, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

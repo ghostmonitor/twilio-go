@@ -27,19 +27,21 @@ import (
 type CreateDeploymentParams struct {
 	// The SID of the Build for the Deployment.
 	BuildSid *string `json:"BuildSid,omitempty"`
+	// Whether the Deployment is a plugin.
+	IsPlugin *bool `json:"IsPlugin,omitempty"`
 }
 
 func (params *CreateDeploymentParams) SetBuildSid(BuildSid string) *CreateDeploymentParams {
 	params.BuildSid = &BuildSid
 	return params
 }
+func (params *CreateDeploymentParams) SetIsPlugin(IsPlugin bool) *CreateDeploymentParams {
+	params.IsPlugin = &IsPlugin
+	return params
+}
 
 // Create a new Deployment.
-func (c *ApiService) CreateDeployment(
-	ServiceSid string,
-	EnvironmentSid string,
-	params *CreateDeploymentParams,
-) (*ServerlessV1Deployment, error) {
+func (c *ApiService) CreateDeployment(ServiceSid string, EnvironmentSid string, params *CreateDeploymentParams) (*ServerlessV1Deployment, error) {
 	path := "/v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Deployments"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"EnvironmentSid"+"}", EnvironmentSid, -1)
@@ -51,6 +53,9 @@ func (c *ApiService) CreateDeployment(
 
 	if params != nil && params.BuildSid != nil {
 		data.Set("BuildSid", *params.BuildSid)
+	}
+	if params != nil && params.IsPlugin != nil {
+		data.Set("IsPlugin", fmt.Sprint(*params.IsPlugin))
 	}
 
 	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)
@@ -69,11 +74,7 @@ func (c *ApiService) CreateDeployment(
 }
 
 // Retrieve a specific Deployment.
-func (c *ApiService) FetchDeployment(
-	ServiceSid string,
-	EnvironmentSid string,
-	Sid string,
-) (*ServerlessV1Deployment, error) {
+func (c *ApiService) FetchDeployment(ServiceSid string, EnvironmentSid string, Sid string) (*ServerlessV1Deployment, error) {
 	path := "/v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Deployments/{Sid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"EnvironmentSid"+"}", EnvironmentSid, -1)
@@ -117,12 +118,7 @@ func (params *ListDeploymentParams) SetLimit(Limit int) *ListDeploymentParams {
 }
 
 // Retrieve a single page of Deployment records from the API. Request is executed immediately.
-func (c *ApiService) PageDeployment(
-	ServiceSid string,
-	EnvironmentSid string,
-	params *ListDeploymentParams,
-	pageToken, pageNumber string,
-) (*ListDeploymentResponse, error) {
+func (c *ApiService) PageDeployment(ServiceSid string, EnvironmentSid string, params *ListDeploymentParams, pageToken, pageNumber string) (*ListDeploymentResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Deployments"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -160,11 +156,7 @@ func (c *ApiService) PageDeployment(
 }
 
 // Lists Deployment records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListDeployment(
-	ServiceSid string,
-	EnvironmentSid string,
-	params *ListDeploymentParams,
-) ([]ServerlessV1Deployment, error) {
+func (c *ApiService) ListDeployment(ServiceSid string, EnvironmentSid string, params *ListDeploymentParams) ([]ServerlessV1Deployment, error) {
 	response, errors := c.StreamDeployment(ServiceSid, EnvironmentSid, params)
 
 	records := make([]ServerlessV1Deployment, 0)
@@ -180,11 +172,7 @@ func (c *ApiService) ListDeployment(
 }
 
 // Streams Deployment records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamDeployment(
-	ServiceSid string,
-	EnvironmentSid string,
-	params *ListDeploymentParams,
-) (chan ServerlessV1Deployment, chan error) {
+func (c *ApiService) StreamDeployment(ServiceSid string, EnvironmentSid string, params *ListDeploymentParams) (chan ServerlessV1Deployment, chan error) {
 	if params == nil {
 		params = &ListDeploymentParams{}
 	}
@@ -205,12 +193,7 @@ func (c *ApiService) StreamDeployment(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamDeployment(
-	response *ListDeploymentResponse,
-	params *ListDeploymentParams,
-	recordChannel chan ServerlessV1Deployment,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamDeployment(response *ListDeploymentResponse, params *ListDeploymentParams, recordChannel chan ServerlessV1Deployment, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

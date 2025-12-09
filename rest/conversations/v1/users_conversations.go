@@ -46,10 +46,7 @@ func (c *ApiService) DeleteUserConversation(UserSid string, ConversationSid stri
 }
 
 // Fetch a specific User Conversation.
-func (c *ApiService) FetchUserConversation(
-	UserSid string,
-	ConversationSid string,
-) (*ConversationsV1UserConversation, error) {
+func (c *ApiService) FetchUserConversation(UserSid string, ConversationSid string) (*ConversationsV1UserConversation, error) {
 	path := "/v1/Users/{UserSid}/Conversations/{ConversationSid}"
 	path = strings.Replace(path, "{"+"UserSid"+"}", UserSid, -1)
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
@@ -76,7 +73,7 @@ func (c *ApiService) FetchUserConversation(
 
 // Optional parameters for the method 'ListUserConversation'
 type ListUserConversationParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 50.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -92,11 +89,7 @@ func (params *ListUserConversationParams) SetLimit(Limit int) *ListUserConversat
 }
 
 // Retrieve a single page of UserConversation records from the API. Request is executed immediately.
-func (c *ApiService) PageUserConversation(
-	UserSid string,
-	params *ListUserConversationParams,
-	pageToken, pageNumber string,
-) (*ListUserConversationResponse, error) {
+func (c *ApiService) PageUserConversation(UserSid string, params *ListUserConversationParams, pageToken, pageNumber string) (*ListUserConversationResponse, error) {
 	path := "/v1/Users/{UserSid}/Conversations"
 
 	path = strings.Replace(path, "{"+"UserSid"+"}", UserSid, -1)
@@ -133,10 +126,7 @@ func (c *ApiService) PageUserConversation(
 }
 
 // Lists UserConversation records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListUserConversation(
-	UserSid string,
-	params *ListUserConversationParams,
-) ([]ConversationsV1UserConversation, error) {
+func (c *ApiService) ListUserConversation(UserSid string, params *ListUserConversationParams) ([]ConversationsV1UserConversation, error) {
 	response, errors := c.StreamUserConversation(UserSid, params)
 
 	records := make([]ConversationsV1UserConversation, 0)
@@ -152,10 +142,7 @@ func (c *ApiService) ListUserConversation(
 }
 
 // Streams UserConversation records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamUserConversation(
-	UserSid string,
-	params *ListUserConversationParams,
-) (chan ConversationsV1UserConversation, chan error) {
+func (c *ApiService) StreamUserConversation(UserSid string, params *ListUserConversationParams) (chan ConversationsV1UserConversation, chan error) {
 	if params == nil {
 		params = &ListUserConversationParams{}
 	}
@@ -176,12 +163,7 @@ func (c *ApiService) StreamUserConversation(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUserConversation(
-	response *ListUserConversationResponse,
-	params *ListUserConversationParams,
-	recordChannel chan ConversationsV1UserConversation,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUserConversation(response *ListUserConversationResponse, params *ListUserConversationParams, recordChannel chan ConversationsV1UserConversation, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -253,11 +235,7 @@ func (params *UpdateUserConversationParams) SetLastReadMessageIndex(LastReadMess
 }
 
 // Update a specific User Conversation.
-func (c *ApiService) UpdateUserConversation(
-	UserSid string,
-	ConversationSid string,
-	params *UpdateUserConversationParams,
-) (*ConversationsV1UserConversation, error) {
+func (c *ApiService) UpdateUserConversation(UserSid string, ConversationSid string, params *UpdateUserConversationParams) (*ConversationsV1UserConversation, error) {
 	path := "/v1/Users/{UserSid}/Conversations/{ConversationSid}"
 	path = strings.Replace(path, "{"+"UserSid"+"}", UserSid, -1)
 	path = strings.Replace(path, "{"+"ConversationSid"+"}", ConversationSid, -1)
@@ -268,7 +246,7 @@ func (c *ApiService) UpdateUserConversation(
 	}
 
 	if params != nil && params.NotificationLevel != nil {
-		data.Set("NotificationLevel", *params.NotificationLevel)
+		data.Set("NotificationLevel", fmt.Sprint(*params.NotificationLevel))
 	}
 	if params != nil && params.LastReadTimestamp != nil {
 		data.Set("LastReadTimestamp", fmt.Sprint((*params.LastReadTimestamp).Format(time.RFC3339)))

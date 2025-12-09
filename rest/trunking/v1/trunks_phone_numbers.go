@@ -35,10 +35,7 @@ func (params *CreatePhoneNumberParams) SetPhoneNumberSid(PhoneNumberSid string) 
 }
 
 //
-func (c *ApiService) CreatePhoneNumber(
-	TrunkSid string,
-	params *CreatePhoneNumberParams,
-) (*TrunkingV1PhoneNumber, error) {
+func (c *ApiService) CreatePhoneNumber(TrunkSid string, params *CreatePhoneNumberParams) (*TrunkingV1PhoneNumber, error) {
 	path := "/v1/Trunks/{TrunkSid}/PhoneNumbers"
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
 
@@ -131,11 +128,7 @@ func (params *ListPhoneNumberParams) SetLimit(Limit int) *ListPhoneNumberParams 
 }
 
 // Retrieve a single page of PhoneNumber records from the API. Request is executed immediately.
-func (c *ApiService) PagePhoneNumber(
-	TrunkSid string,
-	params *ListPhoneNumberParams,
-	pageToken, pageNumber string,
-) (*ListPhoneNumberResponse, error) {
+func (c *ApiService) PagePhoneNumber(TrunkSid string, params *ListPhoneNumberParams, pageToken, pageNumber string) (*ListPhoneNumberResponse, error) {
 	path := "/v1/Trunks/{TrunkSid}/PhoneNumbers"
 
 	path = strings.Replace(path, "{"+"TrunkSid"+"}", TrunkSid, -1)
@@ -188,10 +181,7 @@ func (c *ApiService) ListPhoneNumber(TrunkSid string, params *ListPhoneNumberPar
 }
 
 // Streams PhoneNumber records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamPhoneNumber(
-	TrunkSid string,
-	params *ListPhoneNumberParams,
-) (chan TrunkingV1PhoneNumber, chan error) {
+func (c *ApiService) StreamPhoneNumber(TrunkSid string, params *ListPhoneNumberParams) (chan TrunkingV1PhoneNumber, chan error) {
 	if params == nil {
 		params = &ListPhoneNumberParams{}
 	}
@@ -212,12 +202,7 @@ func (c *ApiService) StreamPhoneNumber(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamPhoneNumber(
-	response *ListPhoneNumberResponse,
-	params *ListPhoneNumberParams,
-	recordChannel chan TrunkingV1PhoneNumber,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamPhoneNumber(response *ListPhoneNumberResponse, params *ListPhoneNumberParams, recordChannel chan TrunkingV1PhoneNumber, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

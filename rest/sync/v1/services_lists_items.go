@@ -53,11 +53,7 @@ func (params *CreateSyncListItemParams) SetCollectionTtl(CollectionTtl int) *Cre
 }
 
 //
-func (c *ApiService) CreateSyncListItem(
-	ServiceSid string,
-	ListSid string,
-	params *CreateSyncListItemParams,
-) (*SyncV1SyncListItem, error) {
+func (c *ApiService) CreateSyncListItem(ServiceSid string, ListSid string, params *CreateSyncListItemParams) (*SyncV1SyncListItem, error) {
 	path := "/v1/Services/{ServiceSid}/Lists/{ListSid}/Items"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ListSid"+"}", ListSid, -1)
@@ -113,12 +109,7 @@ func (params *DeleteSyncListItemParams) SetIfMatch(IfMatch string) *DeleteSyncLi
 }
 
 //
-func (c *ApiService) DeleteSyncListItem(
-	ServiceSid string,
-	ListSid string,
-	Index int,
-	params *DeleteSyncListItemParams,
-) error {
+func (c *ApiService) DeleteSyncListItem(ServiceSid string, ListSid string, Index int, params *DeleteSyncListItemParams) error {
 	path := "/v1/Services/{ServiceSid}/Lists/{ListSid}/Items/{Index}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ListSid"+"}", ListSid, -1)
@@ -177,7 +168,7 @@ type ListSyncListItemParams struct {
 	From *string `json:"From,omitempty"`
 	// Whether to include the List Item referenced by the `from` parameter. Can be: `inclusive` to include the List Item referenced by the `from` parameter or `exclusive` to start with the next List Item. The default value is `inclusive`.
 	Bounds *string `json:"Bounds,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -205,12 +196,7 @@ func (params *ListSyncListItemParams) SetLimit(Limit int) *ListSyncListItemParam
 }
 
 // Retrieve a single page of SyncListItem records from the API. Request is executed immediately.
-func (c *ApiService) PageSyncListItem(
-	ServiceSid string,
-	ListSid string,
-	params *ListSyncListItemParams,
-	pageToken, pageNumber string,
-) (*ListSyncListItemResponse, error) {
+func (c *ApiService) PageSyncListItem(ServiceSid string, ListSid string, params *ListSyncListItemParams, pageToken, pageNumber string) (*ListSyncListItemResponse, error) {
 	path := "/v1/Services/{ServiceSid}/Lists/{ListSid}/Items"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -222,13 +208,13 @@ func (c *ApiService) PageSyncListItem(
 	}
 
 	if params != nil && params.Order != nil {
-		data.Set("Order", *params.Order)
+		data.Set("Order", fmt.Sprint(*params.Order))
 	}
 	if params != nil && params.From != nil {
 		data.Set("From", *params.From)
 	}
 	if params != nil && params.Bounds != nil {
-		data.Set("Bounds", *params.Bounds)
+		data.Set("Bounds", fmt.Sprint(*params.Bounds))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -257,11 +243,7 @@ func (c *ApiService) PageSyncListItem(
 }
 
 // Lists SyncListItem records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListSyncListItem(
-	ServiceSid string,
-	ListSid string,
-	params *ListSyncListItemParams,
-) ([]SyncV1SyncListItem, error) {
+func (c *ApiService) ListSyncListItem(ServiceSid string, ListSid string, params *ListSyncListItemParams) ([]SyncV1SyncListItem, error) {
 	response, errors := c.StreamSyncListItem(ServiceSid, ListSid, params)
 
 	records := make([]SyncV1SyncListItem, 0)
@@ -277,11 +259,7 @@ func (c *ApiService) ListSyncListItem(
 }
 
 // Streams SyncListItem records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamSyncListItem(
-	ServiceSid string,
-	ListSid string,
-	params *ListSyncListItemParams,
-) (chan SyncV1SyncListItem, chan error) {
+func (c *ApiService) StreamSyncListItem(ServiceSid string, ListSid string, params *ListSyncListItemParams) (chan SyncV1SyncListItem, chan error) {
 	if params == nil {
 		params = &ListSyncListItemParams{}
 	}
@@ -302,12 +280,7 @@ func (c *ApiService) StreamSyncListItem(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSyncListItem(
-	response *ListSyncListItemResponse,
-	params *ListSyncListItemParams,
-	recordChannel chan SyncV1SyncListItem,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSyncListItem(response *ListSyncListItemResponse, params *ListSyncListItemParams, recordChannel chan SyncV1SyncListItem, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -391,12 +364,7 @@ func (params *UpdateSyncListItemParams) SetCollectionTtl(CollectionTtl int) *Upd
 }
 
 //
-func (c *ApiService) UpdateSyncListItem(
-	ServiceSid string,
-	ListSid string,
-	Index int,
-	params *UpdateSyncListItemParams,
-) (*SyncV1SyncListItem, error) {
+func (c *ApiService) UpdateSyncListItem(ServiceSid string, ListSid string, Index int, params *UpdateSyncListItemParams) (*SyncV1SyncListItem, error) {
 	path := "/v1/Services/{ServiceSid}/Lists/{ListSid}/Items/{Index}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"ListSid"+"}", ListSid, -1)

@@ -102,10 +102,7 @@ func (params *CreateServiceConversationParams) SetBindingsEmailName(BindingsEmai
 }
 
 // Create a new conversation in your service
-func (c *ApiService) CreateServiceConversation(
-	ChatServiceSid string,
-	params *CreateServiceConversationParams,
-) (*ConversationsV1ServiceConversation, error) {
+func (c *ApiService) CreateServiceConversation(ChatServiceSid string, params *CreateServiceConversationParams) (*ConversationsV1ServiceConversation, error) {
 	path := "/v1/Services/{ChatServiceSid}/Conversations"
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
 
@@ -133,7 +130,7 @@ func (c *ApiService) CreateServiceConversation(
 		data.Set("DateUpdated", fmt.Sprint((*params.DateUpdated).Format(time.RFC3339)))
 	}
 	if params != nil && params.State != nil {
-		data.Set("State", *params.State)
+		data.Set("State", fmt.Sprint(*params.State))
 	}
 	if params != nil && params.TimersInactive != nil {
 		data.Set("Timers.Inactive", *params.TimersInactive)
@@ -178,11 +175,7 @@ func (params *DeleteServiceConversationParams) SetXTwilioWebhookEnabled(XTwilioW
 }
 
 // Remove a conversation from your service
-func (c *ApiService) DeleteServiceConversation(
-	ChatServiceSid string,
-	Sid string,
-	params *DeleteServiceConversationParams,
-) error {
+func (c *ApiService) DeleteServiceConversation(ChatServiceSid string, Sid string, params *DeleteServiceConversationParams) error {
 	path := "/v1/Services/{ChatServiceSid}/Conversations/{Sid}"
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -206,10 +199,7 @@ func (c *ApiService) DeleteServiceConversation(
 }
 
 // Fetch a conversation from your service
-func (c *ApiService) FetchServiceConversation(
-	ChatServiceSid string,
-	Sid string,
-) (*ConversationsV1ServiceConversation, error) {
+func (c *ApiService) FetchServiceConversation(ChatServiceSid string, Sid string) (*ConversationsV1ServiceConversation, error) {
 	path := "/v1/Services/{ChatServiceSid}/Conversations/{Sid}"
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -242,7 +232,7 @@ type ListServiceConversationParams struct {
 	EndDate *string `json:"EndDate,omitempty"`
 	// State for sorting and filtering list of Conversations. Can be `active`, `inactive` or `closed`
 	State *string `json:"State,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -270,11 +260,7 @@ func (params *ListServiceConversationParams) SetLimit(Limit int) *ListServiceCon
 }
 
 // Retrieve a single page of ServiceConversation records from the API. Request is executed immediately.
-func (c *ApiService) PageServiceConversation(
-	ChatServiceSid string,
-	params *ListServiceConversationParams,
-	pageToken, pageNumber string,
-) (*ListServiceConversationResponse, error) {
+func (c *ApiService) PageServiceConversation(ChatServiceSid string, params *ListServiceConversationParams, pageToken, pageNumber string) (*ListServiceConversationResponse, error) {
 	path := "/v1/Services/{ChatServiceSid}/Conversations"
 
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
@@ -291,7 +277,7 @@ func (c *ApiService) PageServiceConversation(
 		data.Set("EndDate", *params.EndDate)
 	}
 	if params != nil && params.State != nil {
-		data.Set("State", *params.State)
+		data.Set("State", fmt.Sprint(*params.State))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -320,10 +306,7 @@ func (c *ApiService) PageServiceConversation(
 }
 
 // Lists ServiceConversation records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListServiceConversation(
-	ChatServiceSid string,
-	params *ListServiceConversationParams,
-) ([]ConversationsV1ServiceConversation, error) {
+func (c *ApiService) ListServiceConversation(ChatServiceSid string, params *ListServiceConversationParams) ([]ConversationsV1ServiceConversation, error) {
 	response, errors := c.StreamServiceConversation(ChatServiceSid, params)
 
 	records := make([]ConversationsV1ServiceConversation, 0)
@@ -339,10 +322,7 @@ func (c *ApiService) ListServiceConversation(
 }
 
 // Streams ServiceConversation records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamServiceConversation(
-	ChatServiceSid string,
-	params *ListServiceConversationParams,
-) (chan ConversationsV1ServiceConversation, chan error) {
+func (c *ApiService) StreamServiceConversation(ChatServiceSid string, params *ListServiceConversationParams) (chan ConversationsV1ServiceConversation, chan error) {
 	if params == nil {
 		params = &ListServiceConversationParams{}
 	}
@@ -363,12 +343,7 @@ func (c *ApiService) StreamServiceConversation(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamServiceConversation(
-	response *ListServiceConversationResponse,
-	params *ListServiceConversationParams,
-	recordChannel chan ConversationsV1ServiceConversation,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamServiceConversation(response *ListServiceConversationResponse, params *ListServiceConversationParams, recordChannel chan ConversationsV1ServiceConversation, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -494,11 +469,7 @@ func (params *UpdateServiceConversationParams) SetBindingsEmailName(BindingsEmai
 }
 
 // Update an existing conversation in your service
-func (c *ApiService) UpdateServiceConversation(
-	ChatServiceSid string,
-	Sid string,
-	params *UpdateServiceConversationParams,
-) (*ConversationsV1ServiceConversation, error) {
+func (c *ApiService) UpdateServiceConversation(ChatServiceSid string, Sid string, params *UpdateServiceConversationParams) (*ConversationsV1ServiceConversation, error) {
 	path := "/v1/Services/{ChatServiceSid}/Conversations/{Sid}"
 	path = strings.Replace(path, "{"+"ChatServiceSid"+"}", ChatServiceSid, -1)
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
@@ -524,7 +495,7 @@ func (c *ApiService) UpdateServiceConversation(
 		data.Set("MessagingServiceSid", *params.MessagingServiceSid)
 	}
 	if params != nil && params.State != nil {
-		data.Set("State", *params.State)
+		data.Set("State", fmt.Sprint(*params.State))
 	}
 	if params != nil && params.TimersInactive != nil {
 		data.Set("Timers.Inactive", *params.TimersInactive)

@@ -163,7 +163,7 @@ func (c *ApiService) FetchService(Sid string) (*SyncV1Service, error) {
 
 // Optional parameters for the method 'ListService'
 type ListServiceParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 100.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -179,10 +179,7 @@ func (params *ListServiceParams) SetLimit(Limit int) *ListServiceParams {
 }
 
 // Retrieve a single page of Service records from the API. Request is executed immediately.
-func (c *ApiService) PageService(
-	params *ListServiceParams,
-	pageToken, pageNumber string,
-) (*ListServiceResponse, error) {
+func (c *ApiService) PageService(params *ListServiceParams, pageToken, pageNumber string) (*ListServiceResponse, error) {
 	path := "/v1/Services"
 
 	data := url.Values{}
@@ -254,12 +251,7 @@ func (c *ApiService) StreamService(params *ListServiceParams) (chan SyncV1Servic
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamService(
-	response *ListServiceResponse,
-	params *ListServiceParams,
-	recordChannel chan SyncV1Service,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamService(response *ListServiceResponse, params *ListServiceParams, recordChannel chan SyncV1Service, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

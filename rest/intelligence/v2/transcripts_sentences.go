@@ -27,7 +27,9 @@ import (
 type ListSentenceParams struct {
 	// Grant access to PII Redacted/Unredacted Sentences. If redaction is enabled, the default is `true` to access redacted sentences.
 	Redacted *bool `json:"Redacted,omitempty"`
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// Returns word level timestamps information, if word_timestamps is enabled. The default is `false`.
+	WordTimestamps *bool `json:"WordTimestamps,omitempty"`
+	// How many resources to return in each list page. The default is 50, and the maximum is 5000.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -35,6 +37,10 @@ type ListSentenceParams struct {
 
 func (params *ListSentenceParams) SetRedacted(Redacted bool) *ListSentenceParams {
 	params.Redacted = &Redacted
+	return params
+}
+func (params *ListSentenceParams) SetWordTimestamps(WordTimestamps bool) *ListSentenceParams {
+	params.WordTimestamps = &WordTimestamps
 	return params
 }
 func (params *ListSentenceParams) SetPageSize(PageSize int) *ListSentenceParams {
@@ -47,11 +53,7 @@ func (params *ListSentenceParams) SetLimit(Limit int) *ListSentenceParams {
 }
 
 // Retrieve a single page of Sentence records from the API. Request is executed immediately.
-func (c *ApiService) PageSentence(
-	TranscriptSid string,
-	params *ListSentenceParams,
-	pageToken, pageNumber string,
-) (*ListSentenceResponse, error) {
+func (c *ApiService) PageSentence(TranscriptSid string, params *ListSentenceParams, pageToken, pageNumber string) (*ListSentenceResponse, error) {
 	path := "/v2/Transcripts/{TranscriptSid}/Sentences"
 
 	path = strings.Replace(path, "{"+"TranscriptSid"+"}", TranscriptSid, -1)
@@ -63,6 +65,9 @@ func (c *ApiService) PageSentence(
 
 	if params != nil && params.Redacted != nil {
 		data.Set("Redacted", fmt.Sprint(*params.Redacted))
+	}
+	if params != nil && params.WordTimestamps != nil {
+		data.Set("WordTimestamps", fmt.Sprint(*params.WordTimestamps))
 	}
 	if params != nil && params.PageSize != nil {
 		data.Set("PageSize", fmt.Sprint(*params.PageSize))
@@ -107,10 +112,7 @@ func (c *ApiService) ListSentence(TranscriptSid string, params *ListSentencePara
 }
 
 // Streams Sentence records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamSentence(
-	TranscriptSid string,
-	params *ListSentenceParams,
-) (chan IntelligenceV2Sentence, chan error) {
+func (c *ApiService) StreamSentence(TranscriptSid string, params *ListSentenceParams) (chan IntelligenceV2Sentence, chan error) {
 	if params == nil {
 		params = &ListSentenceParams{}
 	}
@@ -131,12 +133,7 @@ func (c *ApiService) StreamSentence(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSentence(
-	response *ListSentenceResponse,
-	params *ListSentenceParams,
-	recordChannel chan IntelligenceV2Sentence,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSentence(response *ListSentenceResponse, params *ListSentenceParams, recordChannel chan IntelligenceV2Sentence, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

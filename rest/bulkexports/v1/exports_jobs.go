@@ -65,10 +65,7 @@ func (params *CreateExportCustomJobParams) SetEmail(Email string) *CreateExportC
 }
 
 //
-func (c *ApiService) CreateExportCustomJob(
-	ResourceType string,
-	params *CreateExportCustomJobParams,
-) (*BulkexportsV1ExportCustomJob, error) {
+func (c *ApiService) CreateExportCustomJob(ResourceType string, params *CreateExportCustomJobParams) (*BulkexportsV1ExportCustomJob, error) {
 	path := "/v1/Exports/{ResourceType}/Jobs"
 	path = strings.Replace(path, "{"+"ResourceType"+"}", ResourceType, -1)
 
@@ -174,11 +171,7 @@ func (params *ListExportCustomJobParams) SetLimit(Limit int) *ListExportCustomJo
 }
 
 // Retrieve a single page of ExportCustomJob records from the API. Request is executed immediately.
-func (c *ApiService) PageExportCustomJob(
-	ResourceType string,
-	params *ListExportCustomJobParams,
-	pageToken, pageNumber string,
-) (*ListExportCustomJobResponse, error) {
+func (c *ApiService) PageExportCustomJob(ResourceType string, params *ListExportCustomJobParams, pageToken, pageNumber string) (*ListExportCustomJobResponse, error) {
 	path := "/v1/Exports/{ResourceType}/Jobs"
 
 	path = strings.Replace(path, "{"+"ResourceType"+"}", ResourceType, -1)
@@ -215,10 +208,7 @@ func (c *ApiService) PageExportCustomJob(
 }
 
 // Lists ExportCustomJob records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListExportCustomJob(
-	ResourceType string,
-	params *ListExportCustomJobParams,
-) ([]BulkexportsV1ExportCustomJob, error) {
+func (c *ApiService) ListExportCustomJob(ResourceType string, params *ListExportCustomJobParams) ([]BulkexportsV1ExportCustomJob, error) {
 	response, errors := c.StreamExportCustomJob(ResourceType, params)
 
 	records := make([]BulkexportsV1ExportCustomJob, 0)
@@ -234,10 +224,7 @@ func (c *ApiService) ListExportCustomJob(
 }
 
 // Streams ExportCustomJob records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamExportCustomJob(
-	ResourceType string,
-	params *ListExportCustomJobParams,
-) (chan BulkexportsV1ExportCustomJob, chan error) {
+func (c *ApiService) StreamExportCustomJob(ResourceType string, params *ListExportCustomJobParams) (chan BulkexportsV1ExportCustomJob, chan error) {
 	if params == nil {
 		params = &ListExportCustomJobParams{}
 	}
@@ -258,12 +245,7 @@ func (c *ApiService) StreamExportCustomJob(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamExportCustomJob(
-	response *ListExportCustomJobResponse,
-	params *ListExportCustomJobParams,
-	recordChannel chan BulkexportsV1ExportCustomJob,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamExportCustomJob(response *ListExportCustomJobResponse, params *ListExportCustomJobParams, recordChannel chan BulkexportsV1ExportCustomJob, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

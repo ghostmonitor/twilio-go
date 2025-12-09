@@ -23,6 +23,67 @@ import (
 	"github.com/ghostmonitor/twilio-go/client"
 )
 
+// Optional parameters for the method 'CreateChannelSender'
+type CreateChannelSenderParams struct {
+	// The SID of the Channel Sender being added to the Service.
+	Sid *string `json:"Sid,omitempty"`
+}
+
+func (params *CreateChannelSenderParams) SetSid(Sid string) *CreateChannelSenderParams {
+	params.Sid = &Sid
+	return params
+}
+
+//
+func (c *ApiService) CreateChannelSender(MessagingServiceSid string, params *CreateChannelSenderParams) (*MessagingV1ChannelSender, error) {
+	path := "/v1/Services/{MessagingServiceSid}/ChannelSenders"
+	path = strings.Replace(path, "{"+"MessagingServiceSid"+"}", MessagingServiceSid, -1)
+
+	data := url.Values{}
+	headers := map[string]interface{}{
+		"Content-Type": "application/x-www-form-urlencoded",
+	}
+
+	if params != nil && params.Sid != nil {
+		data.Set("Sid", *params.Sid)
+	}
+
+	resp, err := c.requestHandler.Post(c.baseURL+path, data, headers)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	ps := &MessagingV1ChannelSender{}
+	if err := json.NewDecoder(resp.Body).Decode(ps); err != nil {
+		return nil, err
+	}
+
+	return ps, err
+}
+
+//
+func (c *ApiService) DeleteChannelSender(MessagingServiceSid string, Sid string) error {
+	path := "/v1/Services/{MessagingServiceSid}/ChannelSenders/{Sid}"
+	path = strings.Replace(path, "{"+"MessagingServiceSid"+"}", MessagingServiceSid, -1)
+	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
+
+	data := url.Values{}
+	headers := map[string]interface{}{
+		"Content-Type": "application/x-www-form-urlencoded",
+	}
+
+	resp, err := c.requestHandler.Delete(c.baseURL+path, data, headers)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	return nil
+}
+
 //
 func (c *ApiService) FetchChannelSender(MessagingServiceSid string, Sid string) (*MessagingV1ChannelSender, error) {
 	path := "/v1/Services/{MessagingServiceSid}/ChannelSenders/{Sid}"
@@ -67,11 +128,7 @@ func (params *ListChannelSenderParams) SetLimit(Limit int) *ListChannelSenderPar
 }
 
 // Retrieve a single page of ChannelSender records from the API. Request is executed immediately.
-func (c *ApiService) PageChannelSender(
-	MessagingServiceSid string,
-	params *ListChannelSenderParams,
-	pageToken, pageNumber string,
-) (*ListChannelSenderResponse, error) {
+func (c *ApiService) PageChannelSender(MessagingServiceSid string, params *ListChannelSenderParams, pageToken, pageNumber string) (*ListChannelSenderResponse, error) {
 	path := "/v1/Services/{MessagingServiceSid}/ChannelSenders"
 
 	path = strings.Replace(path, "{"+"MessagingServiceSid"+"}", MessagingServiceSid, -1)
@@ -108,10 +165,7 @@ func (c *ApiService) PageChannelSender(
 }
 
 // Lists ChannelSender records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListChannelSender(
-	MessagingServiceSid string,
-	params *ListChannelSenderParams,
-) ([]MessagingV1ChannelSender, error) {
+func (c *ApiService) ListChannelSender(MessagingServiceSid string, params *ListChannelSenderParams) ([]MessagingV1ChannelSender, error) {
 	response, errors := c.StreamChannelSender(MessagingServiceSid, params)
 
 	records := make([]MessagingV1ChannelSender, 0)
@@ -127,10 +181,7 @@ func (c *ApiService) ListChannelSender(
 }
 
 // Streams ChannelSender records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamChannelSender(
-	MessagingServiceSid string,
-	params *ListChannelSenderParams,
-) (chan MessagingV1ChannelSender, chan error) {
+func (c *ApiService) StreamChannelSender(MessagingServiceSid string, params *ListChannelSenderParams) (chan MessagingV1ChannelSender, chan error) {
 	if params == nil {
 		params = &ListChannelSenderParams{}
 	}
@@ -151,12 +202,7 @@ func (c *ApiService) StreamChannelSender(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamChannelSender(
-	response *ListChannelSenderResponse,
-	params *ListChannelSenderParams,
-	recordChannel chan MessagingV1ChannelSender,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamChannelSender(response *ListChannelSenderResponse, params *ListChannelSenderParams, recordChannel chan MessagingV1ChannelSender, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

@@ -36,12 +36,7 @@ func (params *DeleteUserChannelParams) SetXTwilioWebhookEnabled(XTwilioWebhookEn
 }
 
 // Removes User from selected Channel.
-func (c *ApiService) DeleteUserChannel(
-	ServiceSid string,
-	UserSid string,
-	ChannelSid string,
-	params *DeleteUserChannelParams,
-) error {
+func (c *ApiService) DeleteUserChannel(ServiceSid string, UserSid string, ChannelSid string, params *DeleteUserChannelParams) error {
 	path := "/v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"UserSid"+"}", UserSid, -1)
@@ -66,11 +61,7 @@ func (c *ApiService) DeleteUserChannel(
 }
 
 //
-func (c *ApiService) FetchUserChannel(
-	ServiceSid string,
-	UserSid string,
-	ChannelSid string,
-) (*ChatV2UserChannel, error) {
+func (c *ApiService) FetchUserChannel(ServiceSid string, UserSid string, ChannelSid string) (*ChatV2UserChannel, error) {
 	path := "/v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"UserSid"+"}", UserSid, -1)
@@ -98,7 +89,7 @@ func (c *ApiService) FetchUserChannel(
 
 // Optional parameters for the method 'ListUserChannel'
 type ListUserChannelParams struct {
-	// How many resources to return in each list page. The default is 50, and the maximum is 1000.
+	// How many resources to return in each list page. The default is 50, and the maximum is 50.
 	PageSize *int `json:"PageSize,omitempty"`
 	// Max number of records to return.
 	Limit *int `json:"limit,omitempty"`
@@ -114,12 +105,7 @@ func (params *ListUserChannelParams) SetLimit(Limit int) *ListUserChannelParams 
 }
 
 // Retrieve a single page of UserChannel records from the API. Request is executed immediately.
-func (c *ApiService) PageUserChannel(
-	ServiceSid string,
-	UserSid string,
-	params *ListUserChannelParams,
-	pageToken, pageNumber string,
-) (*ListUserChannelResponse, error) {
+func (c *ApiService) PageUserChannel(ServiceSid string, UserSid string, params *ListUserChannelParams, pageToken, pageNumber string) (*ListUserChannelResponse, error) {
 	path := "/v2/Services/{ServiceSid}/Users/{UserSid}/Channels"
 
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
@@ -157,11 +143,7 @@ func (c *ApiService) PageUserChannel(
 }
 
 // Lists UserChannel records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListUserChannel(
-	ServiceSid string,
-	UserSid string,
-	params *ListUserChannelParams,
-) ([]ChatV2UserChannel, error) {
+func (c *ApiService) ListUserChannel(ServiceSid string, UserSid string, params *ListUserChannelParams) ([]ChatV2UserChannel, error) {
 	response, errors := c.StreamUserChannel(ServiceSid, UserSid, params)
 
 	records := make([]ChatV2UserChannel, 0)
@@ -177,11 +159,7 @@ func (c *ApiService) ListUserChannel(
 }
 
 // Streams UserChannel records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamUserChannel(
-	ServiceSid string,
-	UserSid string,
-	params *ListUserChannelParams,
-) (chan ChatV2UserChannel, chan error) {
+func (c *ApiService) StreamUserChannel(ServiceSid string, UserSid string, params *ListUserChannelParams) (chan ChatV2UserChannel, chan error) {
 	if params == nil {
 		params = &ListUserChannelParams{}
 	}
@@ -202,12 +180,7 @@ func (c *ApiService) StreamUserChannel(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUserChannel(
-	response *ListUserChannelResponse,
-	params *ListUserChannelParams,
-	recordChannel chan ChatV2UserChannel,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUserChannel(response *ListUserChannelResponse, params *ListUserChannelParams, recordChannel chan ChatV2UserChannel, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -279,12 +252,7 @@ func (params *UpdateUserChannelParams) SetLastConsumptionTimestamp(LastConsumpti
 }
 
 //
-func (c *ApiService) UpdateUserChannel(
-	ServiceSid string,
-	UserSid string,
-	ChannelSid string,
-	params *UpdateUserChannelParams,
-) (*ChatV2UserChannel, error) {
+func (c *ApiService) UpdateUserChannel(ServiceSid string, UserSid string, ChannelSid string, params *UpdateUserChannelParams) (*ChatV2UserChannel, error) {
 	path := "/v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid}"
 	path = strings.Replace(path, "{"+"ServiceSid"+"}", ServiceSid, -1)
 	path = strings.Replace(path, "{"+"UserSid"+"}", UserSid, -1)
@@ -296,7 +264,7 @@ func (c *ApiService) UpdateUserChannel(
 	}
 
 	if params != nil && params.NotificationLevel != nil {
-		data.Set("NotificationLevel", *params.NotificationLevel)
+		data.Set("NotificationLevel", fmt.Sprint(*params.NotificationLevel))
 	}
 	if params != nil && params.LastConsumedMessageIndex != nil {
 		data.Set("LastConsumedMessageIndex", fmt.Sprint(*params.LastConsumedMessageIndex))

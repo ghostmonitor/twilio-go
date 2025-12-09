@@ -23,16 +23,16 @@ import (
 // Optional parameters for the method 'CreateBillingUsage'
 type CreateBillingUsageParams struct {
 	//
-	CreateBillingUsageRequest *CreateBillingUsageRequest `json:"CreateBillingUsageRequest,omitempty"`
+	MarketplaceV1InstalledAddOnUsage *MarketplaceV1InstalledAddOnUsage `json:"MarketplaceV1InstalledAddOnUsage,omitempty"`
 }
 
-func (params *CreateBillingUsageParams) SetCreateBillingUsageRequest(CreateBillingUsageRequest CreateBillingUsageRequest) *CreateBillingUsageParams {
-	params.CreateBillingUsageRequest = &CreateBillingUsageRequest
+func (params *CreateBillingUsageParams) SetMarketplaceV1InstalledAddOnUsage(MarketplaceV1InstalledAddOnUsage MarketplaceV1InstalledAddOnUsage) *CreateBillingUsageParams {
+	params.MarketplaceV1InstalledAddOnUsage = &MarketplaceV1InstalledAddOnUsage
 	return params
 }
 
-//
-func (c *ApiService) CreateBillingUsage(InstalledAddOnSid string, params *CreateBillingUsageParams) (*MarketplaceV1BillingUsageResponse, error) {
+// Allows Twilio Marketplace publishers to manually report customer usage on No-code Partner Listings that they own.
+func (c *ApiService) CreateBillingUsage(InstalledAddOnSid string, params *CreateBillingUsageParams) (*MarketplaceV1InstalledAddOnUsage, error) {
 	path := "/v1/InstalledAddOns/{InstalledAddOnSid}/Usage"
 	path = strings.Replace(path, "{"+"InstalledAddOnSid"+"}", InstalledAddOnSid, -1)
 
@@ -42,8 +42,8 @@ func (c *ApiService) CreateBillingUsage(InstalledAddOnSid string, params *Create
 	}
 
 	body := []byte{}
-	if params != nil && params.CreateBillingUsageRequest != nil {
-		b, err := json.Marshal(*params.CreateBillingUsageRequest)
+	if params != nil && params.MarketplaceV1InstalledAddOnUsage != nil {
+		b, err := json.Marshal(*params.MarketplaceV1InstalledAddOnUsage)
 		if err != nil {
 			return nil, err
 		}
@@ -57,7 +57,7 @@ func (c *ApiService) CreateBillingUsage(InstalledAddOnSid string, params *Create
 
 	defer resp.Body.Close()
 
-	ps := &MarketplaceV1BillingUsageResponse{}
+	ps := &MarketplaceV1InstalledAddOnUsage{}
 	if err := json.NewDecoder(resp.Body).Decode(ps); err != nil {
 		return nil, err
 	}

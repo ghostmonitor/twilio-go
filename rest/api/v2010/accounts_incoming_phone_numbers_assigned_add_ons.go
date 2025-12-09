@@ -41,10 +41,7 @@ func (params *CreateIncomingPhoneNumberAssignedAddOnParams) SetInstalledAddOnSid
 }
 
 // Assign an Add-on installation to the Number specified.
-func (c *ApiService) CreateIncomingPhoneNumberAssignedAddOn(
-	ResourceSid string,
-	params *CreateIncomingPhoneNumberAssignedAddOnParams,
-) (*ApiV2010IncomingPhoneNumberAssignedAddOn, error) {
+func (c *ApiService) CreateIncomingPhoneNumberAssignedAddOn(ResourceSid string, params *CreateIncomingPhoneNumberAssignedAddOnParams) (*ApiV2010IncomingPhoneNumberAssignedAddOn, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -89,11 +86,7 @@ func (params *DeleteIncomingPhoneNumberAssignedAddOnParams) SetPathAccountSid(Pa
 }
 
 // Remove the assignment of an Add-on installation from the Number specified.
-func (c *ApiService) DeleteIncomingPhoneNumberAssignedAddOn(
-	ResourceSid string,
-	Sid string,
-	params *DeleteIncomingPhoneNumberAssignedAddOnParams,
-) error {
+func (c *ApiService) DeleteIncomingPhoneNumberAssignedAddOn(ResourceSid string, Sid string, params *DeleteIncomingPhoneNumberAssignedAddOnParams) error {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -130,11 +123,7 @@ func (params *FetchIncomingPhoneNumberAssignedAddOnParams) SetPathAccountSid(Pat
 }
 
 // Fetch an instance of an Add-on installation currently assigned to this Number.
-func (c *ApiService) FetchIncomingPhoneNumberAssignedAddOn(
-	ResourceSid string,
-	Sid string,
-	params *FetchIncomingPhoneNumberAssignedAddOnParams,
-) (*ApiV2010IncomingPhoneNumberAssignedAddOn, error) {
+func (c *ApiService) FetchIncomingPhoneNumberAssignedAddOn(ResourceSid string, Sid string, params *FetchIncomingPhoneNumberAssignedAddOnParams) (*ApiV2010IncomingPhoneNumberAssignedAddOn, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -188,11 +177,7 @@ func (params *ListIncomingPhoneNumberAssignedAddOnParams) SetLimit(Limit int) *L
 }
 
 // Retrieve a single page of IncomingPhoneNumberAssignedAddOn records from the API. Request is executed immediately.
-func (c *ApiService) PageIncomingPhoneNumberAssignedAddOn(
-	ResourceSid string,
-	params *ListIncomingPhoneNumberAssignedAddOnParams,
-	pageToken, pageNumber string,
-) (*ListIncomingPhoneNumberAssignedAddOnResponse, error) {
+func (c *ApiService) PageIncomingPhoneNumberAssignedAddOn(ResourceSid string, params *ListIncomingPhoneNumberAssignedAddOnParams, pageToken, pageNumber string) (*ListIncomingPhoneNumberAssignedAddOnResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -234,10 +219,7 @@ func (c *ApiService) PageIncomingPhoneNumberAssignedAddOn(
 }
 
 // Lists IncomingPhoneNumberAssignedAddOn records from the API as a list. Unlike stream, this operation is eager and loads 'limit' records into memory before returning.
-func (c *ApiService) ListIncomingPhoneNumberAssignedAddOn(
-	ResourceSid string,
-	params *ListIncomingPhoneNumberAssignedAddOnParams,
-) ([]ApiV2010IncomingPhoneNumberAssignedAddOn, error) {
+func (c *ApiService) ListIncomingPhoneNumberAssignedAddOn(ResourceSid string, params *ListIncomingPhoneNumberAssignedAddOnParams) ([]ApiV2010IncomingPhoneNumberAssignedAddOn, error) {
 	response, errors := c.StreamIncomingPhoneNumberAssignedAddOn(ResourceSid, params)
 
 	records := make([]ApiV2010IncomingPhoneNumberAssignedAddOn, 0)
@@ -253,10 +235,7 @@ func (c *ApiService) ListIncomingPhoneNumberAssignedAddOn(
 }
 
 // Streams IncomingPhoneNumberAssignedAddOn records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamIncomingPhoneNumberAssignedAddOn(
-	ResourceSid string,
-	params *ListIncomingPhoneNumberAssignedAddOnParams,
-) (chan ApiV2010IncomingPhoneNumberAssignedAddOn, chan error) {
+func (c *ApiService) StreamIncomingPhoneNumberAssignedAddOn(ResourceSid string, params *ListIncomingPhoneNumberAssignedAddOnParams) (chan ApiV2010IncomingPhoneNumberAssignedAddOn, chan error) {
 	if params == nil {
 		params = &ListIncomingPhoneNumberAssignedAddOnParams{}
 	}
@@ -277,12 +256,7 @@ func (c *ApiService) StreamIncomingPhoneNumberAssignedAddOn(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamIncomingPhoneNumberAssignedAddOn(
-	response *ListIncomingPhoneNumberAssignedAddOnResponse,
-	params *ListIncomingPhoneNumberAssignedAddOnParams,
-	recordChannel chan ApiV2010IncomingPhoneNumberAssignedAddOn,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamIncomingPhoneNumberAssignedAddOn(response *ListIncomingPhoneNumberAssignedAddOnResponse, params *ListIncomingPhoneNumberAssignedAddOnParams, recordChannel chan ApiV2010IncomingPhoneNumberAssignedAddOn, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

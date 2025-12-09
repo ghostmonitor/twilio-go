@@ -3,28 +3,24 @@ package twiml_test
 import (
 	"testing"
 
-	"github.com/ghostmonitor/twilio-go/twiml"
 	"github.com/stretchr/testify/assert"
+	"github.com/ghostmonitor/twilio-go/twiml"
 )
 
 func TestVoice_ZeroValueVerbList(t *testing.T) {
 	var verbs []twiml.Element
 	resp, _ := twiml.Voice(verbs)
-	assert.Equal(
-		t,
+	assert.Equal(t,
 		`<?xml version="1.0" encoding="UTF-8"?><Response/>`,
-		resp,
-	)
+		resp)
 }
 
 func TestVoice_EmptyVerbList(t *testing.T) {
 	verbs := []twiml.Element{}
 	resp, _ := twiml.Voice(verbs)
-	assert.Equal(
-		t,
+	assert.Equal(t,
 		`<?xml version="1.0" encoding="UTF-8"?><Response/>`,
-		resp,
-	)
+		resp)
 }
 
 func TestVoice_SayVerb(t *testing.T) {
@@ -33,11 +29,9 @@ func TestVoice_SayVerb(t *testing.T) {
 	}
 	verbs := []twiml.Element{say}
 	resp, _ := twiml.Messages(verbs)
-	assert.Equal(
-		t,
+	assert.Equal(t,
 		`<?xml version="1.0" encoding="UTF-8"?><Response><Say>Hello World!</Say></Response>`,
-		resp,
-	)
+		resp)
 }
 
 func TestVoice_SayVerbWithParams(t *testing.T) {
@@ -74,9 +68,7 @@ func TestVoice_GatherVerbWithNestedPlayVerb(t *testing.T) {
 	}
 	verbs := []twiml.Element{gather}
 	resp, _ := twiml.Messages(verbs)
-	assert.Equal(
-		t,
+	assert.Equal(t,
 		`<?xml version="1.0" encoding="UTF-8"?><Response><Gather><Play>https://demo.twilio.com</Play></Gather></Response>`,
-		resp,
-	)
+		resp)
 }

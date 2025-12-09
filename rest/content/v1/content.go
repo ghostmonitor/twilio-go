@@ -130,10 +130,7 @@ func (params *ListContentParams) SetLimit(Limit int) *ListContentParams {
 }
 
 // Retrieve a single page of Content records from the API. Request is executed immediately.
-func (c *ApiService) PageContent(
-	params *ListContentParams,
-	pageToken, pageNumber string,
-) (*ListContentResponse, error) {
+func (c *ApiService) PageContent(params *ListContentParams, pageToken, pageNumber string) (*ListContentResponse, error) {
 	path := "/v1/Content"
 
 	data := url.Values{}
@@ -205,12 +202,7 @@ func (c *ApiService) StreamContent(params *ListContentParams) (chan ContentV1Con
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamContent(
-	response *ListContentResponse,
-	params *ListContentParams,
-	recordChannel chan ContentV1Content,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamContent(response *ListContentResponse, params *ListContentParams, recordChannel chan ContentV1Content, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -256,4 +248,49 @@ func (c *ApiService) getNextListContentResponse(nextPageUrl string) (interface{}
 		return nil, err
 	}
 	return ps, nil
+}
+
+// Optional parameters for the method 'UpdateContent'
+type UpdateContentParams struct {
+	//
+	ContentUpdateRequest *ContentUpdateRequest `json:"ContentUpdateRequest,omitempty"`
+}
+
+func (params *UpdateContentParams) SetContentUpdateRequest(ContentUpdateRequest ContentUpdateRequest) *UpdateContentParams {
+	params.ContentUpdateRequest = &ContentUpdateRequest
+	return params
+}
+
+// Update a Content resource
+func (c *ApiService) UpdateContent(Sid string, params *UpdateContentParams) (*ContentV1Content, error) {
+	path := "/v1/Content/{Sid}"
+	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
+
+	data := url.Values{}
+	headers := map[string]interface{}{
+		"Content-Type": "application/json",
+	}
+
+	body := []byte{}
+	if params != nil && params.ContentUpdateRequest != nil {
+		b, err := json.Marshal(*params.ContentUpdateRequest)
+		if err != nil {
+			return nil, err
+		}
+		body = b
+	}
+
+	resp, err := c.requestHandler.Put(c.baseURL+path, data, headers, body...)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	ps := &ContentV1Content{}
+	if err := json.NewDecoder(resp.Body).Decode(ps); err != nil {
+		return nil, err
+	}
+
+	return ps, err
 }

@@ -81,11 +81,7 @@ func (params *ListBundleCopyParams) SetLimit(Limit int) *ListBundleCopyParams {
 }
 
 // Retrieve a single page of BundleCopy records from the API. Request is executed immediately.
-func (c *ApiService) PageBundleCopy(
-	BundleSid string,
-	params *ListBundleCopyParams,
-	pageToken, pageNumber string,
-) (*ListBundleCopyResponse, error) {
+func (c *ApiService) PageBundleCopy(BundleSid string, params *ListBundleCopyParams, pageToken, pageNumber string) (*ListBundleCopyResponse, error) {
 	path := "/v2/RegulatoryCompliance/Bundles/{BundleSid}/Copies"
 
 	path = strings.Replace(path, "{"+"BundleSid"+"}", BundleSid, -1)
@@ -138,10 +134,7 @@ func (c *ApiService) ListBundleCopy(BundleSid string, params *ListBundleCopyPara
 }
 
 // Streams BundleCopy records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamBundleCopy(
-	BundleSid string,
-	params *ListBundleCopyParams,
-) (chan NumbersV2BundleCopy, chan error) {
+func (c *ApiService) StreamBundleCopy(BundleSid string, params *ListBundleCopyParams) (chan NumbersV2BundleCopy, chan error) {
 	if params == nil {
 		params = &ListBundleCopyParams{}
 	}
@@ -162,12 +155,7 @@ func (c *ApiService) StreamBundleCopy(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamBundleCopy(
-	response *ListBundleCopyResponse,
-	params *ListBundleCopyParams,
-	recordChannel chan NumbersV2BundleCopy,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamBundleCopy(response *ListBundleCopyResponse, params *ListBundleCopyParams, recordChannel chan NumbersV2BundleCopy, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

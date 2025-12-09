@@ -71,10 +71,7 @@ func (params *ListUsageRecordMonthlyParams) SetLimit(Limit int) *ListUsageRecord
 }
 
 // Retrieve a single page of UsageRecordMonthly records from the API. Request is executed immediately.
-func (c *ApiService) PageUsageRecordMonthly(
-	params *ListUsageRecordMonthlyParams,
-	pageToken, pageNumber string,
-) (*ListUsageRecordMonthlyResponse, error) {
+func (c *ApiService) PageUsageRecordMonthly(params *ListUsageRecordMonthlyParams, pageToken, pageNumber string) (*ListUsageRecordMonthlyResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -164,12 +161,7 @@ func (c *ApiService) StreamUsageRecordMonthly(params *ListUsageRecordMonthlyPara
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamUsageRecordMonthly(
-	response *ListUsageRecordMonthlyResponse,
-	params *ListUsageRecordMonthlyParams,
-	recordChannel chan ApiV2010UsageRecordMonthly,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamUsageRecordMonthly(response *ListUsageRecordMonthlyResponse, params *ListUsageRecordMonthlyParams, recordChannel chan ApiV2010UsageRecordMonthly, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

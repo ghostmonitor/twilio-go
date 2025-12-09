@@ -109,10 +109,7 @@ func (params *FetchPluginConfigurationParams) SetFlexMetadata(FlexMetadata strin
 }
 
 //
-func (c *ApiService) FetchPluginConfiguration(
-	Sid string,
-	params *FetchPluginConfigurationParams,
-) (*FlexV1PluginConfiguration, error) {
+func (c *ApiService) FetchPluginConfiguration(Sid string, params *FetchPluginConfigurationParams) (*FlexV1PluginConfiguration, error) {
 	path := "/v1/PluginService/Configurations/{Sid}"
 	path = strings.Replace(path, "{"+"Sid"+"}", Sid, -1)
 
@@ -163,10 +160,7 @@ func (params *ListPluginConfigurationParams) SetLimit(Limit int) *ListPluginConf
 }
 
 // Retrieve a single page of PluginConfiguration records from the API. Request is executed immediately.
-func (c *ApiService) PagePluginConfiguration(
-	params *ListPluginConfigurationParams,
-	pageToken, pageNumber string,
-) (*ListPluginConfigurationResponse, error) {
+func (c *ApiService) PagePluginConfiguration(params *ListPluginConfigurationParams, pageToken, pageNumber string) (*ListPluginConfigurationResponse, error) {
 	path := "/v1/PluginService/Configurations"
 
 	data := url.Values{}
@@ -238,12 +232,7 @@ func (c *ApiService) StreamPluginConfiguration(params *ListPluginConfigurationPa
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamPluginConfiguration(
-	response *ListPluginConfigurationResponse,
-	params *ListPluginConfigurationParams,
-	recordChannel chan FlexV1PluginConfiguration,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamPluginConfiguration(response *ListPluginConfigurationResponse, params *ListPluginConfigurationParams, recordChannel chan FlexV1PluginConfiguration, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

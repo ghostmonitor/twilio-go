@@ -4,10 +4,11 @@ All URIs are relative to *https://content.twilio.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateContent**](ContentApi.md#CreateContent) | **Post** /v1/Content | 
-[**DeleteContent**](ContentApi.md#DeleteContent) | **Delete** /v1/Content/{Sid} | 
-[**FetchContent**](ContentApi.md#FetchContent) | **Get** /v1/Content/{Sid} | 
-[**ListContent**](ContentApi.md#ListContent) | **Get** /v1/Content | 
+[**CreateContent**](ContentApi.md#CreateContent) | **Post** /v1/Content | Create Content
+[**DeleteContent**](ContentApi.md#DeleteContent) | **Delete** /v1/Content/{Sid} | Delete Content
+[**FetchContent**](ContentApi.md#FetchContent) | **Get** /v1/Content/{Sid} | Fetch Content
+[**ListContent**](ContentApi.md#ListContent) | **Get** /v1/Content | List Contents
+[**UpdateContent**](ContentApi.md#UpdateContent) | **Put** /v1/Content/{Sid} | Update Content
 
 
 
@@ -15,7 +16,7 @@ Method | HTTP request | Description
 
 > ContentV1Content CreateContent(ctx, optional)
 
-
+Create Content
 
 Create a Content resource
 
@@ -54,7 +55,7 @@ Name | Type | Description
 
 > DeleteContent(ctx, Sid)
 
-
+Delete Content
 
 Deletes a Content resource
 
@@ -96,7 +97,7 @@ Name | Type | Description
 
 > ContentV1Content FetchContent(ctx, Sid)
 
-
+Fetch Content
 
 Fetch a Content resource by its unique Content Sid
 
@@ -138,7 +139,7 @@ Name | Type | Description
 
 > []ContentV1Content ListContent(ctx, optional)
 
-
+List Contents
 
 Retrieve a list of Contents belonging to the account used to make the request
 
@@ -167,6 +168,49 @@ Name | Type | Description
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateContent
+
+> ContentV1Content UpdateContent(ctx, Sidoptional)
+
+Update Content
+
+Update a Content resource
+
+### Path Parameters
+
+
+Name | Type | Description
+------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**Sid** | **string** | The Twilio-provided string that uniquely identifies the Content resource to update.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a UpdateContentParams struct
+
+
+Name | Type | Description
+------------- | ------------- | -------------
+**ContentUpdateRequest** | [**ContentUpdateRequest**](ContentUpdateRequest.md) | 
+
+### Return type
+
+[**ContentV1Content**](ContentV1Content.md)
+
+### Authorization
+
+[accountSid_authToken](../README.md#accountSid_authToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

@@ -238,7 +238,7 @@ func (c *ApiService) CreateIncomingPhoneNumber(params *CreateIncomingPhoneNumber
 		data.Set("VoiceUrl", *params.VoiceUrl)
 	}
 	if params != nil && params.EmergencyStatus != nil {
-		data.Set("EmergencyStatus", *params.EmergencyStatus)
+		data.Set("EmergencyStatus", fmt.Sprint(*params.EmergencyStatus))
 	}
 	if params != nil && params.EmergencyAddressSid != nil {
 		data.Set("EmergencyAddressSid", *params.EmergencyAddressSid)
@@ -253,7 +253,7 @@ func (c *ApiService) CreateIncomingPhoneNumber(params *CreateIncomingPhoneNumber
 		data.Set("AddressSid", *params.AddressSid)
 	}
 	if params != nil && params.VoiceReceiveMode != nil {
-		data.Set("VoiceReceiveMode", *params.VoiceReceiveMode)
+		data.Set("VoiceReceiveMode", fmt.Sprint(*params.VoiceReceiveMode))
 	}
 	if params != nil && params.BundleSid != nil {
 		data.Set("BundleSid", *params.BundleSid)
@@ -328,10 +328,7 @@ func (params *FetchIncomingPhoneNumberParams) SetPathAccountSid(PathAccountSid s
 }
 
 // Fetch an incoming-phone-number belonging to the account used to make the request.
-func (c *ApiService) FetchIncomingPhoneNumber(
-	Sid string,
-	params *FetchIncomingPhoneNumberParams,
-) (*ApiV2010IncomingPhoneNumber, error) {
+func (c *ApiService) FetchIncomingPhoneNumber(Sid string, params *FetchIncomingPhoneNumberParams) (*ApiV2010IncomingPhoneNumber, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -408,10 +405,7 @@ func (params *ListIncomingPhoneNumberParams) SetLimit(Limit int) *ListIncomingPh
 }
 
 // Retrieve a single page of IncomingPhoneNumber records from the API. Request is executed immediately.
-func (c *ApiService) PageIncomingPhoneNumber(
-	params *ListIncomingPhoneNumberParams,
-	pageToken, pageNumber string,
-) (*ListIncomingPhoneNumberResponse, error) {
+func (c *ApiService) PageIncomingPhoneNumber(params *ListIncomingPhoneNumberParams, pageToken, pageNumber string) (*ListIncomingPhoneNumberResponse, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json"
 
 	if params != nil && params.PathAccountSid != nil {
@@ -501,12 +495,7 @@ func (c *ApiService) StreamIncomingPhoneNumber(params *ListIncomingPhoneNumberPa
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamIncomingPhoneNumber(
-	response *ListIncomingPhoneNumberResponse,
-	params *ListIncomingPhoneNumberParams,
-	recordChannel chan ApiV2010IncomingPhoneNumber,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamIncomingPhoneNumber(response *ListIncomingPhoneNumberResponse, params *ListIncomingPhoneNumberParams, recordChannel chan ApiV2010IncomingPhoneNumber, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -704,10 +693,7 @@ func (params *UpdateIncomingPhoneNumberParams) SetBundleSid(BundleSid string) *U
 }
 
 // Update an incoming-phone-number instance.
-func (c *ApiService) UpdateIncomingPhoneNumber(
-	Sid string,
-	params *UpdateIncomingPhoneNumberParams,
-) (*ApiV2010IncomingPhoneNumber, error) {
+func (c *ApiService) UpdateIncomingPhoneNumber(Sid string, params *UpdateIncomingPhoneNumberParams) (*ApiV2010IncomingPhoneNumber, error) {
 	path := "/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json"
 	if params != nil && params.PathAccountSid != nil {
 		path = strings.Replace(path, "{"+"AccountSid"+"}", *params.PathAccountSid, -1)
@@ -770,7 +756,7 @@ func (c *ApiService) UpdateIncomingPhoneNumber(
 		data.Set("VoiceUrl", *params.VoiceUrl)
 	}
 	if params != nil && params.EmergencyStatus != nil {
-		data.Set("EmergencyStatus", *params.EmergencyStatus)
+		data.Set("EmergencyStatus", fmt.Sprint(*params.EmergencyStatus))
 	}
 	if params != nil && params.EmergencyAddressSid != nil {
 		data.Set("EmergencyAddressSid", *params.EmergencyAddressSid)
@@ -779,7 +765,7 @@ func (c *ApiService) UpdateIncomingPhoneNumber(
 		data.Set("TrunkSid", *params.TrunkSid)
 	}
 	if params != nil && params.VoiceReceiveMode != nil {
-		data.Set("VoiceReceiveMode", *params.VoiceReceiveMode)
+		data.Set("VoiceReceiveMode", fmt.Sprint(*params.VoiceReceiveMode))
 	}
 	if params != nil && params.IdentitySid != nil {
 		data.Set("IdentitySid", *params.IdentitySid)

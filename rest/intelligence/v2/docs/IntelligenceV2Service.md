@@ -19,7 +19,8 @@ Name | Type | Description | Notes
 **WebhookUrl** | Pointer to **string** | The URL Twilio will request when executing the Webhook. |
 **WebhookHttpMethod** | Pointer to [**string**](ServiceEnumHttpMethod.md) |  |
 **ReadOnlyAttachedOperatorSids** | Pointer to **[]string** | Operator sids attached to this service, read only |
-**Version** | Pointer to **int** | The version number of this Service. |
+**Version** | **int** | The version number of this Service. |[optional] [default to 0]
+**EncryptionCredentialSid** | Pointer to **string** | The unique SID identifier of the Public Key resource used to encrypt the sentences and operator results. |
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

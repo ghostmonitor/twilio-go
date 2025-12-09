@@ -14,8 +14,8 @@ Name | Type | Description | Notes
 **DefaultChannelCreatorRoleSid** | Pointer to **string** |  |
 **ReadStatusEnabled** | Pointer to **bool** |  |
 **ReachabilityEnabled** | Pointer to **bool** |  |
-**TypingIndicatorTimeout** | Pointer to **int** |  |
-**ConsumptionReportInterval** | Pointer to **int** |  |
+**TypingIndicatorTimeout** | **int** |  |[optional] [default to 0]
+**ConsumptionReportInterval** | **int** |  |[optional] [default to 0]
 **Limits** | Pointer to **interface{}** |  |
 **Webhooks** | Pointer to **interface{}** |  |
 **PreWebhookUrl** | Pointer to **string** |  |

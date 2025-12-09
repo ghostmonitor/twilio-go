@@ -41,11 +41,7 @@ func (params *ListDataSessionParams) SetLimit(Limit int) *ListDataSessionParams 
 }
 
 // Retrieve a single page of DataSession records from the API. Request is executed immediately.
-func (c *ApiService) PageDataSession(
-	SimSid string,
-	params *ListDataSessionParams,
-	pageToken, pageNumber string,
-) (*ListDataSessionResponse, error) {
+func (c *ApiService) PageDataSession(SimSid string, params *ListDataSessionParams, pageToken, pageNumber string) (*ListDataSessionResponse, error) {
 	path := "/v1/Sims/{SimSid}/DataSessions"
 
 	path = strings.Replace(path, "{"+"SimSid"+"}", SimSid, -1)
@@ -98,10 +94,7 @@ func (c *ApiService) ListDataSession(SimSid string, params *ListDataSessionParam
 }
 
 // Streams DataSession records from the API as a channel stream. This operation lazily loads records as efficiently as possible until the limit is reached.
-func (c *ApiService) StreamDataSession(
-	SimSid string,
-	params *ListDataSessionParams,
-) (chan WirelessV1DataSession, chan error) {
+func (c *ApiService) StreamDataSession(SimSid string, params *ListDataSessionParams) (chan WirelessV1DataSession, chan error) {
 	if params == nil {
 		params = &ListDataSessionParams{}
 	}
@@ -122,12 +115,7 @@ func (c *ApiService) StreamDataSession(
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamDataSession(
-	response *ListDataSessionResponse,
-	params *ListDataSessionParams,
-	recordChannel chan WirelessV1DataSession,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamDataSession(response *ListDataSessionResponse, params *ListDataSessionParams, recordChannel chan WirelessV1DataSession, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

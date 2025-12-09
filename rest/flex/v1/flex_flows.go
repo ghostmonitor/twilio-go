@@ -146,7 +146,7 @@ func (c *ApiService) CreateFlexFlow(params *CreateFlexFlowParams) (*FlexV1FlexFl
 		data.Set("ChatServiceSid", *params.ChatServiceSid)
 	}
 	if params != nil && params.ChannelType != nil {
-		data.Set("ChannelType", *params.ChannelType)
+		data.Set("ChannelType", fmt.Sprint(*params.ChannelType))
 	}
 	if params != nil && params.ContactIdentity != nil {
 		data.Set("ContactIdentity", *params.ContactIdentity)
@@ -155,7 +155,7 @@ func (c *ApiService) CreateFlexFlow(params *CreateFlexFlowParams) (*FlexV1FlexFl
 		data.Set("Enabled", fmt.Sprint(*params.Enabled))
 	}
 	if params != nil && params.IntegrationType != nil {
-		data.Set("IntegrationType", *params.IntegrationType)
+		data.Set("IntegrationType", fmt.Sprint(*params.IntegrationType))
 	}
 	if params != nil && params.IntegrationFlowSid != nil {
 		data.Set("Integration.FlowSid", *params.IntegrationFlowSid)
@@ -275,10 +275,7 @@ func (params *ListFlexFlowParams) SetLimit(Limit int) *ListFlexFlowParams {
 }
 
 // Retrieve a single page of FlexFlow records from the API. Request is executed immediately.
-func (c *ApiService) PageFlexFlow(
-	params *ListFlexFlowParams,
-	pageToken, pageNumber string,
-) (*ListFlexFlowResponse, error) {
+func (c *ApiService) PageFlexFlow(params *ListFlexFlowParams, pageToken, pageNumber string) (*ListFlexFlowResponse, error) {
 	path := "/v1/FlexFlows"
 
 	data := url.Values{}
@@ -353,12 +350,7 @@ func (c *ApiService) StreamFlexFlow(params *ListFlexFlowParams) (chan FlexV1Flex
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamFlexFlow(
-	response *ListFlexFlowResponse,
-	params *ListFlexFlowParams,
-	recordChannel chan FlexV1FlexFlow,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamFlexFlow(response *ListFlexFlowResponse, params *ListFlexFlowParams, recordChannel chan FlexV1FlexFlow, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -530,7 +522,7 @@ func (c *ApiService) UpdateFlexFlow(Sid string, params *UpdateFlexFlowParams) (*
 		data.Set("ChatServiceSid", *params.ChatServiceSid)
 	}
 	if params != nil && params.ChannelType != nil {
-		data.Set("ChannelType", *params.ChannelType)
+		data.Set("ChannelType", fmt.Sprint(*params.ChannelType))
 	}
 	if params != nil && params.ContactIdentity != nil {
 		data.Set("ContactIdentity", *params.ContactIdentity)
@@ -539,7 +531,7 @@ func (c *ApiService) UpdateFlexFlow(Sid string, params *UpdateFlexFlowParams) (*
 		data.Set("Enabled", fmt.Sprint(*params.Enabled))
 	}
 	if params != nil && params.IntegrationType != nil {
-		data.Set("IntegrationType", *params.IntegrationType)
+		data.Set("IntegrationType", fmt.Sprint(*params.IntegrationType))
 	}
 	if params != nil && params.IntegrationFlowSid != nil {
 		data.Set("Integration.FlowSid", *params.IntegrationFlowSid)

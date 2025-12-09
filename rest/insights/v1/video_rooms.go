@@ -97,10 +97,7 @@ func (params *ListVideoRoomSummaryParams) SetLimit(Limit int) *ListVideoRoomSumm
 }
 
 // Retrieve a single page of VideoRoomSummary records from the API. Request is executed immediately.
-func (c *ApiService) PageVideoRoomSummary(
-	params *ListVideoRoomSummaryParams,
-	pageToken, pageNumber string,
-) (*ListVideoRoomSummaryResponse, error) {
+func (c *ApiService) PageVideoRoomSummary(params *ListVideoRoomSummaryParams, pageToken, pageNumber string) (*ListVideoRoomSummaryResponse, error) {
 	path := "/v1/Video/Rooms"
 
 	data := url.Values{}
@@ -191,12 +188,7 @@ func (c *ApiService) StreamVideoRoomSummary(params *ListVideoRoomSummaryParams) 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamVideoRoomSummary(
-	response *ListVideoRoomSummaryResponse,
-	params *ListVideoRoomSummaryParams,
-	recordChannel chan InsightsV1VideoRoomSummary,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamVideoRoomSummary(response *ListVideoRoomSummaryResponse, params *ListVideoRoomSummaryParams, recordChannel chan InsightsV1VideoRoomSummary, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {

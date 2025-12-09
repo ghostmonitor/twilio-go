@@ -141,7 +141,7 @@ func (c *ApiService) PageSim(params *ListSimParams, pageToken, pageNumber string
 	}
 
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.Fleet != nil {
 		data.Set("Fleet", *params.Fleet)
@@ -213,12 +213,7 @@ func (c *ApiService) StreamSim(params *ListSimParams) (chan SupersimV1Sim, chan 
 	return recordChannel, errorChannel
 }
 
-func (c *ApiService) streamSim(
-	response *ListSimResponse,
-	params *ListSimParams,
-	recordChannel chan SupersimV1Sim,
-	errorChannel chan error,
-) {
+func (c *ApiService) streamSim(response *ListSimResponse, params *ListSimParams, recordChannel chan SupersimV1Sim, errorChannel chan error) {
 	curRecord := 1
 
 	for response != nil {
@@ -321,7 +316,7 @@ func (c *ApiService) UpdateSim(Sid string, params *UpdateSimParams) (*SupersimV1
 		data.Set("UniqueName", *params.UniqueName)
 	}
 	if params != nil && params.Status != nil {
-		data.Set("Status", *params.Status)
+		data.Set("Status", fmt.Sprint(*params.Status))
 	}
 	if params != nil && params.Fleet != nil {
 		data.Set("Fleet", *params.Fleet)
